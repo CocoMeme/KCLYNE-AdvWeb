@@ -1,0 +1,33 @@
+/* public/css/account.css */
+
+/* ...existing styles... */
+
+.confirmation-dialog {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: -300px; /* Start position off-screen */
+    height: 96px;
+    background: #EE6F57;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: right 0.3s ease-in-out; /* Add transition */
+}
+
+.confirmation-dialog.show {
+    right: 0; /* End position */
+}
+
+.confirmation-dialog button {
+    background: #00334E;
+    color: white;
+    border: 1px solid #00334E;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.confirmation-button:hover {
+    background: #00334E;
+}

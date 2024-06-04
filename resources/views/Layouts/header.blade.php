@@ -32,6 +32,11 @@
                         <i class='bx bx-log-out-circle'></i>
                     </button>
                 </form>
+                <div id="confirmation-dialog" class="confirmation-dialog">
+                    <p>Are you sure you want to logout?</p>
+                    <button id="confirm-logout" class="confirmation-button">Yes</button>
+                    <button id="cancel-logout" class="confirmation-button">No</button>
+                </div>
             </div>
         @else
             <a href="/">
@@ -41,13 +46,8 @@
                 <i class='bx bx-bell'></i>
             </a>
             <a href="{{ route('login') }}">
-                <i class='bx bxs-user-circle'></i>
+                <i class='bx bx-log-in-circle'></i>
             </a>
-            <div class="logout-button">
-                <a href="{{ route('register') }}">
-                    <i class='bx bx-log-in-circle'></i>
-                </a>
-            </div>
         @endauth
     </div>
 </header>
