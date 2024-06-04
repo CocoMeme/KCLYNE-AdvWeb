@@ -1,0 +1,14 @@
+
+/* HEADER ||||||||||||||||||||||||||||||||||||||||||||||||||
+*/
+
+.main-home{
+    width: 100%;
+    height: 100vh;
+    background-image: url(/Images/Layouts/Home_Page.jpg);
+    background-position: center;
+    background-size: cover;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    align-items: center;
+}

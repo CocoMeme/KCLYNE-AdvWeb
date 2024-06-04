@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,41 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/*
+|--------------------------------------------------------------------------
+| GENERAL
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('customer.home');
 });
+
+Route::get('/home', function () {
+    return view('customer.home');
+})->name('home');
+
+/*
+|--------------------------------------------------------------------------
+| ACCOUNTS
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/register', [AccountController::class, 'showRegisterForm'])->name('register');
+Route::post('register', [AccountController::class, 'register']);
+
+Route::get('/login', [AccountController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AccountController::class, 'login'])->name('login');
+Route::post('/logout', [AccountController::class, 'logout'])->name('logout');
+
+/*
+|--------------------------------------------------------------------------
+| ADMINS
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
+| PRODUCTS
+|--------------------------------------------------------------------------
+*/

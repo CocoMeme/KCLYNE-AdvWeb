@@ -11,8 +11,11 @@ class CreateCustomersTable extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('address');
-            $table->string('phone_number');
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->string('image')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
             $table->timestamps();
         });
     }
@@ -22,3 +25,4 @@ class CreateCustomersTable extends Migration
         Schema::dropIfExists('customers');
     }
 }
+
