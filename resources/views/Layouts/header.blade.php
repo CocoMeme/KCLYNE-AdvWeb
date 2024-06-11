@@ -7,20 +7,22 @@
         <li><a href="#">Services</a></li>
         <li><a href="#">About Us</a></li>
     </ul>
-
-    <div class="search">
-        <form action="#" method="GET">
-            <input type="text" name="query" placeholder="Search a Product" value="">
-        </form>
-    </div>
     
     <div class="nav-icon">
         @auth
+        <a href="#">
+        <div class="search search-compact" id="search-compact" style="display:flex">
+            <i class='bx bx-search' id="search-icon"></i>
+        </div>
+        </a>
+
+        <div class="search search-expanded" id="search-expanded" style="display:none">
+            <input type="text" placeholder="Enter a search query...">
+            <i class='bx bx-search'></i>
+        </div>
+
             <a href="/">
                 <i class='bx bx-cart-alt'></i>
-            </a>
-            <a href="/">
-                <i class='bx bx-bell'></i>
             </a>
             <div class="user-info">
                 <img src="/Images/Customers/{{ Auth::user()->customer->image }}" alt="Profile Image" class="profile-image">
@@ -39,11 +41,19 @@
                 </div>
             </div>
         @else
+        <a href="#">
+        <div class="search search-compact" id="search-compact" style="display:flex">
+            <i class='bx bx-search' id="search-icon"></i>
+        </div>
+        </a>
+
+        <div class="search search-expanded" id="search-expanded" style="display:none">
+            <input type="text" placeholder="Enter a search query...">
+            <i class='bx bx-search'></i>
+        </div>
+        
             <a href="/">
                 <i class='bx bx-cart-alt'></i>
-            </a>
-            <a href="/">
-                <i class='bx bx-bell'></i>
             </a>
             <a href="{{ route('login') }}">
                 <i class='bx bx-log-in-circle'></i>

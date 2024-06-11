@@ -6,7 +6,7 @@ document.getElementById('logout-button').addEventListener('click', function(even
     confirmationDialog.style.display = 'block';
     setTimeout(() => {
         confirmationDialog.classList.add('show');
-    }, 10); // Slight delay to trigger transition
+    }, 10);
 });
 
 document.getElementById('confirm-logout').addEventListener('click', function() {
@@ -18,5 +18,32 @@ document.getElementById('cancel-logout').addEventListener('click', function() {
     confirmationDialog.classList.remove('show');
     setTimeout(() => {
         confirmationDialog.style.display = 'none';
-    }, 300); // Delay to match the transition duration
+    }, 300);
+});
+
+//SEARCH
+
+document.getElementById('search-icon').addEventListener('click', function(event) {
+    event.preventDefault();
+    var searchCompact = document.getElementById('search-compact');
+    var searchExpanded = document.getElementById('search-expanded');
+    searchCompact.style.display = 'none';
+    searchExpanded.style.display = 'flex';
+    setTimeout(function() {
+        searchExpanded.classList.add('visible');
+        document.body.classList.add('blackened');
+    }, 10); 
+});
+
+document.addEventListener('click', function(event) {
+    var searchCompact = document.getElementById('search-compact');
+    var searchExpanded = document.getElementById('search-expanded');
+    if (!searchExpanded.contains(event.target) && event.target.id !== 'search-icon') {
+        searchExpanded.classList.remove('visible');
+        document.body.classList.remove('blackened');
+        setTimeout(function() {
+            searchExpanded.style.display = 'none';
+            searchCompact.style.display = 'flex';
+        }, 100);
+    }
 });
