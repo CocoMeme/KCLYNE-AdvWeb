@@ -33,9 +33,13 @@
                     </button>
                 </form>
                 <div id="confirmation-dialog" class="confirmation-dialog">
-                    <p>Are you sure you want to logout?</p>
-                    <button id="confirm-logout" class="confirmation-button">Yes</button>
-                    <button id="cancel-logout" class="confirmation-button">No</button>
+                    <div class="message">
+                        <p>Are you sure you want to logout?</p>
+                    </div>
+                    <div class="buttons">
+                        <button id="confirm-logout" class="confirmation-button">Yes</button>
+                        <button id="cancel-logout" class="confirmation-button">No</button>
+                    </div>
                 </div>
             </div>
         @else
