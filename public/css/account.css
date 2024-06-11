@@ -1,33 +1,54 @@
 /* public/css/account.css */
 
-/* ...existing styles... */
-
 .confirmation-dialog {
-    display: none;
     position: absolute;
     top: 0;
-    right: -300px; /* Start position off-screen */
-    height: 96px;
+    right: -250px; /* Start position off-screen */
+    height: auto;
+    width: 240px;
     background: #EE6F57;
-    padding: 10px;
+    padding: 20px;
+    height: 96px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     transition: right 0.3s ease-in-out; /* Add transition */
+    display: flex;
+    /* justify-content: space-between;
+    align-items: center; */
 }
 
 .confirmation-dialog.show {
     right: 0; /* End position */
 }
 
+.confirmation-dialog .message {
+    color: #FFF;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 7px;
+}
+
+.confirmation-dialog .buttons {
+    display:block;
+    /* flex-direction: column;
+    justify-content: space-between; */
+}
+
 .confirmation-dialog button {
     background: #00334E;
     color: white;
-    border: 1px solid #00334E;
     padding: 5px 10px;
     cursor: pointer;
-    margin-right: 5px;
+    margin-bottom: 5px;
+    width: 95px;
+    text-align: center;
+    border: none;
+}
+
+.confirmation-dialog .buttons button:last-child {
+    margin-bottom: 0;
 }
 
 .confirmation-button:hover {
-    background: #00334E;
+    background: #275b78;
 }
