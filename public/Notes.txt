@@ -1,0 +1,39 @@
+------------------------------------
+
+Color:
+
+#00334E 
+#EE6F57 
+
+#145374 
+#F6F5F5 
+
+------------------------------------
+
+composer require barryvdh/laravel-debugbar --dev
+
+install Insomnia or Postman (API Flatform) 
+
+Insomnia - bombompaw2003
+
+Node.js
+
+Truthy
+
+Chart.js
+
+------------------------------------
+
+API Resource
+
+php artisan make:controller name --resource
+
+------------------------------------
+
+Others:
+
+php artisan cache:clear
+php artisan route:clear
+php artisan route:clear
+
+php artisan migrate:refresh

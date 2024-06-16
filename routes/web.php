@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +47,10 @@ Route::post('/logout', [AccountController::class, 'logout'])->name('logout');
 | ADMINS
 |--------------------------------------------------------------------------
 */
+
+
+Route::get('/admin/products', [ProductController::class, 'index'])->name('admin.products');
+
 
 /*
 |--------------------------------------------------------------------------
