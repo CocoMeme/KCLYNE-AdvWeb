@@ -29,12 +29,10 @@ class AccountController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/');
+            return response()->json(['message' => 'Login successful']);
         }
 
-        return back()->withErrors([
-            'username' => 'The provided credentials do not match our records.',
-        ])->onlyInput('username');
+        return response()->json(['message' => 'The provided credentials do not match our records.'], 422);
     }
 
     public function register(Request $request)
@@ -79,7 +77,7 @@ class AccountController extends Controller
         // Log in the user
         Auth::login($user);
 
-        return redirect()->route('home');
+        return response()->json(['message' => 'Registration successful']);
     }
 
     public function logout(Request $request)
@@ -88,6 +86,6 @@ class AccountController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/home');
+        return response()->json(['message' => 'Logged out successfully']);
     }
 }
