@@ -7,7 +7,7 @@
         @csrf
         <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" name="username" id="username" class="form-control" required>
+            <input type="text" name="username" id="username" class="form-control" required value="{{ old('username') }}">
             @error('username')
                 <span class="text-danger">{{ $message }}</span>
             @enderror
@@ -25,3 +25,4 @@
     </form>
     <p>Don't have an account? <a href="{{ route('register') }}">Register here</a></p>
 </div>
+@endsection

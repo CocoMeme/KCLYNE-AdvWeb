@@ -26,14 +26,26 @@ class AccountController extends Controller
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
-
+    
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return response()->json(['message' => 'Login successful']);
+            return redirect()->intended('/');
         }
-
-        return response()->json(['message' => 'The provided credentials do not match our records.'], 422);
+    
+        return back()->withErrors([
+            'username' => 'The provided credentials do not match our records.',
+        ])->onlyInput('username');
     }
+    
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+    
+        return redirect('/home');
+    }
+    
 
     public function register(Request $request)
     {
@@ -80,12 +92,4 @@ class AccountController extends Controller
         return response()->json(['message' => 'Registration successful']);
     }
 
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return response()->json(['message' => 'Logged out successfully']);
-    }
 }
