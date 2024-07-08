@@ -75,4 +75,13 @@
     </div>
 </header>
 
+<body>
+
+    <div class="container">
+        @yield('content')
+    </div>
+
+
+</body>
+
 <script src="{{ asset('js/AccountScripts.js') }}"></script>
