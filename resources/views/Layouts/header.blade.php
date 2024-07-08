@@ -66,4 +66,3 @@
     </div>
 </header>
 
-<script src="{{ asset('js/AccountScript.js') }}"></script>

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\EmployeeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +40,7 @@ Route::get('/home', function () {
 Route::get('/register', [AccountController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AccountController::class, 'register']);
 
-Route::get('/login', [AccountController::class, 'showLoginForm'])->name('login');
+Route::get('/login', [AccountController::class, 'showLoginForm'])->name('showlogin');
 Route::post('/login', [AccountController::class, 'login'])->name('login');
 Route::post('/logout', [AccountController::class, 'logout'])->name('logout');
 
@@ -64,3 +65,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
 */
 
 // Other product routes can be added here as needed
+
+/*
+|--------------------------------------------------------------------------
+| EMPLOYEES
+|--------------------------------------------------------------------------
+*/
+Route::get('/employee', [EmployeeController::class, 'index'])->name('employee.index');
+Route::resource('employee', EmployeeController::class);
+Route::post('/employee/import', [EmployeeController::class, 'import'])->name('employee.import');
+Route::post('/employee/export', [EmployeeController::class, 'export'])->name('employee.export');

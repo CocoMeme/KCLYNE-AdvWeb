@@ -1,0 +1,82 @@
+.container {
+    display: flex;
+}
+.left-panel {
+    width: 20%;
+    padding: 20px;
+    border-right: 1px solid #dddddd;
+}
+.right-panel {
+    width: 80%;
+    padding: 20px;
+}
+.employee-image {
+    max-width: 100%;
+    height: auto;
+    border: solid 1px;
+    background-color: #00334E;;
+}
+#employeePosition{
+    margin-top: 10px;
+    margin-bottom: 1rem;
+    color: white;
+    background-color: #ee6f57;
+    border-radius: 10px;
+}
+
+#employeeName{
+    font-weight: bolder;
+    font-size: 25px;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 10rem;
+    padding: .5rem 0;
+    margin: .125rem 0 0;
+    font-size: 1rem;
+    color: #3f6f9e;
+    text-align: left;
+    list-style: none;
+    background-color: #9c9797;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: .25rem;
+    transform: translateX(-90px);
+}
+
+.dropdown-menu.show {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    transform: translateY(-100%);
+}
+
+.table-responsive {
+    overflow-x: hidden;
+}
+.status-verified::before {
+    content: '\f00c';
+    font-family: 'Font Awesome 5 Free';
+    color: green;
+    font-weight: 900;
+    display: inline-block;
+    width: 1em;
+}
+.status-pending::before {
+    content: '\f110';
+    font-family: 'Font Awesome 5 Free';
+    color: red;
+    font-weight: 900;
+    display: inline-block;
+    width: 1em;
+}
+.selected {
+    background-color: #EE6F57 !important;
+}
