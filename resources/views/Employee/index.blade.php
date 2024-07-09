@@ -13,18 +13,23 @@
     </div>
     <div class="right-panel">
         <div id="employees">
-            <a class="btn btn-primary" href="{{ route('employee.create') }}" role="button">Add Employee</a>
+
+            <div class="table-methods">
+
+                <a class="btn btn-primary" href="{{ route('employee.create') }}" role="button">Add Employee</a>
         
-            <form method="POST" enctype="multipart/form-data" action="{{ route('employee.import') }}">
-                @csrf
-                <input type="file" id="uploadName" name="employee_upload" required>
-                <button type="submit" class="btn btn-info btn-primary">Import Excel File</button>
-            </form>
-        
-            <form method="POST" action="{{ route('employee.export') }}">
-            @csrf
-            <button type="submit" class="btn btn-info btn-primary">Export Excel File</button>
-            </form>
+                <form method="POST" enctype="multipart/form-data" action="{{ route('employee.import') }}">
+                    @csrf
+                    <input type="file" id="uploadName" name="employee_upload" required>
+                    <button type="submit" class="btn btn-info btn-primary">Import Excel File</button>
+                </form>
+            
+                <form method="POST" action="{{ route('employee.export') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-info btn-primary">Export Excel File</button>
+                </form>
+
+            </div>
         
             <div class="table-responsive">
                 <table id="etable" class="table table-striped table-hover">
