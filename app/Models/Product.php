@@ -12,4 +12,9 @@ class Product extends Model
     protected $fillable = [
         'name', 'description', 'price','stock_quantity', 'image_path', 'created_at', 'updated_at',
     ];
+
+    public function getImagePathsAttribute()
+    {
+        return explode(',', $this->image_path);
+    }
 }

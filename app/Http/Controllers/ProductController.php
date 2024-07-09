@@ -4,85 +4,167 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Imports\ProductImport;
+use App\Exports\ProductExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\DataTables;
+use DB;
+use Storage;
 
 class ProductController extends Controller
 {
-    public function index()
-    {
-        return view('Admin.products');
-    }
-
+    //API CREATE PRODUCT
     public function store(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:255',
             'price' => 'required|numeric',
             'stock_quantity' => 'required|integer',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+    
+        $imagePaths = [];
+    
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->move(public_path('images/Products'), $imageName);
+                $imagePaths[] = $imageName;
+            }
+            $validatedData['image_path'] = implode(',', $imagePaths); // Store image paths as a comma-separated string
+        }
+    
+        $product = Product::create($validatedData);
+    
+        return response()->json([
+            "success" => "Product created successfully.",
+            "product" => $product,
+            "status" => 200
+        ]);
+    }
+    
 
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('products', 'public');
-        } else {
-            $imagePath = null;
+
+    //API READ PRODUCT
+    public function get_product($id)
+    {
+        $product = Product::find($id);
+
+        if (!$product) {
+            return response()->json([
+                'error' => 'Product not found',
+                'status' => 404
+            ], 404);
         }
 
-        $product = new Product([
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-            'stock_quantity' => $request->stock_quantity,
-            'image_path' => $imagePath ? Storage::url($imagePath) : null,
+        return response()->json([
+            'success' => 'Product retrieved successfully',
+            'product' => $product,
+            'status' => 200
         ]);
-
-        $product->save();
-
-        return response()->json($product);
     }
 
-    public function show($id)
+    //API READ ALL PRODUCTS
+    public function get_all_products(Request $request)
     {
-        $product = Product::findOrFail($id);
-        return response()->json($product);
+        $products = Product::all();
+        return response()->json($products);
     }
 
+    //API UPDATE PRODUCT
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $product = Product::find($id);
+
+        if (!$product) {
+            return response()->json([
+                'error' => 'Product not found',
+                'status' => 404
+            ], 404);
+        }
+
+        $validatedData = $request->validate([
             'name' => 'sometimes|required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'nullable|string|max:255',
             'price' => 'sometimes|required|numeric',
             'stock_quantity' => 'sometimes|required|integer',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $product = Product::findOrFail($id);
-
         if ($request->hasFile('image')) {
-            if ($product->image_path) {
-                Storage::delete(str_replace('/storage/', 'public/', $product->image_path));
+            if ($product->image) {
+                Storage::delete('images/Products/'.$product->image);
             }
-            $imagePath = $request->file('image')->store('products', 'public');
-            $product->image_path = Storage::url($imagePath);
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images/Products'), $imageName);
+            $validatedData['image'] = $imageName;
         }
 
-        $product->update($request->only(['name', 'description', 'price', 'stock_quantity']));
+        $product->update($validatedData);
 
-        return response()->json($product);
+        return response()->json([
+            'success' => 'Product updated successfully.',
+            'product' => $product,
+            'status' => 200
+        ]);
     }
 
+    //API DELETE PRODUCT
     public function destroy($id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::find($id);
 
-        if ($product->image_path) {
-            Storage::delete(str_replace('/storage/', 'public/', $product->image_path));
+        if (!$product) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+
+        if ($product->image) {
+            Storage::delete('images/Products/'.$product->image);
         }
 
         $product->delete();
 
-        return response()->json(['success' => 'Product deleted successfully']);
+        return response()->json(['success' => 'Product deleted successfully'], 200);
+    }
+
+    //CLASSES
+
+    public function index()
+    {
+        $products = Product::all();
+        return view('products.index', compact('products'));
+    }
+
+    public function create()
+    {
+        return view('products.create');
+    }
+
+    public function edit($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('products.edit', compact('product'));
+    }
+
+    public function show($id)
+    {
+        return Product::find($id);
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'product_upload' => 'required|mimes:xlsx,xls,csv',
+        ]);
+
+        Excel::import(new ProductImport(), $request->file('product_upload'));
+
+        return redirect()->back()->with('success', 'Excel file Imported Successfully');
+    }
+
+    public function export()
+    {
+        return Excel::download(new ProductExport, 'ProductsExport.xlsx');
     }
 }

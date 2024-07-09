@@ -24,7 +24,7 @@ class CreateEmployeesTable extends Migration
             $table->bigInteger('payrate_per_hour')->nullable();
             $table->string('employee_image')->nullable();
             $table->softDeletes();
-            $table->enum('status', ['Verified', 'Pending']);
+            $table->enum('status', ['Verified', 'Pending'])->default('Pending');
             $table->timestamps();
         });
     }

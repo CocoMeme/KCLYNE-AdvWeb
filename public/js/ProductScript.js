@@ -1,162 +1,101 @@
-$(document).ready(function () {
-    $('#ptable').DataTable({
-        ajax: {
-            url: "/api/products",
-            dataSrc: ""
-        },
-        dom: 'Bfrtip',
-        buttons: [
-            'pdf',
-            'excel',
-            {
-                text: 'Add Product',
-                className: 'btn btn-primary',
-                action: function (e, dt, node, config) {
-                    $("#pform").trigger("reset");
-                    $('#productModal').modal('show');
-                    $('#productUpdate').hide();
-                    $('#productImage').remove();
-                }
-            }
-        ],
-        columns: [
-            { data: 'id' },
-            {
-                data: null,
-                render: function (data, type, row) {
-                    return `<img src="${data.image_path}" width="50" height="60">`;
-                }
-            },
-            { data: 'name' },
-            { data: 'description' },
-            { data: 'price' },
-            { data: 'stock_quantity' },
-            {
-                data: null,
-                render: function (data, type, row) {
-                    return "<a href='#' class='editBtn' data-id='" + data.id + "'><i class='fas fa-edit' style='font-size:24px'></i></a><a href='#' class='deleteBtn' data-id='" + data.id + "'><i class='fas fa-trash-alt' style='font-size:24px; color:red'></a>";
-                }
-            }
-        ],
+$(document).ready(function() {
+    $('#ptable').DataTable();
+
+    $('.action-button').on('click', function() {
+        var dropdown = $(this).next('.dropdown-menu');
+        $('.dropdown-menu').not(dropdown).hide();
+        dropdown.toggle();
     });
 
-    $("#productSubmit").on('click', function (e) {
-        e.preventDefault();
-        var data = $('#pform')[0];
-        let formData = new FormData(data);
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('.action-button, .dropdown-menu').length) {
+            $('.dropdown-menu').hide();
+        }
+    });
+    
+    $('#ptable tbody').on('click', 'tr', function () {
+        $('#ptable tbody tr').css('background-color', '');
+        $(this).css('background-color', '#EE6F57');
+        
+        var imageSrcs = $(this).data('product-images').split(',');
+        var firstImageSrc = imageSrcs.length > 0 ? imageSrcs[0] : 'defaultproduct.jpg';
+        var imageUrl = firstImageSrc ? '/images/Products/' + firstImageSrc : '/images/Products/defaultproduct.jpg';
+
+        var name = $(this).find('td').eq(1).text();
+        var description = $(this).data('product-description');
+
+        $('#productImage').attr('src', imageUrl)
+            .on('error', function() {
+                $(this).attr('src', '/images/Products/defaultproduct.jpg');
+            });
+        $('#productName').text(name);
+        $('#productDescription').text(description);
+    });
+
+    
+
+    $('.status-button').on('click', function() {
+        var productId = $(this).data('id');
+        var currentStatus = $(this).data('status');
+        var newStatus = currentStatus === 'Verified' ? 'Pending' : 'Verified';
 
         $.ajax({
-            type: "POST",
-            url: "/api/products",
-            data: formData,
-            contentType: false,
-            processData: false,
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-            dataType: "json",
-            success: function (data) {
-                $("#productModal").modal("hide");
-                var $ptable = $('#ptable').DataTable();
-                $ptable.ajax.reload();
+            url: `http://127.0.0.1:8000/api/product/status/${productId}`,
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            error: function (error) {
-                console.log(error);
+            data: JSON.stringify({ status: newStatus }),
+            success: function(response) {
+                alert('Product status updated successfully');
+                location.reload();
+            },
+            error: function(error) {
+                console.error('Error:', error);
             }
         });
     });
 
-    $('#ptable tbody').on('click', 'a.editBtn', function (e) {
+    $('.delete-button').on('click', function() {
+        var productId = $(this).data('id');
+        var deleteUrl = `/api/product/delete/${productId}`;
+        $('#deleteForm').attr('action', deleteUrl);
+        $('#deleteModal').modal('show');
+    });
+
+    $('#deleteForm').on('submit', function(e) {
         e.preventDefault();
-        $('#productImage').remove();
-        $('#productId').remove();
-        $("#pform").trigger("reset");
-
-        var id = $(this).data('id');
-        $('<input>').attr({ type: 'hidden', id: 'productId', name: 'id', value: id }).appendTo('#pform');
-        $('#productModal').modal('show');
-        $('#productSubmit').hide();
-        $('#productUpdate').show();
-
-        $.ajax({
-            type: "GET",
-            url: `/api/products/${id}`,
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-            dataType: "json",
-            success: function (data) {
-                $('#name').val(data.name);
-                $('#description').val(data.description);
-                $('#price').val(data.price);
-                $('#stock_quantity').val(data.stock_quantity);
-                $("#pform").append(`<img src="${data.image_path}" width="200px" height="200px" id="productImage" />`);
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });
+        var actionUrl = $(this).attr('action');
+        deleteProduct(actionUrl);
     });
 
-    $("#productUpdate").on('click', function (e) {
-        e.preventDefault();
-        var id = $('#productId').val();
-        var table = $('#ptable').DataTable();
-        var data = $('#pform')[0];
-        let formData = new FormData(data);
-        formData.append("_method", "PUT");
-
-        $.ajax({
-            type: "POST",
-            url: `/api/products/${id}`,
-            data: formData,
-            contentType: false,
-            processData: false,
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-            dataType: "json",
-            success: function (data) {
-                $('#productModal').modal("hide");
-                table.ajax.reload();
-            },
-            error: function (error) {
-                console.log(error);
+    function deleteProduct(url) {
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
             }
-        });
-    });
-
-    $('#ptable tbody').on('click', 'a.deleteBtn', function (e) {
-        e.preventDefault();
-        var table = $('#ptable').DataTable();
-        var id = $(this).data('id');
-        var $row = $(this).closest('tr');
-
-        bootbox.confirm({
-            message: "Do you want to delete this product?",
-            buttons: {
-                confirm: {
-                    label: 'Yes',
-                    className: 'btn-success'
-                },
-                cancel: {
-                    label: 'No',
-                    className: 'btn-danger'
-                }
-            },
-            callback: function (result) {
-                if (result) {
-                    $.ajax({
-                        type: "DELETE",
-                        url: `/api/products/${id}`,
-                        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                        dataType: "json",
-                        success: function (data) {
-                            $row.fadeOut(4000, function () {
-                                table.row($row).remove().draw();
-                            });
-                            bootbox.alert(data.success);
-                        },
-                        error: function (error) {
-                            bootbox.alert(error.responseJSON.message);
-                        }
-                    });
-                }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                alert('Product deleted successfully');
+                location.reload();
+            } else {
+                alert('Error deleting product: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Network error: Could not delete product');
         });
-    });
+    }
+    
 });

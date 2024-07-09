@@ -64,7 +64,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-// Other product routes can be added here as needed
+Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+Route::resource('product', ProductController::class);
+Route::post('/product/import', [ProductController::class, 'import'])->name('product.import');
+Route::post('/product/export', [ProductController::class, 'export'])->name('product.export');
 
 /*
 |--------------------------------------------------------------------------

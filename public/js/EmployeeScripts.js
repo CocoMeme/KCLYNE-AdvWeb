@@ -19,7 +19,7 @@ $(document).ready(function() {
         var imageSrc = $(this).data('employee-image');
         var name = $(this).find('td').eq(2).text() + " " + $(this).find('td').eq(3).text();
         var position = $(this).data('employee-position');
-        var imageUrl = imageSrc ? '/images/' + imageSrc : '/images/defaultemployee.png';
+        var imageUrl = imageSrc ? '/images/Employees/' + imageSrc : '/images/defaultemployee.png';
 
         $('#employeeImage').attr('src', imageUrl)
             .on('error', function() {
@@ -32,7 +32,7 @@ $(document).ready(function() {
     $('.status-button').on('click', function() {
         var employeeId = $(this).data('id');
         var currentStatus = $(this).data('status');
-        var newStatus = currentStatus === 'Verified' ? 'Pending' : 'Verified';
+        var newStatus = currentStatus === 'Verified' ? 'Pending' : 'Pending';
 
         $.ajax({
             url: `http://127.0.0.1:8000/api/employee/status/${employeeId}`,

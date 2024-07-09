@@ -28,6 +28,7 @@ class EmployeeController extends Controller
             'city' => 'required|string|max:255',
             'province' => 'required|string|max:255',
             'position' => 'required|string|max:255',
+            'status' => 'Pending',
             'payrate_per_hour' => 'required|numeric',
             'employee_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
