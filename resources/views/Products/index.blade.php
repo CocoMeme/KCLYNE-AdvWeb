@@ -15,10 +15,10 @@
     </div>
 
     <div class="right-panel">
+
         <div id="products">
 
             <div class="table-methods">
-
                 <a class="btn btn-primary" href="{{ route('product.create') }}" role="button">Add Product</a>
 
                 <form method="POST" enctype="multipart/form-data" action="{{ route('product.import') }}">
@@ -31,13 +31,11 @@
                     @csrf
                     <button type="submit" class="btn btn-info btn-primary">Export Excel File</button>
                 </form>
-
-
-
             </div>
 
 
             <div class="table-responsive">
+
                 <table id="ptable" class="table table-striped table-hover">
                     <thead>
                         <tr>
@@ -83,7 +81,6 @@
                                 </td>
                             </tr>
                         @endforeach
-
                     </tbody>
                 </table>
             </div>

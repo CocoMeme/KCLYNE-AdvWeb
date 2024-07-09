@@ -4,13 +4,18 @@
     <div class="container">
         {!! Form::open(['route' => ['product.update', $product->id], 'enctype' => 'multipart/form-data', 'method' => 'PUT']) !!}
 
-        @if ($product->product_image)
-            <img src="{{ url('images/Products/' . $product->product_image) }}" alt="Product Image" width="100">
+        @if ($product->image_path)
+            @php
+                $images = explode(',', $product->image_path);
+            @endphp
+            @foreach ($images as $image)
+                <img src="{{ url('images/Products/' . $image) }}" alt="Product Image" width="100">
+            @endforeach
         @else
             <p>No image uploaded</p>
         @endif
 
-        {!! Form::file('product_image', ['class' => 'form-control']) !!}
+        {!! Form::file('images[]', ['class' => 'form-control', 'multiple' => 'multiple']) !!}
 
         {!! Form::label('name', 'Product Name') !!}
         {!! Form::text('name', $product->name, ['class' => 'form-control']) !!}
@@ -19,8 +24,13 @@
         {!! Form::textarea('description', $product->description, ['class' => 'form-control']) !!}
         
         {!! Form::label('price', 'Price') !!}
-        {!! Form::number('price', $product->price, ['class' => 'form-control', 'step' => '0.01']) !!}
-        
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">₱</span>
+            </div>
+            {!! Form::number('price', $product->price, ['class' => 'form-control', 'step' => '0.01']) !!}
+        </div>
+
         {!! Form::label('stock_quantity', 'Stock Quantity') !!}
         {!! Form::number('stock_quantity', $product->stock_quantity, ['class' => 'form-control']) !!}
 

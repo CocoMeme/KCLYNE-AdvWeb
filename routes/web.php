@@ -5,6 +5,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ShopController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,3 +79,12 @@ Route::get('/employee', [EmployeeController::class, 'index'])->name('employee.in
 Route::resource('employee', EmployeeController::class);
 Route::post('/employee/import', [EmployeeController::class, 'import'])->name('employee.import');
 Route::post('/employee/export', [EmployeeController::class, 'export'])->name('employee.export');
+
+/*
+|--------------------------------------------------------------------------
+| SHOP
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
+Route::get('/shop/{id}', [ShopController::class, 'show'])->name('shopInfo');

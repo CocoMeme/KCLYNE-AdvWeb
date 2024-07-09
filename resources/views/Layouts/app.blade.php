@@ -12,7 +12,7 @@
     <link href="{{ asset('css/header-footer.css') }}" rel="stylesheet">
     <link href="{{ asset('css/layouts.css') }}" rel="stylesheet">
     <link href="{{ asset('css/account.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/datatable.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/shop.css') }}" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
     
@@ -31,6 +31,8 @@
     <div class="container">
         @yield('content')
     </div>
+
+    @include('layouts.footer')
     
 
     <!-- Ensure this script is loaded first -->

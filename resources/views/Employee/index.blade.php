@@ -3,6 +3,7 @@
 @section('content')
 
 <div class="container">
+
     <div class="left-panel">
         <h3>Employee Details</h3>
         <img id="employeeImage" src="Images\Layouts\Logo White.png" alt="Employee Image" class="employee-image">
@@ -11,6 +12,7 @@
         <p id="employeeName" align="center">Name</p>
         <p id="employeePosition" align="center">Position</p>
     </div>
+
     <div class="right-panel">
         <div id="employees">
 
@@ -85,28 +87,30 @@
         </div>
     
         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Delete Confirmation</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to delete the selected employee?
-            </div>
-            <div class="modal-footer">
-                <form id="deleteForm" method="POST">
-                    @method('DELETE')
-                    @csrf
-                    <button type="submit" class="btn btn-primary">Yes</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                </form>
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Delete Confirmation</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete the selected employee?
+                    </div>
+                    <div class="modal-footer">
+                        <form id="deleteForm" method="POST">
+                            @method('DELETE')
+                            @csrf
+                            <button type="submit" class="btn btn-primary">Yes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
+
     </div>
-</div>
 </div>
 
 <script src="{{ asset('js/EmployeeScripts.js') }}"></script>

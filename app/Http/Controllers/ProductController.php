@@ -76,39 +76,50 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $product = Product::find($id);
-
+    
         if (!$product) {
             return response()->json([
                 'error' => 'Product not found',
                 'status' => 404
             ], 404);
         }
-
+    
         $validatedData = $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string|max:255',
             'price' => 'sometimes|required|numeric',
             'stock_quantity' => 'sometimes|required|integer',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate multiple images
         ]);
-
-        if ($request->hasFile('image')) {
-            if ($product->image) {
-                Storage::delete('images/Products/'.$product->image);
+    
+        $imagePaths = [];
+        if ($request->hasFile('images')) {
+            // Delete old images if they exist
+            if ($product->image_path) {
+                $oldImages = explode(',', $product->image_path);
+                foreach ($oldImages as $oldImage) {
+                    Storage::delete('images/Products/'.$oldImage);
+                }
             }
-            $imageName = time().'.'.$request->image->extension();
-            $request->image->move(public_path('images/Products'), $imageName);
-            $validatedData['image'] = $imageName;
+    
+            foreach ($request->file('images') as $image) {
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->move(public_path('images/Products'), $imageName);
+                $imagePaths[] = $imageName;
+            }
+    
+            $validatedData['image_path'] = implode(',', $imagePaths); // Save filenames as a comma-separated string
         }
-
+    
         $product->update($validatedData);
-
+    
         return response()->json([
             'success' => 'Product updated successfully.',
             'product' => $product,
             'status' => 200
         ]);
     }
+    
 
     //API DELETE PRODUCT
     public function destroy($id)
