@@ -9,8 +9,7 @@ class ShopController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
-        return view('Shop.index', compact('products'));
+        return view('Shop.index');
     }
 
     public function show($id)
@@ -19,5 +18,9 @@ class ShopController extends Controller
         return view('Shop.show', compact('product'));
     }
 
-    // Additional functions for Shop can be added here as needed
+    public function getProducts()
+    {
+        $products = Product::all();
+        return response()->json($products);
+    }
 }

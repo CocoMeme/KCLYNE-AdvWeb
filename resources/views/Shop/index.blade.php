@@ -1,54 +1,37 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="product-shop">
-        {{-- PRODUCT DISPLAY --}}
-        <div class="display-product">
-            <div class="products">
-                @foreach($products as $product)
-                    <a href="{{ route('shopInfo', ['id' => $product->id]) }}">
-                        <div class="row">
-                            @php
-                                $imagesExist = false;
-                                $images = explode(',', $product->image_path);
-                            @endphp
-                            
-                            @if(count($images) > 0)
-                                @foreach ($images as $image)
-                                    @if(file_exists(public_path('images/Products/' . $image)))
-                                        <img src="{{ asset('images/Products/' . $image) }}" alt="Product Image" width="100px">
-                                        @php $imagesExist = true; @endphp
-                                        @break
-                                    @endif
-                                @endforeach
-                            @endif
-                            
-                            @if(!$imagesExist)
-                                <img src="{{ asset('images/Products/defaultproduct.jpg') }}" alt="No Product Image" width="100px">
-                            @endif
-
-                            <h3>{{ $product->name }}</h3>
-
-                            <div class="product-info">
-                                <div class="form-group">
-                                    <label name="Stat" for="">SRP:</label><p>₱ {{ number_format($product->price, 2) }}</p>
-                                </div>
-
-                                <div class="form-group">
-                                    <label name="Stat" for="">Stocks:</label><p>{{ $product->stock_quantity }}</p>
-                                </div>
-
-                                <p name="description">{{ $product->description }}</p>
-                            </div>
-
-                            <div class="shop-button">
-
-                            </div>
-
-                        </div>
-                    </a>    
-                @endforeach
-            </div>
+    <h1>Your Shopping Cart</h1>
+    <div id="cart-container">
+        <div id="cart">
+            <i class="fa fa-shopping-cart fa-2x openCloseCart" aria-hidden="true"></i>
+            <button id="emptyCart" class="btn btn-warning">Empty Cart</button>
         </div>
-    </section>
+        <span id="itemCount" style="display: none;"></span>
+    </div>
+    
+    <div id="shoppingCart" style="display: none;">
+        <div id="cartItemsContainer">
+            <h2>Items in your cart</h2>
+            <i class="fas fa-times-circle"></i>
+            <div id="cartItems"></div>
+            <button class="btn btn-primary" id="checkout">Checkout</button>
+            <button class="btn btn-secondary" id="close">Close</button>
+            <span id="cartTotal">Total: ₱ 0.00</span>
+        </div>
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="{{ route('shop.index') }}">Shopping Cart</a></li>
+        </ul>
+    </nav>
+
+    <div class="product-shop">
+        <div class="products" id="items">
+
+        </div>
+    </div>
+
+    <script src="{{ asset('js/ShopScripts.js') }}"></script>
 @endsection

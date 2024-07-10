@@ -12,7 +12,7 @@
     height: 340px;
     margin: 10px; /* Add margin between each row */
     border: 3px solid #00334E ;
-    transition: all 0.5s ease;
+    transition: all 0.1s ease;
     z-index: 999;
     padding: 5px;
     display: flex; /* Add display flex to make product-info stretch */
@@ -38,7 +38,12 @@
 
 .product-shop .row:hover {
     scale: 98%;
+    border: 5px solid #00334E;
 }
+
+/* .product-shop .row:hover h3 {
+    background-color: #EE6F57;
+} */
 
 .product-shop .product-info {
     padding: 7px;
@@ -70,16 +75,16 @@
     width: 70%;
 }
 
-.product-shop .row .form-group-button {
+/* .product-shop .row .form-group-button {
     display: flex;
     width: 100%;
-    margin: 0; /* Remove default margin */
-    padding: 0; /* Remove default padding */
+    margin: 0; 
+    padding: 0;
 }
 
 .product-shop .row .form-group-button button {
-    flex: 1; /* Make buttons take up equal space */
-    margin-right: 5px; /* Add 5px right margin between buttons */
+    flex: 1;
+    margin-right: 5px;
     font-size: 13px;
     font-weight: 500;
     transition: all 0.5s ease;
@@ -111,9 +116,23 @@
     background-color: #00334E ;
     color: #fff;
     scale: 98%;
-}
+} */
 
 
 /* SHOP BUTTON ================================================= */
 
 
+.product-shop .methods{
+    display: flex;
+    justify-content: space-between;
+    gap: 1px;
+}
+
+.product-shop .methods .btn.btn-primary.add{
+    background-color: #EE6F57;
+    color: #ebebeb;
+    border: none;
+    padding: 5px;
+    font-size: 11px;
+    flex-grow: 1;
+}

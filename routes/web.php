@@ -87,4 +87,5 @@ Route::post('/employee/export', [EmployeeController::class, 'export'])->name('em
 */
 
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
-Route::get('/shop/{id}', [ShopController::class, 'show'])->name('shopInfo');
+Route::get('/shop/{id}', [ShopController::class, 'show'])->name('shop.show');
+Route::get('/api/products', [ShopController::class, 'getProducts']);
