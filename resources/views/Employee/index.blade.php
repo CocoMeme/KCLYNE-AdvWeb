@@ -5,7 +5,7 @@
 <div class="container">
 
     <div class="left-panel">
-        <h3>Employee Details</h3>
+        <h3 align="center">Employee Details</h3>
         <img id="employeeImage" src="Images\Layouts\Logo White.png" alt="Employee Image" class="employee-image">
         <br>
         <br>

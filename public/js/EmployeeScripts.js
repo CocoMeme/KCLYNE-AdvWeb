@@ -32,7 +32,7 @@ $(document).ready(function() {
     $('.status-button').on('click', function() {
         var employeeId = $(this).data('id');
         var currentStatus = $(this).data('status');
-        var newStatus = currentStatus === 'Verified' ? 'Pending' : 'Pending';
+        var newStatus = currentStatus === 'Verified' ? 'Pending' : 'Verified';
 
         $.ajax({
             url: `http://127.0.0.1:8000/api/employee/status/${employeeId}`,
