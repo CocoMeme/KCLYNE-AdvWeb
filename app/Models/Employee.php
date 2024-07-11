@@ -25,6 +25,7 @@ class Employee extends Model
         'position',
         'payrate_per_hour',
         'employee_image',
+        'status',
     ];
 
     public function documents()

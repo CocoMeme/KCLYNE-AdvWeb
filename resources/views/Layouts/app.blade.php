@@ -13,6 +13,7 @@
     <link href="{{ asset('css/layouts.css') }}" rel="stylesheet">
     <link href="{{ asset('css/account.css') }}" rel="stylesheet">
     <link href="{{ asset('css/shop.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/header-admin.css') }}" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
     
@@ -26,14 +27,27 @@
 
 </head>
 <body>
-    @include('layouts.header')
-    
-    <div class="main-container">
-        @yield('content')
-    </div>
+    @if(Auth::check() && Auth::user()->role == 'admin')
 
-    @include('layouts.footer')
+        @include('layouts.header-admin')
+
+        <div class="main-container">
+            @yield('content')
+        </div>
+
+    @else
+
+
+        @include('layouts.header')
+
+        <div class="main-container">
+            @yield('content')
+        </div>
     
+        @include('layouts.footer')
+
+
+    @endif
 
     <!-- Ensure this script is loaded first -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

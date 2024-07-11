@@ -1,0 +1,56 @@
+.admin-header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    color: #fff;
+}
+
+.side-bar {
+    display: flex;
+    flex-direction: column; /* Arrange items vertically */
+    width: 250px;
+    background-color: #00334E ;
+    color: #fff;
+    height: 100vh;
+    padding: 30px;
+}
+
+.admin-header .logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ensure the anchor takes full width */
+    margin-bottom: 100px;
+}
+
+.admin-header .logo img {
+    max-width: 100px; /* Make sure the image is responsive */
+    height: auto;
+}
+
+.admin-navmenu {
+    list-style: none;
+    padding: 0;
+    
+}
+
+.admin-navmenu li {
+    margin-bottom: 25px;
+}
+
+.admin-navmenu a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.admin-header .log-out{
+    color: #fff;
+    position: fixed;
+    bottom: 20px;
+}
+
+.admin-header i{
+    font-size: 20px;
+    color: #fff;
+    margin-right: 10px;
+}
