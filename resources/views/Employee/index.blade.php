@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container">
+<div class="admin-container">
 
     <div class="left-panel">
         <h3 align="center">Employee Details</h3>
@@ -18,17 +18,17 @@
 
             <div class="table-methods">
 
-                <a class="btn btn-primary" href="{{ route('employee.create') }}" role="button">Add Employee</a>
+                <a class="btn btn-primary" href="{{ route('employee.create') }}" role="button"><i class='bx bx-user-plus'></i>Add Employee</a>
         
                 <form method="POST" enctype="multipart/form-data" action="{{ route('employee.import') }}">
                     @csrf
+                    <button type="submit" class="btn btn-info btn-primary"><i class='bx bxs-file-import'></i>Import Excel File</button>
                     <input type="file" id="uploadName" name="employee_upload" required>
-                    <button type="submit" class="btn btn-info btn-primary">Import Excel File</button>
                 </form>
             
                 <form method="POST" action="{{ route('employee.export') }}">
                     @csrf
-                    <button type="submit" class="btn btn-info btn-primary">Export Excel File</button>
+                    <button type="submit" class="btn btn-info btn-primary"><i class='bx bxs-file-export'></i>Export Excel File</button>
                 </form>
 
             </div>

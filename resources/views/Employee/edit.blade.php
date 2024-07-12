@@ -1,7 +1,7 @@
-@extends('layouts.master')
+@extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="admin-container">
         {!! Form::open(['route' => ['employee.update', $employee->id], 'enctype' => 'multipart/form-data', 'method' => 'PUT']) !!}
 
         @if ($employee->employee_image)

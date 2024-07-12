@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container">
+<div class="admin-container">
     <div class="left-panel">
         <h3 align="center">Product Details</h3>
         <img id="productImage" src="Images\Layouts\Logo.jpg" alt="Product Image" class="product-image">
@@ -19,17 +19,18 @@
         <div id="products">
 
             <div class="table-methods">
-                <a class="btn btn-primary" href="{{ route('product.create') }}" role="button">Add Product</a>
+                <a class="btn btn-primary" href="#" role="button" data-toggle="modal" data-target="#createProductModal" id="openCreateProductModal"><i class='bx bxs-add-to-queue' ></i>Add Product</a>
 
                 <form method="POST" enctype="multipart/form-data" action="{{ route('product.import') }}">
                     @csrf
+                    
+                    <button type="submit" class="btn btn-info btn-primary"><i class='bx bxs-file-import'></i>Import Excel File</button>
                     <input type="file" id="uploadName" name="product_upload" required>
-                    <button type="submit" class="btn btn-info btn-primary">Import Excel File</button>
                 </form>            
 
                 <form method="POST" action="{{ route('product.export') }}">
                     @csrf
-                    <button type="submit" class="btn btn-info btn-primary">Export Excel File</button>
+                    <button type="submit" class="btn btn-info btn-primary"><i class='bx bxs-file-export'></i>Export Excel File</button>
                 </form>
             </div>
 
@@ -86,6 +87,7 @@
             </div>
         </div>
     
+        <!-- Delete Confirmation Modal -->
         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -109,9 +111,30 @@
                 </div>
             </div>
         </div>
+
+        <!-- Create Product Modal -->
+        <div class="modal fade" id="createProductModal" tabindex="-1" role="dialog" aria-labelledby="createProductModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createProductModalLabel">Create Product</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form content will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
+<script>
+    var openCreateProductModalUrl = "{{ route('product.create') }}";
+</script>
 <script src="{{ asset('js/ProductScript.js') }}"></script>
+<script src="{{ asset('js/ModalScripts.js') }}"></script>
 
 @endsection

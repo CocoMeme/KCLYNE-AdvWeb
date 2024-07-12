@@ -1,5 +1,5 @@
 <header>
-    <a href="/" class="logo"><img src="/Images/Layouts/Logo White.png" alt="Logo"></a>
+    <a href="/" class="logo"><img src="/Images/Layouts/Logo White.png" alt="Logo">KCLYNE</a>
     
     <ul class="navmenu">
         <li><a href="/">Home</a></li>

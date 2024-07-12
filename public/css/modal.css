@@ -1,0 +1,13 @@
+/* Custom styles for centering the modal */
+.modal-dialog-centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; /* Ensure the modal covers the full viewport height */
+}
+
+.modal-content {
+    max-width: 500px; /* Adjust the max-width as needed */
+    position: relative;
+    z-index: 1050; /* Ensure it overlaps other content */
+}
