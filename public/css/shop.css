@@ -1,7 +1,13 @@
 
 /* PRODUCT SHOP DISPLAY ================================================= */
 
+.shop-container{
+    padding: 5%;
+}
+
 .product-shop .products {
+    width: 1080px;
+    margin: auto;
     display: flex;
     flex-wrap: wrap; /* Allow items to wrap to the next row */
     justify-content: center; /* Horizontally center align items */

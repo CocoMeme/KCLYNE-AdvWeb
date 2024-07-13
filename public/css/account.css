@@ -8,7 +8,7 @@
     width: 240px;
     background: #EE6F57;
     padding: 20px;
-    height: 96px;
+    height: 100px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     transition: right 0.3s ease-in-out; /* Add transition */

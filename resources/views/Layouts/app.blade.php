@@ -32,7 +32,7 @@
 
         @include('layouts.header-admin')
 
-        <div class="main-container">
+        <div class="main-container" style="margin-top: 100px">
             @yield('content')
         </div>
 

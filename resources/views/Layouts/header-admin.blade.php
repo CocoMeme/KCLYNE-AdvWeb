@@ -11,7 +11,7 @@
             <li><a href="/admin/dashboard"><i class='bx bx-bar-chart-square'></i>Dashboard</a></li>
             <li><a href="/admin/users"><i class='bx bxs-user-rectangle'></i>Customers</a></li>
             <li><a href="/product"><i class='bx bxs-purchase-tag-alt'></i>Products</a></li>
-            <li><a href="/admin/orders"><i class='bx bxs-wrench'></i>Services</a></li>
+            <li><a href="/service"><i class='bx bxs-wrench'></i>Services</a></li>
             <li><a href="/employee"><i class='bx bxs-user-detail'></i>Employees</a></li>
         </ul>
 

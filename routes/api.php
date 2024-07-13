@@ -45,3 +45,15 @@ Route::get('/get_all_employees', [EmployeeController::class, 'get_all_employees'
 Route::put('/update_employee/{id}', [EmployeeController::class, 'update']);
 Route::patch('/employee/status/{id}', [EmployeeController::class, 'updateStatus']);
 Route::delete('/employee/delete/{id}', [EmployeeController::class, 'destroy'])->name('employee.delete');
+
+/*
+|--------------------------------------------------------------------------
+| SERVICE
+|--------------------------------------------------------------------------
+*/
+
+Route::post('/apicreate', [ServiceController::class, 'apistore'])->name('api.store');
+Route::get('/get_service/{id}', [ServiceController::class, 'get_service']);
+Route::get('/get_all_service', [ServiceController::class, 'get_all_service']);
+Route::put('/apiupdate/{id}', [ServiceController::class, 'apiupdate']);
+Route::delete('/apidelete/{id}', [ServiceController::class, 'apidelete']);

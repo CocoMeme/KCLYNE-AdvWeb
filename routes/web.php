@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\ServiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,3 +90,24 @@ Route::post('/employee/export', [EmployeeController::class, 'export'])->name('em
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 Route::get('/shop/{id}', [ShopController::class, 'show'])->name('shop.show');
 Route::get('/api/products', [ShopController::class, 'getProducts']);
+
+
+/*
+|--------------------------------------------------------------------------
+| SERVICE
+|--------------------------------------------------------------------------
+*/
+
+ 
+Route::get('/service', [ServiceController::class, 'index']);
+Route::post('/store', [ServiceController::class, 'store'])->name('store');
+Route::get('/fetchall', [ServiceController::class, 'fetchAll'])->name('fetchAll');
+Route::delete('/delete', [ServiceController::class, 'delete'])->name('delete');
+Route::get('/edit', [ServiceController::class, 'edit'])->name('edit');
+Route::post('/update', [ServiceController::class, 'update'])->name('update');
+
+Route::get('/export', [ServiceController::class, 'export'])->name('export');
+Route::post('/import', [ServiceController::class, 'import'])->name('import');
+
+Route::get('/services', [ServiceController::class, 'customer_service_index']);
+Route::get('/getcustomer_service_index', [ServiceController::class, 'getcustomer_service_index'])->name('services.getcustomer_service_index');

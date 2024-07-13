@@ -28,11 +28,11 @@ class ProductController extends Controller
     
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $imageName = time() . '_' . $image->getClientOriginalName();
+                $imageName = $image->getClientOriginalName();
                 $image->move(public_path('images/Products'), $imageName);
                 $imagePaths[] = $imageName;
             }
-            $validatedData['image_path'] = implode(',', $imagePaths); // Store image paths as a comma-separated string
+            $validatedData['image_path'] = implode(',', $imagePaths);
         }
     
         $product = Product::create($validatedData);
