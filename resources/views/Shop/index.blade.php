@@ -1,37 +1,100 @@
 @extends('layouts.app')
 
+<head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
+
 @section('content')
-    <h1>Your Shopping Cart</h1>
-    <div id="cart-container">
-        <div id="cart">
-            <i class="fa fa-shopping-cart fa-2x openCloseCart" aria-hidden="true"></i>
-            <button id="emptyCart" class="btn btn-warning">Empty Cart</button>
-        </div>
-        <span id="itemCount" style="display: none;"></span>
+<div class="cart-container" id="cart-container">
+    <div class="cart-header">
+        <h2>Cart</h2>
+        <button class="close-cart">x</button>
     </div>
-    
-    <div id="shoppingCart" style="display: none;">
-        <div id="cartItemsContainer">
-            <h2>Items in your cart</h2>
-            <i class="fas fa-times-circle"></i>
-            <div id="cartItems"></div>
-            <button class="btn btn-primary" id="checkout">Checkout</button>
-            <button class="btn btn-secondary" id="close">Close</button>
-            <span id="cartTotal">Total: ₱ 0.00</span>
+    <div class="cart-controls">
+            <input type="checkbox" id="select-all-items"> Select All
+            <button class="delete-selected" id="delete-selected-items" style="display: none;"><i class="fa-regular fa-trash-can"></i> Delete</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+    </div>
+    <div class="checkout-footer">
+        <span id="cartTotal">Total: ₱ <span id="cart-total-amount">0.00</span></span>
+        <button class="btn btn-primary" id="checkout">CHECKOUT</button>
+    </div>
+</div>
+<div class="cart-sidebar" id="cart-sidebar">
+    <i class="fa fa-shopping-cart cart-icon"></i>
+    <span id="cart-item-count" class="cart-item-count">0</span>
+</div>
+
+
+<div class="product-shop">
+    <div class="products" id="items">
+        <!-- Products will be dynamically loaded here -->
+    </div>
+</div>
+
+<!-- Modal for Add to Cart -->
+<div class="modal fade" id="addToCartModal" tabindex="-1" role="dialog" aria-labelledby="addToCartModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addToCartModalLabel">Add to Cart</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="productId" value="">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img id="productImageModal" src="" alt="Product Image" class="img-fluid">
+                    </div>
+                    <div class="col-md-8">
+                        <h4 id="productNameModal"></h4>
+                        <p id="productPriceModal"></p>
+                        <div class="form-group">
+                            <label for="productQuantity">Quantity:</label>
+                            <input type="number" id="productQuantity" class="form-control" value="1" min="1">
+                        </div>
+                        <div>
+                            <p>Total Price: ₱<span id="totalPrice">0.00</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="addToCartButtonModal">Add to Cart</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
+</div>
 
-    <nav>
-        <ul>
-            <li><a href="{{ route('shop.index') }}">Shopping Cart</a></li>
-        </ul>
-    </nav>
-
-    <div class="product-shop">
-        <div class="products" id="items">
-
+<!-- Checkout Details Modal -->
+<div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header-checkout">
+                <h5 class="modal-title-checkout" id="checkoutModalLabel">Checkout Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body-checkout" id="checkoutDetails">
+                <div id="selectedItems"></div>
+                <!-- Customer Information will be displayed here -->
+                <div id="customerInfo"></div>
+            </div>
+            <div class="modal-footer-checkout">
+                <button type="button" class="btn btn-secondary checkout-close" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary checkout-confirm" id="confirmCheckout">Confirm Checkout</button>
+            </div>
         </div>
     </div>
+</div>
 
-    <script src="{{ asset('js/ShopScripts.js') }}"></script>
+<script src="{{ asset('js/ShopScripts.js') }}"></script>
 @endsection

@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\ProductController; // Make sure to import the ProductController
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +35,21 @@ Route::get('/get_all_products', [ProductController::class, 'get_all_products']);
 Route::put('/update_product/{id}', [ProductController::class, 'update']);
 Route::patch('/product/status/{id}', [ProductController::class, 'updateStatus']);
 Route::delete('/product/delete/{id}', [ProductController::class, 'destroy'])->name('product.delete');
+
+/*
+|--------------------------------------------------------------------------
+| CART
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/cart/add', [CartController::class, 'addToCart']);
+    Route::post('/orders', [OrderController::class, 'store']);
+    Route::get('/cart', [CartController::class, 'getCart']);
+    Route::get('/customer', [AuthController::class, 'getCustomerInfo']);
+    Route::post('/cart/update', [CartController::class, 'updateQuantity']);
+    Route::delete('/cart/{product}', [CartController::class, 'delete']);
+});
 
 /*
 |--------------------------------------------------------------------------

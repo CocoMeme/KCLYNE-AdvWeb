@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,10 @@ Route::get('/', function () {
 Route::get('/home', function () {
     return view('customer.home');
 })->name('home');
+
+Route::get('/thank-you', function () {
+    return view('shop.ty');
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -86,6 +91,7 @@ Route::post('/employee/export', [EmployeeController::class, 'export'])->name('em
 |--------------------------------------------------------------------------
 */
 
-Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
+Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 Route::get('/shop/{id}', [ShopController::class, 'show'])->name('shop.show');
 Route::get('/api/products', [ShopController::class, 'getProducts']);
+Route::delete('/cart/delete-selected', [CartController::class, 'deleteSelected']);
