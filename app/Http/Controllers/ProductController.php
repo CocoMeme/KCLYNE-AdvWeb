@@ -94,16 +94,16 @@ class ProductController extends Controller
     
         $imagePaths = [];
         if ($request->hasFile('images')) {
-            // Delete old images if they exist
-            if ($product->image_path) {
-                $oldImages = explode(',', $product->image_path);
-                foreach ($oldImages as $oldImage) {
-                    Storage::delete('images/Products/'.$oldImage);
-                }
-            }
+            // // Delete old images if they exist
+            // if ($product->image_path) {
+            //     $oldImages = explode(',', $product->image_path);
+            //     foreach ($oldImages as $oldImage) {
+            //         Storage::delete('images/Products/'.$oldImage);
+            //     }
+            // }
     
             foreach ($request->file('images') as $image) {
-                $imageName = time() . '_' . $image->getClientOriginalName();
+                $imageName = $image->getClientOriginalName();
                 $image->move(public_path('images/Products'), $imageName);
                 $imagePaths[] = $imageName;
             }
@@ -119,6 +119,8 @@ class ProductController extends Controller
             'status' => 200
         ]);
     }
+    
+
     
 
     //API DELETE PRODUCT

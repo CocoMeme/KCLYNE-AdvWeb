@@ -8,7 +8,11 @@
     </div>
 @endif
 
+
+
 {!! Form::open(['route' => 'product.store', 'enctype' => 'multipart/form-data', 'method' => 'POST']) !!}
+
+
     <div class="form-group">
         {!! Form::label('name', 'Product Name') !!}
         {!! Form::text('name', null, ['class' => 'form-control', 'required']) !!}
@@ -33,6 +37,9 @@
         {!! Form::label('images', 'Upload Images') !!}
         {!! Form::file('images[]', ['class' => 'form-control', 'multiple' => true]) !!}
     </div>            
-    
-    {!! Form::submit('Create Product', ['class' => 'btn btn-primary']) !!}
+
+    <div class="modal-footer">
+        {!! Form::submit('Create Product', ['class' => 'btn btn-primary']) !!}
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+    </div>
 {!! Form::close() !!}
