@@ -39,9 +39,12 @@ $(document).ready(function() {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            data: JSON.stringify({ status: newStatus }),
+            data: JSON.stringify({
+                status: newStatus,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            }),
             success: function(response) {
                 alert('Employee status updated successfully');
                 location.reload();
@@ -70,8 +73,11 @@ $(document).ready(function() {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            }
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            body: JSON.stringify({
+                _token: $('meta[name="csrf-token"]').attr('content')
+            })
         })
         .then(response => {
             if (!response.ok) {
@@ -92,5 +98,4 @@ $(document).ready(function() {
             alert('Network error: Could not delete employee');
         });
     }
-    
 });

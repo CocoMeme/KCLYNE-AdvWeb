@@ -70,7 +70,7 @@ class EmployeeController extends Controller
         ]);
     }
     //API READ ALL EMPLOYEE
-    public function get_all_employee(Request $request){
+    public function get_all_employees(Request $request){
         $employee=Employee::all();
         return response()->json($employee);
     }
