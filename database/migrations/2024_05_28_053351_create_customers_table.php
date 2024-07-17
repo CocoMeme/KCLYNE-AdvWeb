@@ -15,9 +15,10 @@ class CreateCustomersTable extends Migration
             $table->string('email')->unique();
             $table->string('image')->nullable();
             $table->string('phone')->nullable();
+            $table->enum('status', ['Actived', 'Deactivated'])->default('Actived');
             $table->string('address')->nullable();
             $table->timestamps();
-        });
+        });        
     }
 
     public function down()

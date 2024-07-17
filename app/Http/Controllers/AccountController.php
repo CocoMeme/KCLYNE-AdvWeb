@@ -58,38 +58,40 @@ class AccountController extends Controller
             'address' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-
+    
         // Set default image if no image uploaded
         $imageName = 'default_photo.png';
-        
+    
         // Handle image upload if present
         if ($request->hasFile('image')) {
             $customerImage = $request->file('image');
             $imageName = $customerImage->getClientOriginalName();
             $customerImage->move(public_path('Images/Customers'), $imageName);
         }
-
+    
         // Create user
         $user = User::create([
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'role' => 'customer',
         ]);
-
+    
         // Create customer
-        Customer::create([
+        $customer = Customer::create([
             'user_id' => $user->id,
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,
             'image' => $imageName,
+            'status' => 'Actived', // This is actually redundant as it defaults to Actived
         ]);
-
+    
         // Log in the user
         Auth::login($user);
-
-        return response()->json(['message' => 'Registration successful']);
+    
+        return redirect()->route('home')->with('message', 'Signed up successfully');
     }
+    
 
 }

@@ -1,18 +1,6 @@
 $(document).ready(function() {
     $('#ptable').DataTable();
 
-    $('.action-button').on('click', function() {
-        var dropdown = $(this).next('.dropdown-menu');
-        $('.dropdown-menu').not(dropdown).hide();
-        dropdown.toggle();
-    });
-
-    $(document).on('click', function(e) {
-        if (!$(e.target).closest('.action-button, .dropdown-menu').length) {
-            $('.dropdown-menu').hide();
-        }
-    });
-    
     $('#ptable tbody').on('click', 'tr', function () {
         $('#ptable tbody tr').css('background-color', '');
         $(this).css('background-color', '#EE6F57');
@@ -32,39 +20,76 @@ $(document).ready(function() {
         $('#productDescription').text(description);
     });
 
-    
-
-    $('.status-button').on('click', function() {
-        var productId = $(this).data('id');
-        var currentStatus = $(this).data('status');
-        var newStatus = currentStatus === 'Verified' ? 'Pending' : 'Verified';
-
-        $.ajax({
-            url: `http://127.0.0.1:8000/api/product/status/${productId}`,
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            data: JSON.stringify({ status: newStatus }),
-            success: function(response) {
-                alert('Product status updated successfully');
-                location.reload();
-            },
-            error: function(error) {
-                console.error('Error:', error);
-            }
-        });
+    // Open create product modal
+    $('#openCreateProductModal').on('click', function (e) {
+        e.preventDefault();
+        $('#createProductModal').show();
+        setTimeout(() => {
+            $('#createProductModal').css('opacity', '1');
+        }, 10);
     });
 
-    $('.delete-button').on('click', function() {
+    // Close create product modal
+    $('#closeCreateProductModal, #closeCreateProductModalFooter').on('click', function () {
+        $('#createProductModal').css('opacity', '0');
+        setTimeout(() => {
+            $('#createProductModal').hide();
+        }, 300);
+    });
+
+    // Open edit product modal
+    $('.edit-button').on('click', function () {
+        var productId = $(this).data('id');
+        var productName = $(this).data('name');
+        var productDescription = $(this).data('description');
+        var productPrice = $(this).data('price');
+        var productStock = $(this).data('stock-quantity');
+
+        $('#editProductId').val(productId);
+        $('#editName').val(productName);
+        $('#editDescription').val(productDescription);
+        $('#editPrice').val(productPrice);
+        $('#editStockQuantity').val(productStock);
+
+        // Set the form action URL dynamically for PUT request
+        $('#editProductForm').attr('action', `/product/${productId}`);
+
+        $('#editProductModal').show();
+        setTimeout(() => {
+            $('#editProductModal').css('opacity', '1');
+        }, 10);
+    });
+
+
+    // Close edit product modal
+    $('#closeEditProductModal, #closeEditProductModalFooter').on('click', function () {
+        $('#editProductModal').css('opacity', '0');
+        setTimeout(() => {
+            $('#editProductModal').hide();
+        }, 300);
+    });
+
+    // Open delete product modal
+    $('.delete-button').on('click', function () {
         var productId = $(this).data('id');
         var deleteUrl = `/api/product/delete/${productId}`;
         $('#deleteForm').attr('action', deleteUrl);
-        $('#deleteModal').modal('show');
+        $('#deleteModal').show();
+        setTimeout(() => {
+            $('#deleteModal').css('opacity', '1');
+        }, 10);
     });
 
-    $('#deleteForm').on('submit', function(e) {
+    // Close delete product modal
+    $('#closeDeleteModal, #cancelDeleteModal').on('click', function () {
+        $('#deleteModal').css('opacity', '0');
+        setTimeout(() => {
+            $('#deleteModal').hide();
+        }, 300);
+    });
+
+    // Handle delete form submission
+    $('#deleteForm').on('submit', function (e) {
         e.preventDefault();
         var actionUrl = $(this).attr('action');
         deleteProduct(actionUrl);
@@ -75,7 +100,7 @@ $(document).ready(function() {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         })
         .then(response => {
@@ -97,5 +122,29 @@ $(document).ready(function() {
             alert('Network error: Could not delete product');
         });
     }
-    
+
+    // Import product modal logic
+    $('#openImportProductModal').on('click', function (e) {
+        e.preventDefault();
+        $('#importProductModal').show();
+        setTimeout(() => {
+            $('#importProductModal').css('opacity', '1');
+        }, 10);
+    });
+
+    $('#closeImportProductModal, #cancelImportProductModal').on('click', function () {
+        $('#importProductModal').css('opacity', '0');
+        setTimeout(() => {
+            $('#importProductModal').hide();
+        }, 300);
+    });
+
+    // Ensure modal content is cleared on hide
+    $('#createProductModal').on('hidden.bs.modal', function () {
+        $('#createProductModal .modal-content').html('');
+    });
+
+    $('#editProductModal').on('hidden.bs.modal', function () {
+        $('#editProductModal .modal-content').html('');
+    });
 });

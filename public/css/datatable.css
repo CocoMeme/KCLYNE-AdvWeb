@@ -1,4 +1,4 @@
-.container {
+.admin-container {
     display: flex;
     margin: auto;
     margin-left: 250px;
@@ -27,7 +27,7 @@ tbody td {
 }
 
 tbody td img{
-    border-radius: 50%;
+    border-radius: 20%;
     padding: 5px;
 }
 
@@ -115,22 +115,27 @@ TABLE METHODS
     font-size: 13px;
 }
 
-.table-methods a.btn.btn-primary{
+.table-methods a.btn.btn-primary {
+    display: flex; /* Use flexbox */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
     border: 1px solid #00334E;
     padding: 5px;
-    justify-content: center;
     text-align: center;
-    margin-right: 350px;
     height: 35px;
     width: 150px;
     font-weight: 500;
     color: #dddddd;
-
     background-color: #00334E;
     border-radius: 4px;
-    
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    text-decoration: none; /* Ensure there's no underline on the link */
 }
+
+.table-methods a.btn.btn-primary i {
+    margin-right: 5px; /* Add some space between the icon and text */
+}
+
 
 .table-methods button.btn-info.btn.btn-primary{
     border: 1px solid #00334E;
@@ -142,4 +147,51 @@ TABLE METHODS
     border: 1px solid #00334E;
     padding: 5px;
     height: 35px;
+}
+
+/* 
+---------------------------------------
+TABLE ICON
+---------------------------------------
+*/
+
+.table-methods form button {
+    display: flex; /* Use flexbox */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    border: 1px solid #00334E;
+    padding: 5px;
+    text-align: center;
+    margin-right: 40%;
+    height: 35px;
+    width: 150px;
+    font-weight: 500;
+    color: #dddddd;
+    background-color: #00334E;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    text-decoration: none; /* Ensure there's no underline on the link */
+}
+
+
+.table-methods i{
+    font-size: 16px;
+    color: #fff;
+}
+
+.table-methods form i{
+    font-size: 16px;
+    color: #fff;
+    margin-right: 5px;
+}
+
+/* 
+---------------------------------------
+ACTUAL TABLE
+---------------------------------------
+*/
+
+.table-responsive thead tr th{
+    background-color: #00334E;
+    color: #fff;
 }

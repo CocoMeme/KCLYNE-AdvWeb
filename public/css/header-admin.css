@@ -36,17 +36,29 @@
 
 .admin-navmenu li {
     margin-bottom: 25px;
+    
 }
 
 .admin-navmenu a {
     color: #fff;
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: left;
 }
 
 .admin-header .log-out{
     color: #fff;
     position: fixed;
     bottom: 20px;
+}
+
+.log-out a {
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: left;
 }
 
 .admin-header i{
