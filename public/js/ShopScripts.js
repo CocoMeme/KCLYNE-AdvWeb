@@ -14,7 +14,7 @@ $(document).ready(function () {
         success: function (data) {
             console.log(data);
             $.each(data, function (key, value) {
-                var imagePath = value.image_path ? value.image_path.split(',')[0] : 'defaultproduct.jpg'; // Use 'defaultproduct.jpg' if image_path is null
+                var imagePath = value.image_path ? value.image_path.split(',')[0] : 'defaultproduct.jpg';
                 var item = `
                     <div class='row'>
                         <div class='itemDetails'>
@@ -296,7 +296,6 @@ function updateCartDisplay() {
             var totalQuantity = 0;
             var totalPrice = 0.00;
     
-            // Collect selected cart items
             $('.cart-item-checkbox:checked').each(function () {
                 var productId = $(this).closest('.cart-item-row').data('product-id');
                 var productName = $(this).closest('.cart-item-row').find('h5').text();
@@ -322,7 +321,6 @@ function updateCartDisplay() {
                     </li>`;
             });
             
-            // Check if there are selected items before adding total quantity and total price
             if (selectedItems.length > 0) {
                 checkoutDetailsHtml += `<div id="itemTotal">
                     <li class="checkout-item-info">
@@ -385,21 +383,18 @@ function updateCartDisplay() {
     
     // Function to populate services in the dropdown and manage selected services
     function populateServices() {
-        // Fetch services and populate the modal
         $.ajax({
             type: "GET",
             url: "/api/get_all_service",
             dataType: 'json',
             success: function (data) {
-                console.log(data); // Log the data to inspect its structure
+                console.log(data);
                 $('#serviceSelect').empty();
     
-                // Add a placeholder option
                 $('#serviceSelect').append(`<option value="" selected disabled>Select a service</option>`);
     
-                // Add options for each service
                 data.forEach(function (service) {
-                    var imagePath = `Images/Services/${service.service_image}`; // Adjust the path as per your file structure
+                    var imagePath = `Images/Services/${service.service_image}`;
                     var serviceItem = `
                         <option value="${service.id}" data-service_name="${service.service_name}" data-price="${service.price}" data-description="${service.description}" data-image_path="${imagePath}">
                             ${service.service_name} - ₱${service.price}
@@ -410,13 +405,11 @@ function updateCartDisplay() {
                 $('#serviceSelect').change(function () {
                     var selectedService = $(this).find('option:selected');
                     if (selectedService.val() !== "") {
-                        // Check if the service is already selected
                         var serviceId = selectedService.val();
                         if ($('#availedServicesList').find(`[data-service-id="${serviceId}"]`).length > 0) {
                             alert('This service is already selected.');
-                            $(this).val('').change(); // Reset the selection
+                            $(this).val('').change();
                         } else {
-                        // Add the selected service to the availed services list
                         var serviceDetails = `
                             <div class="service-item" data-service-id="${serviceId}" data-service-price="${selectedService.data('price')}">
                                 <img src="${selectedService.data('image_path')}" alt="${selectedService.data('service_name')}">
@@ -425,12 +418,10 @@ function updateCartDisplay() {
                             </div>`;
                         $('#availedServicesList').append(serviceDetails);
     
-                            // Clear the selection and reset the placeholder
                             $(this).val('').change();
     
                             updateGrandTotal();
     
-                            // Add click event to remove the service
                             $('.removeServiceButton').off('click').on('click', function() {
                                 $(this).closest('.service-item').remove();
                                 updateGrandTotal();
@@ -449,14 +440,12 @@ function updateCartDisplay() {
 function updateGrandTotal() {
     var totalPrice = 0.00;
 
-    // Calculate the total price of items
     $('.cart-item-checkbox:checked').each(function () {
         var productPrice = parseFloat($(this).data('product-price'));
         var productQuantity = parseInt($(this).data('product-quantity'));
         totalPrice += (productPrice * productQuantity);
     });
 
-    // Calculate the total price of selected services
     $('#availedServicesList .service-item').each(function () {
         var servicePrice = parseFloat($(this).data('service-price'));
         totalPrice += servicePrice;
@@ -481,7 +470,6 @@ $('#confirmCheckout').click(function() {
     var totalQuantity = 0;
     var totalPrice = 0.00;
 
-    // Collect selected cart items
     $('.cart-item-checkbox:checked').each(function() {
         var productId = $(this).closest('.cart-item-row').data('product-id');
         var productName = $(this).closest('.cart-item-row').find('h5').text();
@@ -499,7 +487,6 @@ $('#confirmCheckout').click(function() {
         totalPrice += (productPrice * productQuantity);
     });
 
-    // Collect selected services
     $('#availedServicesList .service-item').each(function() {
         var serviceId = $(this).data('service-id');
         selectedItems.push({

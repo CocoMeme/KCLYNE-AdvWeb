@@ -20,7 +20,7 @@ class OrderController extends Controller
         $request->validate([
             'payment_method' => 'required|string',
             'items' => 'required|array',
-            'items.*.type' => 'required|string|in:product,service', // Add type validation for products and services
+            'items.*.type' => 'required|string|in:product,service',
             'items.*.product_id' => 'required_if:items.*.type,product|exists:products,id',
             'items.*.service_id' => 'required_if:items.*.type,service|exists:services,id',
             'items.*.quantity' => 'required_if:items.*.type,product|integer|min:1',
