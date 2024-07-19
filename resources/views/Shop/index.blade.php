@@ -50,7 +50,7 @@
                 <input type="hidden" id="productId" value="">
                 <div class="row">
                     <div class="col-md-4">
-                        <img id="productImageModal" src="" alt="Product Image" class="img-fluid">
+                        <img id="productImageModal" src="" alt="Product Image">
                     </div>
                     <div class="col-md-8">
                         <h4 id="productNameModal"></h4>

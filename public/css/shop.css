@@ -6,11 +6,12 @@
 }
 
 .product-shop .products {
-    width: 1080px;
-    margin: auto;
+    margin-top: 130px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center; 
+    margin-left: 15%;
+    margin-right: 15%;
 }
 
 .product-shop .row {
@@ -67,8 +68,14 @@
 
 .itemImage img {
     width: 100%;
+    height: 250px;
     display: block;
     border-radius: 10px 10px 0 0;
+}
+
+#productImageModal{
+    width: 180px;
+    height: 180px;
 }
 
 .hoverDetails {
@@ -428,6 +435,52 @@
     color: white;
 }
 
+#serviceSelect{
+    margin-top: 10px;
+}
+
+#availedServicesList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.service-item {
+    display: flex;
+    align-items: center;
+    border: 1px solid #007bff;
+    border-radius: 20px;
+    padding: .10rem .50rem;
+}
+
+.service-item img {
+    max-width: 25px;
+    max-height: 25px;
+}
+
+.removeServiceButton {
+    background: none;
+    border: none;
+    font-weight: bold;
+    color: #EE6F57;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.removeServiceButton{
+    width: 20px;
+}
+
+#grandTotal{
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+    padding: .75rem 1.25rem;
+    text-align: right;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
 .modal-title-checkout {
     margin: 0;
     line-height: 1.5;
@@ -481,7 +534,7 @@
 .ty-message {
     margin-top: 10%;
     margin-bottom: 10%;
-    margin-left: 20%;
+    margin-left: 25%;
     margin-right: 25%;
     padding: 20px;
     border: 1px solid #ccc;
@@ -511,7 +564,7 @@
     font-size: 15px;
     font-weight: bold;
     cursor: pointer;
-    margin-left: 72.5%;
+    margin-left: 76%;
 }
 
 .continue-shopping:hover{

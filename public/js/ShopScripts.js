@@ -14,11 +14,12 @@ $(document).ready(function () {
         success: function (data) {
             console.log(data);
             $.each(data, function (key, value) {
+                var imagePath = value.image_path ? value.image_path.split(',')[0] : 'defaultproduct.jpg'; // Use 'defaultproduct.jpg' if image_path is null
                 var item = `
                     <div class='row'>
                         <div class='itemDetails'>
                             <div class='itemImage'>
-                                <img src="/images/Products/${value.image_path.split(',')[0]}" class='productImage'/>
+                                <img src="/images/Products/${imagePath}" class='productImage'/>
                                 ${value.stock_quantity <= 0 ? '<img src="/Images/Shop/out-of-stock.png" class="outOfStockImage"/>' : ''}
                             </div>
                             <div class='itemText'>
@@ -288,48 +289,56 @@ function updateCartDisplay() {
         $(".cart-container").removeClass("active");
     });
     
-    $('#checkout').click(function() {
-        var selectedItems = [];
-        var totalQuantity = 0;
-        var totalPrice = 0.00;
-
-        // Collect selected cart items
-        $('.cart-item-checkbox:checked').each(function() {
-            var productId = $(this).closest('.cart-item-row').data('product-id');
-            var productName = $(this).closest('.cart-item-row').find('h5').text();
-            var productPrice = parseFloat($(this).data('product-price'));
-            var productQuantity = parseInt($(this).data('product-quantity'));
+    $(document).ready(function () {
+        
+        $('#checkout').click(function () {
+            var selectedItems = [];
+            var totalQuantity = 0;
+            var totalPrice = 0.00;
     
-            selectedItems.push({
-                id: productId,
-                name: productName,
-                price: productPrice,
-                quantity: productQuantity
+            // Collect selected cart items
+            $('.cart-item-checkbox:checked').each(function () {
+                var productId = $(this).closest('.cart-item-row').data('product-id');
+                var productName = $(this).closest('.cart-item-row').find('h5').text();
+                var productPrice = parseFloat($(this).data('product-price'));
+                var productQuantity = parseInt($(this).data('product-quantity'));
+    
+                selectedItems.push({
+                    id: productId,
+                    name: productName,
+                    price: productPrice,
+                    quantity: productQuantity
+                });
+    
+                totalQuantity += productQuantity;
+                totalPrice += (productPrice * productQuantity);
             });
     
-            totalQuantity += productQuantity;
-            totalPrice += (productPrice * productQuantity);
-        });
-    
             var checkoutDetailsHtml = '<h5>Order Information</h5><ul class="list-group">';
-            selectedItems.forEach(function(item) {
+            selectedItems.forEach(function (item) {
                 checkoutDetailsHtml += `
                     <li class="list-group-item">
                         <p class="checkout-details">${item.quantity} x ₱${item.price.toFixed(2)} | ${item.name} | Total: ₱${(item.price * item.quantity).toFixed(2)}</p>
                     </li>`;
             });
-            checkoutDetailsHtml += `
-                <li class="checkout-item-info">
-                    <strong><p>Total Item Quantity: ${totalQuantity}</p></strong>
-                    <strong><p>Total Price: ₱${totalPrice.toFixed(2)}</p></strong>
-                </li>
-            </ul>`;
+            
+            // Check if there are selected items before adding total quantity and total price
+            if (selectedItems.length > 0) {
+                checkoutDetailsHtml += `<div id="itemTotal">
+                    <li class="checkout-item-info">
+                        <strong><p>Total Item Quantity: ${totalQuantity}</p></strong>
+                        <strong><p>Total Price: ₱${totalPrice.toFixed(2)}</p></strong>
+                    </li>
+                </div>`;
+            }
+
+            checkoutDetailsHtml += '</ul>';
     
             // Fetch customer info
             $.ajax({
                 type: "GET",
                 url: "/api/customer",
-                success: function(data) {
+                success: function (data) {
                     let customerInfoHtml = `
                     <br>
                     <h5>Customer Information</h5>
@@ -339,62 +348,192 @@ function updateCartDisplay() {
                         <p><strong>Phone:</strong> ${data.phone}</p>
                         <p><strong>Address:</strong> ${data.address}</p>
                     </div>`;
-                    $('#checkoutDetails').html(checkoutDetailsHtml + customerInfoHtml);
+                    $('#checkoutDetails').html(checkoutDetailsHtml + getAvailServicesSectionHtml() + customerInfoHtml);
+                    populateServices();
                 },
-                error: function(error) {
+                error: function (error) {
                     console.error("Error fetching customer info:", error);
-                    $('#checkoutDetails').html(checkoutDetailsHtml + '<p>Unable to fetch customer info. Please try again later.</p>');
+                    $('#checkoutDetails').html(checkoutDetailsHtml + getAvailServicesSectionHtml() + '<p>Unable to fetch customer info. Please try again later.</p>');
+                    populateServices();
                 }
             });
     
             $('#checkoutModal').modal('show');
         });
+    });
     
-        // Event listener for confirm checkout button
-        $('#confirmCheckout').click(function() {
-            var selectedItems = [];
-            var totalQuantity = 0;
-            var totalPrice = 0.00;
+    // Function to return the HTML structure for the availed services section
+    function getAvailServicesSectionHtml() {
+        return `
+            <div id="servicesSection">
+                <div id="serviceSelection">
+                    <select id="serviceSelect" class="form-control">
+                        <option value="" selected disabled>Select a service</option>
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                    <div id="serviceDetails">
+                    </div>
+                </div>
+                <div id="availedServicesList">
+                    <!-- Selected services will be appended here -->
+                </div>
+                <div id="grandTotal" style="display: none">
+                    GRAND TOTAL: ₱0.00
+                </div>
+            </div>`;
+    }
     
-            $('.cart-item-checkbox:checked').each(function() {
-                var productId = $(this).closest('.cart-item-row').data('product-id');
-                var productName = $(this).closest('.cart-item-row').find('h5').text();
-                var productPrice = parseFloat($(this).data('product-price'));
-                var productQuantity = parseInt($(this).data('product-quantity'));
+    // Function to populate services in the dropdown and manage selected services
+    function populateServices() {
+        // Fetch services and populate the modal
+        $.ajax({
+            type: "GET",
+            url: "/api/get_all_service",
+            dataType: 'json',
+            success: function (data) {
+                console.log(data); // Log the data to inspect its structure
+                $('#serviceSelect').empty();
     
-                selectedItems.push({
-                    product_id: productId,
-                    quantity: productQuantity,
-                    total_price: productPrice * productQuantity
+                // Add a placeholder option
+                $('#serviceSelect').append(`<option value="" selected disabled>Select a service</option>`);
+    
+                // Add options for each service
+                data.forEach(function (service) {
+                    var imagePath = `Images/Services/${service.service_image}`; // Adjust the path as per your file structure
+                    var serviceItem = `
+                        <option value="${service.id}" data-service_name="${service.service_name}" data-price="${service.price}" data-description="${service.description}" data-image_path="${imagePath}">
+                            ${service.service_name} - ₱${service.price}
+                        </option>`;
+                    $('#serviceSelect').append(serviceItem);
                 });
     
-                totalQuantity += productQuantity;
-                totalPrice += (productPrice * productQuantity);
-            });
+                $('#serviceSelect').change(function () {
+                    var selectedService = $(this).find('option:selected');
+                    if (selectedService.val() !== "") {
+                        // Check if the service is already selected
+                        var serviceId = selectedService.val();
+                        if ($('#availedServicesList').find(`[data-service-id="${serviceId}"]`).length > 0) {
+                            alert('This service is already selected.');
+                            $(this).val('').change(); // Reset the selection
+                        } else {
+                        // Add the selected service to the availed services list
+                        var serviceDetails = `
+                            <div class="service-item" data-service-id="${serviceId}" data-service-price="${selectedService.data('price')}">
+                                <img src="${selectedService.data('image_path')}" alt="${selectedService.data('service_name')}">
+                                <strong>${selectedService.data('service_name')}</strong> - ₱${selectedService.data('price')}
+                                <button type="button" class="removeServiceButton" data-service-id="${serviceId}">X</button>
+                            </div>`;
+                        $('#availedServicesList').append(serviceDetails);
     
-            var orderData = {
-                payment_method: 'Credit Card',
-                quantity: totalQuantity,
-                total_price: totalPrice,
-                items: selectedItems
-            };
+                            // Clear the selection and reset the placeholder
+                            $(this).val('').change();
     
-            $.ajax({
-                type: "POST",
-                url: "/api/orders",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: orderData,
-                success: function(response) {
-                    console.log("Order successfully created:", response);
-                    alert('Order successfully placed!');
-                    window.location.href = '/thank-you';
-                },
-                error: function(error) {
-                    console.error("Error creating order:", error);
-                    alert('Failed to place order. Please try again.');
-                }
-            });
+                            updateGrandTotal();
+    
+                            // Add click event to remove the service
+                            $('.removeServiceButton').off('click').on('click', function() {
+                                $(this).closest('.service-item').remove();
+                                updateGrandTotal();
+                            });
+                        }
+                    }
+                });
+            },
+            error: function () {
+                alert('Failed to load services');
+            }
         });
+    }
+    
+// Function to update the grand total
+function updateGrandTotal() {
+    var totalPrice = 0.00;
+
+    // Calculate the total price of items
+    $('.cart-item-checkbox:checked').each(function () {
+        var productPrice = parseFloat($(this).data('product-price'));
+        var productQuantity = parseInt($(this).data('product-quantity'));
+        totalPrice += (productPrice * productQuantity);
+    });
+
+    // Calculate the total price of selected services
+    $('#availedServicesList .service-item').each(function () {
+        var servicePrice = parseFloat($(this).data('service-price'));
+        totalPrice += servicePrice;
+    });
+
+    $('#grandTotal').text(`GRAND TOTAL: ₱${totalPrice.toFixed(2)}`);
+    updateGrandTotalDisplay();
+} 
+
+// Function to update the display of the grand total
+function updateGrandTotalDisplay() {
+    if ($('#availedServicesList .service-item').length > 0) {
+        $('#grandTotal').css('display', 'block');
+    } else {
+        $('#grandTotal').css('display', 'none');
+    }
+}
+
+// Event listener for confirm checkout button
+$('#confirmCheckout').click(function() {
+    var selectedItems = [];
+    var totalQuantity = 0;
+    var totalPrice = 0.00;
+
+    // Collect selected cart items
+    $('.cart-item-checkbox:checked').each(function() {
+        var productId = $(this).closest('.cart-item-row').data('product-id');
+        var productName = $(this).closest('.cart-item-row').find('h5').text();
+        var productPrice = parseFloat($(this).data('product-price'));
+        var productQuantity = parseInt($(this).data('product-quantity'));
+
+        selectedItems.push({
+            type: 'product',
+            product_id: productId,
+            quantity: productQuantity,
+            total_price: productPrice * productQuantity
+        });
+
+        totalQuantity += productQuantity;
+        totalPrice += (productPrice * productQuantity);
+    });
+
+    // Collect selected services
+    $('#availedServicesList .service-item').each(function() {
+        var serviceId = $(this).data('service-id');
+        selectedItems.push({
+            type: 'service',
+            service_id: serviceId
+        });
+    });
+
+    var orderData = {
+        payment_method: 'Cash',
+        items: selectedItems
+    };
+
+    console.log('Order Data to be sent:', orderData);
+
+    $.ajax({
+        type: "POST",
+        url: "/api/orders",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: JSON.stringify(orderData),
+        contentType: 'application/json',
+        success: function(response) {
+            console.log("Order successfully created:", response);
+            alert('Order successfully placed!');
+            window.location.href = '/thank-you';
+        },
+        error: function(error) {
+            console.error("Error creating order:", error);
+            alert('Failed to place order. Please try again.');
+        }
+    });
 });
+
+});
+

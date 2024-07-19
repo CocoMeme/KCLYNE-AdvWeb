@@ -4,7 +4,7 @@
     <ul class="navmenu">
         <li><a href="/">Home</a></li>
         <li><a href="/shop">Shop</a></li>
-        <li><a href="#">Services</a></li>
+        <li><a href="/services">Services</a></li>
         <li><a href="#">About Us</a></li>
     </ul>
     

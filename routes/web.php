@@ -94,8 +94,6 @@ Route::post('/employee/export', [EmployeeController::class, 'export'])->name('em
 
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 Route::get('/shop/{id}', [ShopController::class, 'show'])->name('shop.show');
-Route::get('/api/products', [ShopController::class, 'getProducts']);
-
 
 /*
 |--------------------------------------------------------------------------

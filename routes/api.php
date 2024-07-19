@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
@@ -48,6 +49,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/orders', [OrderController::class, 'store']);
     Route::get('/cart', [CartController::class, 'getCart']);
     Route::get('/customer', [AuthController::class, 'getCustomerInfo']);
+    Route::get('/products', [ShopController::class, 'getProducts']);
+    Route::get('/services', [ShopController::class, 'getServices']);
     Route::post('/cart/update', [CartController::class, 'updateQuantity']);
     Route::delete('/cart/{product}', [CartController::class, 'delete']);
 });
