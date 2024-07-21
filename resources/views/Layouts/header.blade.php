@@ -10,20 +10,6 @@
     
     <div class="nav-icon">
         @auth
-            <div class="search search-compact" id="search-compact" style="display:flex">
-                <i class='bx bx-search' id="search-icon"></i>
-            </div>
-
-            <a href="#">
-                <div class="search search-expanded" id="search-expanded" style="display:none">
-                    <input type="text" placeholder="Enter a search query...">
-                    <i class='bx bx-search'></i>
-                </div>          
-            </a>
-
-            <a href="/">
-                <i class='bx bx-cart-alt'></i>
-            </a>
             <div class="user-info">
                 <img src="/Images/Customers/{{ Auth::user()->customer->image }}" alt="Profile Image" class="profile-image">
             </div>
@@ -45,20 +31,6 @@
                 </div>
             </div>
         @else
-            <div class="search search-compact" id="search-compact" style="display:flex">
-                <i class='bx bx-search' id="search-icon"></i>
-            </div>
-
-            <a href="#">
-                <div class="search search-expanded" id="search-expanded" style="display:none">
-                    <input type="text" placeholder="Enter a search query...">
-                    <i class='bx bx-search'></i>
-                </div>          
-            </a>
-
-            <a href="/">
-                <i class='bx bx-cart-alt'></i>
-            </a>
             <a href="{{ route('login') }}">
                 <i class='bx bx-log-in-circle'></i>
             </a>

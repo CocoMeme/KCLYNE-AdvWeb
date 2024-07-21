@@ -17,4 +17,9 @@ class Product extends Model
     {
         return explode(',', $this->image_path);
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class);
+    }
 }

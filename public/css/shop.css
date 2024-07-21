@@ -1,5 +1,30 @@
-
 /* PRODUCT SHOP DISPLAY ================================================= */
+
+.productImageContainer {
+    position: relative;
+    width: 100%;
+    height: 250px; /* Ensure the height is fixed */
+    overflow: hidden;
+}
+
+.productImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity 1s;
+}
+
+.productImage.hidden {
+    opacity: 0;
+    z-index: 0;
+}
+
+.productImage.active {
+    opacity: 1;
+    z-index: 1;
+}
 
 .shop-container{
     padding: 5%;
@@ -45,10 +70,11 @@
     margin-bottom: 5px;
 }
 
-.product-shop .product-info p{
+.price-container{
     font-size: 20px;
     font-weight: bold;
     color: #ee6f57;
+    margin-bottom: 0;
 }
 
 /* PRODUCTS HOVER ================================================= */
@@ -66,16 +92,14 @@
     transform: scale(1.05);
 }
 
-.itemImage img {
+.itemImage {
     width: 100%;
     height: 250px;
-    display: block;
-    border-radius: 10px 10px 0 0;
 }
 
-#productImageModal{
+#productImageModal {
     width: 180px;
-    height: 180px;
+    height: 160px;
 }
 
 .hoverDetails {
@@ -90,7 +114,7 @@
     text-align: center;
     padding: 20px;
     box-sizing: border-box;
-    z-index: 1;
+    z-index: 1000;
     border-radius: 10px;
     flex-direction: column;
     justify-content: space-between;
@@ -114,16 +138,16 @@
     border-radius: 20px;
     padding: 7px 14px;
     color: white;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 400;
     cursor: pointer;
 }
 
-.addToCart:hover{
+.addToCart:hover {
     background-color: #b35643;
 }
 
-.viewReview{
+.viewReview {
     background-color: #acadad;
     border: none;
     border-radius: 20px;
@@ -132,11 +156,10 @@
     color: white;
     font-size: 15px;
     font-weight: 500;
-    cursor: pointer;
-    transform: translateY(-1px);
+    cursor: pointer;    
 }
 
-.viewReview:hover{
+.viewReview:hover {
     background-color: #868484;
 }
 
@@ -148,6 +171,86 @@
 .hoverDetails .fa-cart-plus {
     margin-right: 10px;
     color: white;
+}
+
+/* CART MODAL */
+
+.modal-body-cart {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 10px;
+}
+
+.modal-body-cart .col-md-4-cart {
+    flex: 0 0 auto;
+    margin-right: 20px;
+}
+
+.modal-body-cart .col-md-8-cart {
+    flex: 1 1 auto;
+}
+
+.modal-body-cart h4, .modal-body-cart p, .modal-body-cart .form-group-cart {
+    margin: 10px 0;
+    font-size: 17px;
+}
+
+.modal-footer-cart {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.modal-footer-cart .btn {
+    margin-left: 10px;
+}
+
+.row-cart {
+    display: flex;
+    align-items: center;
+}
+
+.col-md-4-cart, .col-md-8-cart {
+    flex: 0 0 auto;
+}
+
+.col-md-4-cart img {
+    width: 100%;
+    height: auto;
+}
+
+.col-md-8-cart {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group-cart, .modal-body-cart > div {
+    margin-bottom: 1rem;
+}
+
+#productPriceModal{
+    font-weight: bold;
+    color: #ee6f57;
+}
+
+.quantityP{
+    font-weight: bold;
+}
+
+.form-control-cart{
+    width: 55%;
+    padding: .20rem;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+.add-to-cart-price{
+    font-weight: bold;
+}
+
+.add-to-cart-price p, .add-to-cart-price span{
+    font-weight: bold;
+    color: #ee6f57;
+    font-size: 20px;
 }
 
 /* CART SIDEBAR ================================================= */
@@ -264,7 +367,7 @@
 
 .productImage {
     width: 100%;
-    height: auto;
+    height: 100%;
 }
 
 .outOfStockImage {
@@ -274,6 +377,7 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
 }
 
 .cart-item-checkbox{
@@ -373,6 +477,11 @@
     cursor: pointer;
 }
 
+#checkout:hover {
+    background-color: #d8634c;
+    color: rgb(214, 212, 212);
+}
+
 .cart-sidebar {
     position: fixed;
     left: 0;
@@ -435,8 +544,20 @@
     color: white;
 }
 
+.info-header{
+    font-size: 17px;
+}
+
+.checkout-details{
+    padding: 0.5rem;
+}
+
 #serviceSelect{
     margin-top: 10px;
+    width: 100%;
+    padding: .50rem;
+    border-radius: 10px;
+    font-size: 15px;
 }
 
 #availedServicesList {
@@ -463,13 +584,17 @@
     background: none;
     border: none;
     font-weight: bold;
-    color: #EE6F57;
+    color: red;
     font-size: 16px;
     cursor: pointer;
 }
 
 .removeServiceButton{
     width: 20px;
+}
+
+.removeServiceButton:hover{
+    color: #a5a5a5;
 }
 
 #grandTotal{
@@ -524,9 +649,17 @@
     text-align: right;
 }
 
+.checkout-item-info p {
+    padding: 0.5rem;
+}
+
 .customerInfo {
     border: 1px solid #dee2e6;
     padding: .75rem 1.25rem;
+}
+
+.customerInfo p{
+    padding: .25rem;
 }
 
 /* TY MESSAGE*/
@@ -572,3 +705,298 @@
     border-color: #d66e59;
     color: white;
 }
+
+/* PRODUCTS RATINGS ================================================= */
+
+.rating-container {
+    display: flex;
+}
+
+.rating-count {
+    font-size: 1em;
+    margin-top: 5px;
+    color: #a39e9e;
+}
+
+.starRating{
+    color: gold;
+    font-size: 1.4em;
+}
+
+.customer-info {
+    display: flex;
+    align-items: center;
+}
+
+.customer-image {
+    border: 3px solid #d3cdcd;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+.reviewComment {
+    border: 3px solid #d3cdcd;
+    background-color: #d3cdcd;
+    margin-bottom: 0;
+    margin-left: 8%;
+    border-radius: 50px;
+    padding: .50em;
+    display: inline-block;
+}
+
+.reviewParagraph {
+    margin-bottom: 0;
+    display: inline-block;
+    width: 100%;
+}
+
+.review-date {
+    margin-right: 10px;
+    font-size: 0.9em;
+    color: #666;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.review-summary {
+    margin-bottom: 20px;
+}
+
+.average-rating {
+    display: flex;
+    align-items: center;
+    font-size: 1.5em;
+}
+
+.average-rating-value {
+    font-size: 2em;
+    margin-right: 10px;
+}
+
+.rating-stars {
+    display: flex;
+    margin-right: 10px;
+}
+
+.total-reviews {
+    font-size: 20px;
+    color: #666;
+}
+
+.modal-body-scrollable {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.rating-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.rating-bar-bg {
+    flex-grow: 1;
+    height: 10px;
+    background-color: #e0e0e0;
+    margin: 0 10px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.rating-bar-fill {
+    height: 100%;
+    background-color: #f5c518;
+    border-radius: 5px;
+}
+
+/* Modal base styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1050;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    outline: 0;
+}
+
+.modal.fade .modal-dialog {
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    transform: translateY(-50px);
+    opacity: 0;
+}
+
+.modal.show .modal-dialog {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Modal overlay */
+.modal.show::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Black background with 50% opacity */
+    z-index: 1040;
+}
+
+/* Modal content styles */
+.modal-dialog {
+    position: relative;
+    width: auto;
+    max-width: 600px;
+    margin: 1.75rem auto;
+    z-index: 1050; /* Ensure modal content is above overlay */
+}
+
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.3rem;
+    outline: 0;
+    padding: 1rem;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
+    border-top-left-radius: 0.3rem;
+    border-top-right-radius: 0.3rem;
+    font-size: 25px;
+}
+
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid #e9ecef;
+    border-top-left-radius: 0.3rem;
+    border-top-right-radius: 0.3rem;
+    font-size: 25px;
+}
+
+.modal-close, .btn-secondary-cart, .checkout-close{
+    color: #fff;
+    background-color: #6c757d;
+    border: none;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    margin-left: 87%;
+    cursor: pointer;
+}
+
+.modal-close:hover, .btn-secondary-cart:hover, .checkout-close:hover{
+    color: #f5f5f5;
+    background-color: #5b6369;
+}
+
+.btn-primary-cart, .checkout-confirm{
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    cursor: pointer;
+}
+
+.btn-primary-cart:hover, .checkout-confirm:hover{
+    color: #f5f5f5;
+    background-color: #036cdb;
+}
+
+.modal-title-review{
+    font-size: 15px;
+}
+
+.modal-body {
+    position: relative;
+    flex: 1 1 auto;
+    padding: 1rem;
+}
+
+/* Scrollable modal body */
+.modal-body-scrollable {
+    max-height: 60vh; /* Adjust as needed */
+    overflow-y: auto;
+}
+
+/* Close button */
+.close, .close-cart-modal {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: 0.5;
+    cursor: pointer;
+    border: none;
+    background-color: white;
+}
+
+.close:hover, .close-cart-modal:hover {
+    color: #000;
+    text-decoration: none;
+    opacity: 0.75;
+}
+
+/* Prevent body scroll when modal is open */
+body.modal-open {
+    overflow: hidden;
+}
+
+/* In-animation */
+.modal.fade .modal-dialog-animate {
+    animation: modalFadeIn 0.3s forwards;
+}
+
+@keyframes modalFadeIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Out-animation */
+.modal.fade .modal-dialog-animate {
+    animation: modalFadeOut 0.3s forwards;
+}
+
+@keyframes modalFadeOut {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+}
+

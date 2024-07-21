@@ -3,7 +3,9 @@
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ServiceReviewController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrderController;
@@ -40,7 +42,7 @@ Route::delete('/product/delete/{id}', [ProductController::class, 'destroy'])->na
 
 /*
 |--------------------------------------------------------------------------
-| CART
+| CART/SHOP/ORDER
 |--------------------------------------------------------------------------
 */
 
@@ -53,6 +55,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/services', [ShopController::class, 'getServices']);
     Route::post('/cart/update', [CartController::class, 'updateQuantity']);
     Route::delete('/cart/{product}', [CartController::class, 'delete']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| REVIEW
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/product/{product}/review', [ProductReviewController::class, 'store']);
+    Route::post('/service/{service}/review', [ServiceReviewController::class, 'store']);
+    Route::get('/products/{id}/reviews', [ShopController::class, 'getProductReviews']);
 });
 
 /*

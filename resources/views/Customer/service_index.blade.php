@@ -1,12 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<!DOCTYPE html>
-<html>
 <head>
     <title>Services</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
     <style>
         .card {
             margin: 0 auto;
@@ -71,7 +68,5 @@
         });
     });
 </script>
-</body>
-</html>
 
 @endsection

@@ -6,52 +6,202 @@ $(document).ready(function () {
         }
     });
 
-    // Fetch products and render them
-    $.ajax({
-        type: "GET",
-        url: "/api/products",
-        dataType: 'json',
-        success: function (data) {
-            console.log(data);
-            $.each(data, function (key, value) {
-                var imagePath = value.image_path ? value.image_path.split(',')[0] : 'defaultproduct.jpg';
-                var item = `
-                    <div class='row'>
-                        <div class='itemDetails'>
-                            <div class='itemImage'>
-                                <img src="/images/Products/${imagePath}" class='productImage'/>
+// Fetch products and render them
+$.ajax({
+    type: "GET",
+    url: "/api/products",
+    dataType: 'json',
+    success: function (data) {
+        console.log(data);
+        $.each(data, function (key, value) {
+            var imagePaths = value.image_path ? value.image_path.split(',') : ['defaultproduct.jpg'];
+            var ratingStars = '';
+            for (var i = 1; i <= 5; i++) {
+                ratingStars += `<span class="starRating">${i <= value.average_rating ? '★' : '☆'}</span>`;
+            }
+
+            var item = `
+                <div class='row'>
+                    <div class='itemDetails'>
+                        <div class='itemImage'>
+                            <div class='productImageContainer'>
+                                ${imagePaths.map((path, index) => `
+                                    <img src="/images/Products/${path.trim()}" class='productImage ${index === 0 ? 'active' : 'hidden'}' />
+                                `).join('')}
                                 ${value.stock_quantity <= 0 ? '<img src="/Images/Shop/out-of-stock.png" class="outOfStockImage"/>' : ''}
                             </div>
-                            <div class='itemText'>
-                                <h3>${value.name}</h3>
-                                <div class='product-info'>
-                                    <p class='price-container'>₱ ${value.price}</p>
-                                </div>
-                            </div>
-                            <div class='hoverDetails'>
-                                <p>${value.description}</p>
-                                <div class='hoverButtons'>
-                                    ${value.stock_quantity > 0 ? `<button class='addToCart' data-product-id="${value.id}" data-product-name="${value.name}" data-product-price="${value.price}"><i class='fa fa-cart-plus'></i> Add to Cart</button>` : ''}
-                                    <button class='btn btn-secondary viewReview'><i class="fa-regular fa-comments"></i></button>
+                        </div>
+                        <div class='itemText'>
+                            <h3>${value.name}</h3>
+                            <div class='product-info'>
+                                <p class='price-container'>₱ ${value.price}</p>
+                                <div class='rating-container'>
+                                    ${ratingStars} <p class="rating-count">(${value.ratings_count})</p>
                                 </div>
                             </div>
                         </div>
-                    </div>`;
-                $("#items").append(item);
-            });
+                        <div class='hoverDetails'>
+                            <p>${value.description}</p>
+                            <div class='hoverButtons'>
+                                ${value.stock_quantity > 0 ? `<button class='addToCart' data-product-id="${value.id}" data-product-name="${value.name}" data-product-price="${value.price}"><i class='fa fa-cart-plus'></i> Add to Cart</button>` : ''}
+                                <button class='btn btn-secondary viewReview' data-product-id="${value.id}"><i class="fa-regular fa-comments"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            $("#items").append(item);
+        });
 
-            // Hover effect
-            $('.itemDetails').hover(function () {
-                $(this).find('.hoverDetails').fadeIn(100);
-            }, function () {
-                $(this).find('.hoverDetails').fadeOut(100);
+        // Initialize image flipping
+        setInterval(function() {
+            $('.productImageContainer').each(function() {
+                var images = $(this).find('.productImage');
+                var activeImage = images.filter('.active');
+                var nextImage = activeImage.next('.productImage').length ? activeImage.next('.productImage') : images.first();
+
+                activeImage.removeClass('active').addClass('hidden');
+                nextImage.removeClass('hidden').addClass('active');
             });
-        },
-        error: function () {
-            console.log('AJAX load did not work');
-            alert("error");
-        }
+        }, 3000); // Change image every 3 seconds
+
+        // Hover effect
+        $('.itemDetails').hover(function () {
+            $(this).find('.hoverDetails').fadeIn(100);
+        }, function () {
+            $(this).find('.hoverDetails').fadeOut(100);
+        });
+    },
+    error: function () {
+        console.log('AJAX load did not work');
+        alert("error");
+    }
+});
+
+    $(document).on('click', '.viewReview', function () {
+        var productId = $(this).closest('.itemDetails').find('.viewReview').data('product-id');
+        var productName = $(this).closest('.itemDetails').find('h3').text();
+        fetchReviews(productId, productName);
     });
+    
+    function fetchReviews(productId, productName) {
+        $.ajax({
+            type: "GET",
+            url: `/api/products/${productId}/reviews`,
+            dataType: 'json',
+            success: function (data) {
+                console.log('Fetched Reviews:', data);
+                renderReviews(data, productName);
+                $('#reviewsModal').modal('show');
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log('AJAX load did not work:', textStatus, errorThrown);
+                alert("Failed to load reviews");
+            }
+        });
+    }
+    
+    function renderReviews(reviews, productName) {
+        var reviewsContainer = $('#reviewsContainer');
+        reviewsContainer.empty();
+    
+        // Calculate summary statistics
+        var totalReviews = reviews.length;
+        var ratingCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+        var totalRating = 0;
+    
+        reviews.forEach(function(review) {
+            totalRating += review.rating;
+            ratingCounts[review.rating]++;
+        });
+    
+        var averageRating = (totalRating / totalReviews).toFixed(1);
+
+        if (isNaN(averageRating)){
+            averageRating = 0.00;
+        };
+    
+        // Generate rating summary HTML
+        var summaryHtml = `
+            <div class="review-summary">
+                <h5 class="modal-title-review">${productName} Reviews & Rating</h5>
+                <div class="average-rating">
+                    <span class="average-rating-value">${averageRating}</span>
+                    <div class="rating-stars">
+                        ${generateStars(averageRating)}
+                    </div>
+                    <span class="total-reviews">(${totalReviews})</span>
+                </div>
+                <div class="rating-distribution">
+                    ${generateRatingDistribution(ratingCounts, totalReviews)}
+                </div>
+            </div>
+        <hr>
+        `;
+    
+        reviewsContainer.append(summaryHtml);
+    
+        if (reviews.length === 0) {
+            reviewsContainer.append('<p>No reviews available for this product.</p>');
+        } else {
+            reviews.forEach(function(review) {
+                var ratingStars = generateStars(review.rating);
+    
+                var customerImage = review.customer.image ? `/images/customers/${review.customer.image}` : 'default-customer.jpg';
+    
+                // Parse and format the created_at timestamp
+                var createdAt = new Date(review.created_at);
+                var formattedDate = createdAt.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+    
+                var reviewHtml = `
+                    <div class="review">
+                        <div class="review-header">
+                            <div class="rating-container-modal">${ratingStars}</div>
+                            <div class="customer-info">
+                                <img src="${customerImage}" alt="${review.customer.name}" class="customer-image"/>
+                                <strong>${review.customer.name}</strong>
+                            </div>
+                        </div>
+                        <div class="reviewComment">
+                            <p class="reviewParagraph">${review.review}</p>
+                        </div>
+                        <div class="review-date">${formattedDate}</div>
+                    </div>
+                    <hr>
+                `;
+                reviewsContainer.append(reviewHtml);
+            });
+        }
+    }
+    
+    function generateStars(rating) {
+        var stars = '';
+        for (var i = 1; i <= 5; i++) {
+            stars += `<span class="starRating">${i <= rating ? '★' : '☆'}</span>`;
+        }
+        return stars;
+    }
+    
+    function generateRatingDistribution(ratingCounts, totalReviews) {
+        var distributionHtml = '';
+        for (var i = 5; i >= 1; i--) {
+            var percentage = ((ratingCounts[i] / totalReviews) * 100).toFixed(1);
+            distributionHtml += `
+                <div class="rating-bar">
+                    <span class="starRating">★</span>
+                    <span>${i}</span>
+                    <div class="rating-bar-bg">
+                        <div class="rating-bar-fill" style="width: ${percentage}%;"></div>
+                    </div>
+                    <span class="rating-count">${ratingCounts[i]}</span>
+                </div>
+            `;
+        }
+        return distributionHtml;
+    }      
 
     // Add to Cart button click handler
     $(document).on('click', '.addToCart', function () {
@@ -313,7 +463,7 @@ function updateCartDisplay() {
                 totalPrice += (productPrice * productQuantity);
             });
     
-            var checkoutDetailsHtml = '<h5>Order Information</h5><ul class="list-group">';
+            var checkoutDetailsHtml = '<h5 class="info-header">Order Information</h5><ul class="list-group">';
             selectedItems.forEach(function (item) {
                 checkoutDetailsHtml += `
                     <li class="list-group-item">
@@ -339,7 +489,7 @@ function updateCartDisplay() {
                 success: function (data) {
                     let customerInfoHtml = `
                     <br>
-                    <h5>Customer Information</h5>
+                    <h5 class="info-header">Customer Information</h5>
                     <div class="customerInfo">
                         <p><strong>Name:</strong> ${data.name}</p>
                         <p><strong>Email:</strong> ${data.email}</p>
