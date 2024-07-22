@@ -15,13 +15,26 @@ class AdminUserSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
+        // Insert admin user
+        $userId = DB::table('users')->insertGetId([
             'username' => 'admin',
             'password' => Hash::make('1234567890'),
             'role' => 'admin',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        // Insert corresponding customer record
+        DB::table('customers')->insert([
+            'user_id' => $userId,
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'image' => '<user_photo.png',
+            'phone' => '123-456-7890',
+            'status' => 'Actived',
+            'address' => 'Confidential Detail',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }
-
