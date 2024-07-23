@@ -1,0 +1,116 @@
+.dashboard-container {
+    padding: 20px;
+    margin-left: 15%;
+}
+
+.dashboard-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+    margin-bottom: 25px;
+
+}
+
+.stat-card {
+    background: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); 
+    width: 22%;
+    text-align: center;
+    position: relative;
+    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.stat-card:hover {
+    background-color: #e4e4e4;
+    color: #EE6F57;
+    transform: scale(1.05);
+}
+
+.stat-icon {
+    font-size: 30px;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.stat-card h2 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.stat-card p {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+    color: #EE6F57
+}
+
+.stat-icon-product i, .stat-icon-service i{
+    color:#007bff;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.stat-icon-cart i{
+    color:#007bff;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.stat-icon-users i{
+    color:#007bff;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.dashboard-charts {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-right: 40px;
+}
+
+.charts-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+
+.chart-card {
+    flex: 1;
+    box-sizing: border-box;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    background-color: #fff;
+}
+
+.chart-card-products,
+.chart-card-services {
+    width: 100%;
+    height: 350px;
+}
+
+.chart-card-orders {
+    width: 100%;
+    height: 350px;
+    display: flex;
+}
+
+.chart-card-customers {
+    width: 100%;
+    height: 350px;
+    padding: 20px;
+}
+
+.chart-card canvas {
+    width: 100%;
+    height: 100%;
+}
+
+#productsRatingsChart, #servicesRatingsChart, #ordersPerDayChart, #customersPerDayChart{
+    padding: 3px;
+}
+

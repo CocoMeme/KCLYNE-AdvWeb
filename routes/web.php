@@ -9,6 +9,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +66,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/users/{id}/deactivate', [AdminController::class, 'deactivate']);
     Route::get('/admin/products', [ProductController::class, 'index'])->name('admin.products');
 });
+
+/*
+|--------------------------------------------------------------------------
+| DASHBOARD
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/admin/dashboard', [DashboardController::class, 'index']);
 
 /*
 |--------------------------------------------------------------------------

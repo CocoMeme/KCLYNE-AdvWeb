@@ -69,6 +69,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/submit-review/{type}', [ReviewController::class, 'submitReview']);
 });
+
 Route::get('/comments/{serviceId}', [ReviewController::class, 'fetchComments']);
 Route::get('/products/{id}/reviews', [ShopController::class, 'getProductReviews']);
 Route::get('/review-details/{type}/{id}', [ReviewController::class, 'getReviewDetails']);
