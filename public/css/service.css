@@ -1,0 +1,120 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    color: #00334E;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    margin: 0 auto;
+    margin-top: 35px;
+    width: 75%;
+}
+
+.card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+}
+
+.card-body {
+    padding: 20px;
+    margin: auto;
+}
+
+.card-title-name {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: black;
+    font-weight: bold;
+}
+
+.card-text-price {
+    font-size: 1rem;
+    color: #EE6F57;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.card-text-description {
+    font-size: 1rem;
+    color: black;
+    margin-bottom: 10px;
+    font-style: normal;
+}
+
+.card-img-bottom {
+    width: 100%;
+    height: 50%;
+    margin: auto;
+    object-fit: cover;
+}
+
+input[type="hidden"] {
+    display: none;
+}
+
+.star-rating-service {
+    font-size: 1.5rem;
+    color: gold;
+}
+
+.comment-icon .fa-regular.fa-comment {
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #00334E;
+    margin-left: 10px;
+}
+
+.comments-container {
+    display: none;
+    margin-top: 10px;
+}
+
+.comment-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.comment-item .comment-details {
+    flex: 1;
+}
+
+.comment-item img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #cdd3cf;
+    margin-right: 10px;
+}
+
+.comment-date {
+    font-size: 0.8rem;
+    color: #999;
+    white-space: nowrap;
+    margin-top: 5px;
+}
+
+.comment-item .comment-rating {
+    font-size: 1.4rem;
+    color: gold;
+}
+
+.number-rating, .comment-number {
+    font-size: 20px;
+    color: #6b6b6b;
+}

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 <head>
+    <meta name="logged-in" content="{{ Auth::check() ? 'true' : 'false' }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 

@@ -75,6 +75,49 @@ class OrderController extends Controller
             DB::rollback();
             return response()->json(['message' => 'Failed to place order', 'error' => $e->getMessage()], 500);
         }
-    }         
-}
+    }        
 
+    // ORDER HISTORY
+    
+    public function myOrders(){
+        return view('Customer.order_history');
+    }
+
+    public function getOrderDetails(Request $request)
+    {
+        try {
+            $type = $request->input('type');
+            $customerId = Auth::id(); // Assuming you use Auth for customer authentication
+    
+            if ($type === 'products') {
+                $orders = OrderItem::whereHas('order', function ($query) use ($customerId) {
+                    $query->where('customer_id', $customerId);
+                })->with(['product.reviews' => function ($query) use ($customerId) {
+                    $query->where('customer_id', $customerId);
+                }])->orderBy('created_at', 'desc')->get();
+    
+                $orders->each(function ($item) {
+                    $item->reviewed = $item->product->reviews->isNotEmpty();
+                    $item->first_image = explode(',', $item->product->image_path)[0];
+                });
+            } elseif ($type === 'services') {
+                $orders = OrderService::whereHas('order', function ($query) use ($customerId) {
+                    $query->where('customer_id', $customerId);
+                })->with(['service.reviews' => function ($query) use ($customerId) {
+                    $query->where('customer_id', $customerId);
+                }])->orderBy('created_at', 'desc')->get();
+    
+                $orders->each(function ($item) {
+                    $item->reviewed = $item->service->reviews->isNotEmpty();
+                });
+            } else {
+                return response()->json(['error' => 'Invalid type'], 400);
+            }
+    
+            return response()->json($orders);
+        } catch (\Exception $e) {
+            Log::error('Error fetching order details: ' . $e->getMessage());
+            return response()->json(['error' => 'Server Error'], 500);
+        }
+    }    
+}

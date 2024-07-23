@@ -21,12 +21,15 @@
     <link href="{{ asset('css/datatable.css') }}" rel="stylesheet">
     <link href="{{ asset('css/header-admin.css') }}" rel="stylesheet">
     <link href="{{ asset('css/modal.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/service.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/order_history.css') }}" rel="stylesheet">
 
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
     <!-- jQuery (ensure only one version is loaded) -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

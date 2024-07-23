@@ -43,7 +43,7 @@ $.ajax({
                         <div class='hoverDetails'>
                             <p>${value.description}</p>
                             <div class='hoverButtons'>
-                                ${value.stock_quantity > 0 ? `<button class='addToCart' data-product-id="${value.id}" data-product-name="${value.name}" data-product-price="${value.price}"><i class='fa fa-cart-plus'></i> Add to Cart</button>` : ''}
+                                ${value.stock_quantity > 0 ? `<button class='addToCart' id="addToCartHover" data-product-id="${value.id}" data-product-name="${value.name}" data-product-price="${value.price}"><i class='fa fa-cart-plus'></i> Add to Cart</button>` : ''}
                                 <button class='btn btn-secondary viewReview' data-product-id="${value.id}"><i class="fa-regular fa-comments"></i></button>
                             </div>
                         </div>
@@ -670,6 +670,27 @@ $('#confirmCheckout').click(function() {
             alert('Failed to place order. Please try again.');
         }
     });
+});
+
+$(document).on('click', '#addToCartHover', function () {
+    var loggedIn = $('meta[name="logged-in"]').attr('content');
+
+    if (loggedIn === 'false') {
+        alert('Please log in to proceed with checkout.');
+        window.location.href = '/login';
+        return;
+    }
+});
+
+$('#cart-sidebar').on('click', function () {
+
+    var loggedIn = $('meta[name="logged-in"]').attr('content');
+
+    if (loggedIn === 'false') {
+        alert('Please log in to view your cart.');
+        window.location.href = '/login';
+    }
+    $('#cartSidebar').modal('show');
 });
 
 });

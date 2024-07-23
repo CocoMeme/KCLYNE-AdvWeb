@@ -1,15 +1,11 @@
 @extends('layouts.app')
-
+<head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
 @section('content')
 <head>
     <title>Services</title>
     <meta charset="utf-8">
-    <style>
-        .card {
-            margin: 0 auto;
-            margin-top: 35px;
-        }
-    </style>
 </head>
 <body>
 <div class="container">
@@ -18,11 +14,26 @@
         @foreach($services as $service)
             <div class="card w-75 post mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">{{ $service->service_name }}</h5>
-                    <p class="card-text">{{ $service->description }}</p>
-                    <p class="card-text">${{ $service->price }}</p>
+                    <h5 class="card-title-name">{{ $service->service_name }}</h5>
+                    <p class="card-text-price">₱{{ $service->price }}</p>
+                    <p class="card-text-description">{{ $service->description }}</p>
+                    <img src="{{ asset('images/Services/' . $service->service_image) }}" class="card-img-bottom" alt="{{ $service->service_name }}">
+                    <div class="rating-and-comments">
+                        <span class="star-rating-service" data-service-id="{{ $service->id }}">
+                            @php
+                                $averageRating = $service->reviews->avg('rating') ?: 0;
+                                $filledStar = $service->reviews->count() > 0 ? '★' : '☆';
+                            @endphp
+                            {!! $filledStar !!}
+                            <span class="number-rating">{{ number_format($averageRating, 1) }}</span>
+                        </span>
+                        <span class="comment-icon" data-service-id="{{ $service->id }}">
+                            <i class="fa-regular fa-comment"></i>
+                            <span class="comment-number">{{ $service->reviews->count() }}</span>
+                        </span>
+                    </div>
+                    <div class="comments-container" id="comments-container-{{ $service->id }}"></div>
                 </div>
-                <img src="{{ asset('images/Services/' . $service->service_image) }}" class="card-img-bottom" alt="{{ $service->service_name }}">
             </div>
         @endforeach
     </div>
@@ -32,41 +43,6 @@
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
-    $(document).ready(function() {
-        function fetchData() {
-            var start = Number($('#start').val());
-            var totalRecords = Number($('#totalrecords').val());
-            var rowPerPage = Number($('#rowperpage').val());
-
-            if (start < totalRecords) {
-                $.ajax({
-                    url: "{{ route('services.getcustomer_service_index') }}",
-                    data: { start: start },
-                    dataType: 'json',
-                    success: function(response) {
-                        $('#services-container').append(response.html);
-                        $('#start').val(start + rowPerPage);
-                        checkWindowSize();
-                    }
-                });
-            }
-        }
-
-        function checkWindowSize() {
-            if ($(window).height() >= $(document).height()) {
-                fetchData();
-            }
-        }
-
-        checkWindowSize();
-
-        $(window).scroll(function() {
-            if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
-                fetchData();
-            }
-        });
-    });
-</script>
+<script src="{{ asset('js/ServiceIndexScript.js') }}"></script>
 
 @endsection

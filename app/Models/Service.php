@@ -15,4 +15,9 @@ class Service extends Model
         'price',
         'service_image',
     ];
+
+    public function reviews()
+    {
+        return $this->hasMany(ServiceReview::class);
+    }
 }

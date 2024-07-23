@@ -8,6 +8,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,6 +98,14 @@ Route::get('/shop/{id}', [ShopController::class, 'show'])->name('shop.show');
 
 /*
 |--------------------------------------------------------------------------
+| ORDER HISTORY
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/orders/history', [OrderController::class, 'myOrders']);
+
+/*
+|--------------------------------------------------------------------------
 | SERVICE
 |--------------------------------------------------------------------------
 */
@@ -113,4 +122,4 @@ Route::get('/export', [ServiceController::class, 'export'])->name('export');
 Route::post('/import', [ServiceController::class, 'import'])->name('import');
 
 Route::get('/services', [ServiceController::class, 'customer_service_index']);
-Route::get('/getcustomer_service_index', [ServiceController::class, 'getcustomer_service_index'])->name('services.getcustomer_service_index');Route::delete('/cart/delete-selected', [CartController::class, 'deleteSelected']);
+Route::get('/getcustomer_service_index', [ServiceController::class, 'getcustomer_service_index'])->name('services.getcustomer_service_index');
