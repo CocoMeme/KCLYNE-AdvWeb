@@ -6,7 +6,6 @@ $(document).ready(function () {
         }
     });
 
-// Fetch products and render them
 $.ajax({
     type: "GET",
     url: "/api/products",
@@ -52,7 +51,6 @@ $.ajax({
             $("#items").append(item);
         });
 
-        // Initialize image flipping
         setInterval(function() {
             $('.productImageContainer').each(function() {
                 var images = $(this).find('.productImage');
@@ -62,9 +60,8 @@ $.ajax({
                 activeImage.removeClass('active').addClass('hidden');
                 nextImage.removeClass('hidden').addClass('active');
             });
-        }, 3000); // Change image every 3 seconds
+        }, 3000);
 
-        // Hover effect
         $('.itemDetails').hover(function () {
             $(this).find('.hoverDetails').fadeIn(100);
         }, function () {
@@ -104,7 +101,6 @@ $.ajax({
         var reviewsContainer = $('#reviewsContainer');
         reviewsContainer.empty();
     
-        // Calculate summary statistics
         var totalReviews = reviews.length;
         var ratingCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
         var totalRating = 0;
@@ -120,7 +116,6 @@ $.ajax({
             averageRating = 0.00;
         };
     
-        // Generate rating summary HTML
         var summaryHtml = `
             <div class="review-summary">
                 <h5 class="modal-title-review">${productName} Reviews & Rating</h5>
@@ -148,7 +143,6 @@ $.ajax({
     
                 var customerImage = review.customer.image ? `/images/customers/${review.customer.image}` : 'default-customer.jpg';
     
-                // Parse and format the created_at timestamp
                 var createdAt = new Date(review.created_at);
                 var formattedDate = createdAt.toLocaleDateString('en-US', {
                     year: 'numeric',
@@ -203,7 +197,6 @@ $.ajax({
         return distributionHtml;
     }      
 
-    // Add to Cart button click handler
     $(document).on('click', '.addToCart', function () {
         var productId = $(this).data('product-id');
         var productName = $(this).data('product-name');
@@ -221,7 +214,6 @@ $.ajax({
         $('#addToCartModal').modal('show');
     });
 
-    // Function to update total price based on quantity input
     function updateTotalPrice() {
         var quantity = parseInt($('#productQuantity').val(), 10) || 1;
         var price = parseFloat($('#productPriceModal').text().replace('₱ ', '').trim());
@@ -233,30 +225,47 @@ $.ajax({
         updateTotalPrice();
     });
 
-    // Function to handle adding to cart
-    $('#addToCartButtonModal').click(function () {
-        var quantity = $('#productQuantity').val();
-        var productId = $('#productId').val();
-        $.ajax({
-            type: "POST",
-            url: "/api/cart/add",
-            dataType: 'json',
-            data: {
-                product_id: productId,
-                quantity: quantity,
-            },
-            success: function (response) {
-                alert('Product added to cart successfully');
-                updateCartDisplay();
-                $('#addToCartModal').modal('hide');
-            },
-            error: function () {
-                alert('Failed to add product to cart');
-            }
+    $(function() {
+        $('#addToCartButtonModal').click(function () {
+            var quantity = $('#productQuantity').val();
+            var productId = $('#productId').val();
+            
+            $("#loader").show();
+            
+            $.ajax({
+                type: "POST",
+                url: "/api/cart/add",
+                dataType: 'json',
+                data: {
+                    product_id: productId,
+                    quantity: quantity,
+                },
+                success: function (response) {
+                    $("#loader").hide();
+                    
+                    if (response.status === 200) {
+                        Swal.fire('Added to Cart!', response.message, 'success');
+                        updateCartDisplay();
+                        $('#addToCartModal').modal('hide');
+                    }
+                },
+                error: function (response) {
+                    $("#loader").hide();
+                    
+                    if (response.responseJSON && response.responseJSON.errors) {
+                        let errorMessages = "";
+                        $.each(response.responseJSON.errors, function(key, value) {
+                            errorMessages += `${value[0]}<br>`;
+                        });
+                        Swal.fire('Error!', errorMessages, 'error');
+                    } else {
+                        Swal.fire('Error!', 'Failed to add product to cart', 'error');
+                    }
+                }
+            });
         });
-    });
+    });    
 
-// Function to update cart display
 function updateCartDisplay() {
     $.ajax({
         type: "GET",
@@ -269,10 +278,13 @@ function updateCartDisplay() {
             data.forEach(function (item) {
                 if (item.product.stock_quantity > 0) {
                     var itemTotalPrice = (item.product.price * item.quantity).toFixed(2);
+                    var imagePaths = item.product.image_path ? item.product.image_path.split(',').map(img => img.trim()) : ['defaultproduct.jpg'];
+                    var productImage = imagePaths.length > 0 ? imagePaths[0] : 'defaultproduct.jpg';
+
                     var cartItem = `
                     <div class="cart-item-row" data-product-id="${item.product.id}">
                         <input type="checkbox" class="cart-item-checkbox" data-product-price="${item.product.price}" data-product-quantity="${item.quantity}">
-                        <img src="/images/Products/${item.product.image_path.split(',')[0]}" alt="${item.product.name}" class="cart-item-image">
+                        <img src="/images/Products/${productImage}" alt="${item.product.name}" class="cart-item-image">
                         <div class="cart-item-details">
                             <h5>${item.product.name}</h5>
                             <p>₱ ${itemTotalPrice}</p>
@@ -295,13 +307,11 @@ function updateCartDisplay() {
 
             $('#cart-item-count').text(totalItems);
 
-            // Add event listener for checkboxes
             $('.cart-item-checkbox').on('change', function () {
                 $(this).siblings('.delete-item').toggle(this.checked);
                 updateTotalPriceSidebar();
             });
 
-            // Add event listener for select all checkbox
             $('#select-all-items').on('change', function () {
                 var isChecked = $(this).is(':checked');
                 $('.cart-item-checkbox').prop('checked', isChecked);
@@ -309,7 +319,6 @@ function updateCartDisplay() {
                 updateTotalPriceSidebar();
             });
 
-            // Add event listeners for quantity buttons
             $('.quantity-decrease').on('click', function () {
                 updateCartItemQuantity($(this).data('product-id'), -1);
             });
@@ -317,7 +326,6 @@ function updateCartDisplay() {
                 updateCartItemQuantity($(this).data('product-id'), 1);
             });
 
-            // Add event listener for delete buttons
             $('.delete-item').on('click', function () {
                 var productId = $(this).data('product-id');
                 deleteCartItem(productId);
@@ -336,13 +344,17 @@ function updateCartDisplay() {
             });
         },
         error: function () {
-            alert('Failed to fetch cart items, kindly login first.');
-            window.location.href = '/login';
+            Swal.fire({
+                title: 'Login First!',
+                text: 'Kindly login first to add items to cart.',
+                icon: 'warning'
+            }).then(() => {
+                window.location.href = '/login';
+            });
         }
     });
 }
 
-    // Function to update cart item quantity
     function updateCartItemQuantity(productId, change) {
         $.ajax({
             type: "POST",
@@ -361,7 +373,6 @@ function updateCartDisplay() {
         });
     }
 
-    // Function to delete cart item
     function deleteCartItem(productId) {
         $.ajax({
             type: "DELETE",
@@ -396,7 +407,6 @@ function updateCartDisplay() {
             //     updateTotalPriceSidebar();
             // }); 
 
-    // Function to delete one or more cart items
     function deleteCartItems(productIds) {
         $.ajax({
             type: "DELETE",
@@ -417,7 +427,6 @@ function updateCartDisplay() {
         });
     }
 
-    // Function to update total price
     function updateTotalPriceSidebar() {
         var totalPrice = 0;
         $('.cart-item-checkbox:checked').each(function () {
@@ -482,7 +491,6 @@ function updateCartDisplay() {
 
             checkoutDetailsHtml += '</ul>';
     
-            // Fetch customer info
             $.ajax({
                 type: "GET",
                 url: "/api/customer",
@@ -510,7 +518,6 @@ function updateCartDisplay() {
         });
     });
     
-    // Function to return the HTML structure for the availed services section
     function getAvailServicesSectionHtml() {
         return `
             <div id="servicesSection">
@@ -531,7 +538,6 @@ function updateCartDisplay() {
             </div>`;
     }
     
-    // Function to populate services in the dropdown and manage selected services
     function populateServices() {
         $.ajax({
             type: "GET",
@@ -586,7 +592,6 @@ function updateCartDisplay() {
         });
     }
     
-// Function to update the grand total
 function updateGrandTotal() {
     var totalPrice = 0.00;
 
@@ -605,7 +610,6 @@ function updateGrandTotal() {
     updateGrandTotalDisplay();
 } 
 
-// Function to update the display of the grand total
 function updateGrandTotalDisplay() {
     if ($('#availedServicesList .service-item').length > 0) {
         $('#grandTotal').css('display', 'block');
@@ -614,7 +618,6 @@ function updateGrandTotalDisplay() {
     }
 }
 
-// Event listener for confirm checkout button
 $('#confirmCheckout').click(function() {
     var selectedItems = [];
     var totalQuantity = 0;
@@ -660,38 +663,67 @@ $('#confirmCheckout').click(function() {
         },
         data: JSON.stringify(orderData),
         contentType: 'application/json',
+        beforeSend: function() {
+            $("#loader").show();
+        },
         success: function(response) {
             console.log("Order successfully created:", response);
-            alert('Order successfully placed!');
-            window.location.href = '/thank-you';
+            
+            $("#loader").hide();     
+            Swal.fire({
+                title: 'Order Placed!',
+                text: 'Your order has been successfully placed.',
+                icon: 'success'
+            }).then(() => {
+                window.location.href = '/thank-you';
+            });
         },
         error: function(error) {
             console.error("Error creating order:", error);
-            alert('Failed to place order. Please try again.');
+            $("#loader").hide();
+            Swal.fire({
+                title: 'Error!',
+                text: 'Failed to place order. Please try again.',
+                icon: 'error'
+            });
         }
-    });
+    });    
 });
 
 $(document).on('click', '#addToCartHover', function () {
     var loggedIn = $('meta[name="logged-in"]').attr('content');
 
     if (loggedIn === 'false') {
-        alert('Please log in to proceed with checkout.');
-        window.location.href = '/login';
+        Swal.fire({
+            title: 'Login First!',
+            text: 'Kindly login first to add items to cart.',
+            icon: 'warning'
+        }).then(() => {
+            window.location.href = '/login';
+        });
         return;
+    } else {
+        $('#addToCartModal').modal('show');
     }
 });
 
 $('#cart-sidebar').on('click', function () {
-
     var loggedIn = $('meta[name="logged-in"]').attr('content');
 
     if (loggedIn === 'false') {
-        alert('Please log in to view your cart.');
-        window.location.href = '/login';
+        Swal.fire({
+            title: 'Login First!',
+            text: 'Kindly login first to view your cart.',
+            icon: 'warning'
+        }).then(() => {
+            window.location.href = '/login';
+        });
+        return;
+    } else {
+        $('#cart-container').show();
     }
-    $('#cartSidebar').modal('show');
 });
+
 
 });
 

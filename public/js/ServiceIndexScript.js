@@ -1,5 +1,4 @@
 $(document).ready(function() {
-    // Function to fetch and append service data
     function fetchData() {
         var start = Number($('#start').val());
         var totalRecords = Number($('#totalrecords').val());
@@ -23,14 +22,12 @@ $(document).ready(function() {
         }
     }
 
-    // Function to check if the window size is enough to load more data
     function checkWindowSize() {
         if ($(window).height() >= $(document).height()) {
             fetchData();
         }
     }
 
-    // Initial check and binding for scrolling event
     checkWindowSize();
 
     $(window).scroll(function() {
@@ -39,18 +36,15 @@ $(document).ready(function() {
         }
     });
 
-    // Fetch and display comments when comment icon is clicked
     $(document).on('click', '.comment-icon', function() {
         var serviceId = $(this).data('service-id');
         var commentsContainer = $('#comments-container-' + serviceId);
 
-        // Toggle visibility of comments container
         if (commentsContainer.is(':visible')) {
             commentsContainer.hide();
             return;
         }
 
-        // Fetch comments from the server
         $.ajax({
             url: `/api/comments/${serviceId}`,
             dataType: 'json',
@@ -61,7 +55,6 @@ $(document).ready(function() {
                         var ratingStars = generateStars(review.rating);
                         var customerImage = review.customer.image ? `/images/customers/${review.customer.image}` : 'default-customer.jpg';
 
-                        // Parse and format the created_at timestamp
                         var createdAt = new Date(review.date);
                         var formattedDate = createdAt.toLocaleDateString('en-US', {
                             year: 'numeric',
@@ -95,7 +88,6 @@ $(document).ready(function() {
         });
     });
 
-    // Helper function to generate stars based on rating
     function generateStars(rating) {
         return '★'.repeat(rating) + '☆'.repeat(5 - rating);
     }

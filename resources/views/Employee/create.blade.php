@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
+<head>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
 @section('content')
-    <div class="admin-container">
+    <div class="create-employee-container">
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -12,7 +16,7 @@
             </div>
         @endif
 
-        {!! Form::open(['route' => 'employee.store', 'enctype' => 'multipart/form-data']) !!}
+        {!! Form::open(['route' => 'employee.store', 'enctype' => 'multipart/form-data', 'class' => 'employee-form']) !!}
         <div class="form-group">
             {!! Form::label('first_name', 'First Name') !!}
             {!! Form::text('first_name', old('first_name'), ['class' => 'form-control']) !!}

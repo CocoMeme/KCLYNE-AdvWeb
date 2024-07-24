@@ -9,6 +9,7 @@
     <div class="tab-content" id="products-tab"></div>
     <div class="tab-content" id="services-tab" style="display: none;"></div>
 </div>
+<div id="loader" style="display: none;">Loading...</div>
 <script src="{{ asset('js/OrderHistoryScript.js') }}"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection

@@ -33,9 +33,11 @@ $(document).ready(function() {
         var employeeId = $(this).data('id');
         var currentStatus = $(this).data('status');
         var newStatus = currentStatus === 'Verified' ? 'Pending' : 'Verified';
-
+    
+        $("#loader").show();
+    
         $.ajax({
-            url: `http://127.0.0.1:8000/api/employee/status/${employeeId}`,
+            url: `/api/employee/status/${employeeId}`,
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -46,14 +48,29 @@ $(document).ready(function() {
                 _token: $('meta[name="csrf-token"]').attr('content')
             }),
             success: function(response) {
-                alert('Employee status updated successfully');
-                location.reload();
+                $("#loader").hide();
+    
+                Swal.fire({
+                    title: 'Employee Status Updated!',
+                    text: response.message,
+                    icon: 'success'
+                }).then(() => {
+                    location.reload();
+                });
             },
             error: function(error) {
+                $("#loader").hide();
+    
                 console.error('Error:', error);
+    
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Failed to update employee status. Please try again.',
+                    icon: 'error'
+                });
             }
         });
-    });
+    });    
 
     $('.delete-button').on('click', function() {
         var employeeId = $(this).data('id');
@@ -69,6 +86,9 @@ $(document).ready(function() {
     });
 
     function deleteEmployee(url) {
+        $('#deleteModal').modal('hide');
+        $("#loader").show();
+    
         fetch(url, {
             method: 'DELETE',
             headers: {
@@ -80,6 +100,8 @@ $(document).ready(function() {
             })
         })
         .then(response => {
+            $("#loader").hide();
+    
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -87,15 +109,46 @@ $(document).ready(function() {
         })
         .then(data => {
             if (data.success) {
-                alert('Employee deleted successfully');
-                location.reload();
+                Swal.fire({
+                    title: 'Deleted!',
+                    text: 'Employee deleted successfully.',
+                    icon: 'success'
+                }).then(() => {
+                    location.reload();
+                });
             } else {
-                alert('Error deleting employee: ' + data.error);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Error deleting employee: ' + data.error,
+                    icon: 'error'
+                });
             }
         })
         .catch(error => {
+            $("#loader").hide();
             console.error('Error:', error);
-            alert('Network error: Could not delete employee');
+            Swal.fire({
+                title: 'Network Error!',
+                text: 'Could not delete employee.',
+                icon: 'error'
+            });
         });
-    }
+    }    
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    var uploadButton = document.getElementById('upload-button');
+    var fileInput = document.getElementById('uploadName');
+    var submitButton = document.getElementById('submit-button');
+    
+    uploadButton.addEventListener('click', function() {
+        fileInput.click();
+    });
+
+    fileInput.addEventListener('change', function() {
+        if (fileInput.files.length > 0) {
+            submitButton.click();
+        }
+    });
+});
+

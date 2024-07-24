@@ -6,16 +6,12 @@ $(document).ready(function() {
         }
     });
 
-    // Mark the "Products" tab as active by default
     $('.tab-button[data-tab="products"]').addClass('active');
     
-    // Show the products tab content by default
     $('#products-tab').show();
     
-    // Fetch order history of products by default
     fetchOrders('products');
 
-    // Handle tab switching
     $('.tab-button').on('click', function() {
         $('.tab-button').removeClass('active');
         $(this).addClass('active');
@@ -190,27 +186,42 @@ $(document).ready(function() {
                             _token: $('meta[name="csrf-token"]').attr('content')
                         },
                         dataType: 'json',
+                        beforeSend: function() {
+                            $("#loader").show();
+                        },
                         success: function(response) {
-                            console.log('Review submission response:', response);
-                            alert("Review submitted successfully!");
-                            $(`button[data-id="${reviewId}"]`).data('reviewed', true).text('Done');
-                            reviewContent.hide();
+                            $("#loader").hide();
+                    
+                            Swal.fire({
+                                title: 'Review Submitted!',
+                                text: response.message,
+                                icon: 'success'
+                            }).then(() => {
+                                $(`button[data-id="${reviewId}"]`).data('reviewed', true).text('Done');
+                                reviewContent.hide();
+                            });
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
+                            $("#loader").hide();
+                    
                             console.log('AJAX load did not work');
                             console.error('Status:', jqXHR.status);
                             console.error('Text Status:', textStatus);
                             console.error('Error Thrown:', errorThrown);
                             console.error('Response Text:', jqXHR.responseText);
-                            alert("error");
+                    
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'Failed to submit review. Please try again.',
+                                icon: 'error'
+                            });
                         }
-                    });
+                    });                   
                 });
             }
         });
     }      
     
-    // Function to update star display
     function updateStarDisplay(id, rating) {
         var stars = $('#star-rating-' + id + ' .star-submit');
         stars.each(function() {

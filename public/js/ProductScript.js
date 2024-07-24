@@ -9,18 +9,17 @@ $(document).ready(function() {
         var firstImageSrc = imageSrcs.length > 0 ? imageSrcs[0] : 'defaultproduct.jpg';
         var imageUrl = firstImageSrc ? '/images/Products/' + firstImageSrc : '/images/Products/defaultproduct.jpg';
 
-        var name = $(this).find('td').eq(1).text();
-        var description = $(this).data('product-description');
+        var name = $(this).find('td').eq(2).text();
+        var stock = $(this).find('td').eq(5).text();
 
         $('#productImage').attr('src', imageUrl)
             .on('error', function() {
                 $(this).attr('src', '/images/Products/defaultproduct.jpg');
             });
         $('#productName').text(name);
-        $('#productDescription').text(description);
+        $('#productStock').text(stock);
     });
 
-    // Open create product modal
     $('#openCreateProductModal').on('click', function (e) {
         e.preventDefault();
         $('#createProductModal').show();
@@ -29,7 +28,6 @@ $(document).ready(function() {
         }, 10);
     });
 
-    // Close create product modal
     $('#closeCreateProductModal, #closeCreateProductModalFooter').on('click', function () {
         $('#createProductModal').css('opacity', '0');
         setTimeout(() => {
@@ -37,7 +35,6 @@ $(document).ready(function() {
         }, 300);
     });
 
-    // Open edit product modal
     $('.edit-button').on('click', function () {
         var productId = $(this).data('id');
         var productName = $(this).data('name');
@@ -51,7 +48,6 @@ $(document).ready(function() {
         $('#editPrice').val(productPrice);
         $('#editStockQuantity').val(productStock);
 
-        // Set the form action URL dynamically for PUT request
         $('#editProductForm').attr('action', `/product/${productId}`);
 
         $('#editProductModal').show();
@@ -61,7 +57,6 @@ $(document).ready(function() {
     });
 
 
-    // Close edit product modal
     $('#closeEditProductModal, #closeEditProductModalFooter').on('click', function () {
         $('#editProductModal').css('opacity', '0');
         setTimeout(() => {
@@ -69,7 +64,6 @@ $(document).ready(function() {
         }, 300);
     });
 
-    // Open delete product modal
     $('.delete-button').on('click', function () {
         var productId = $(this).data('id');
         var deleteUrl = `/api/product/delete/${productId}`;
@@ -80,7 +74,6 @@ $(document).ready(function() {
         }, 10);
     });
 
-    // Close delete product modal
     $('#closeDeleteModal, #cancelDeleteModal').on('click', function () {
         $('#deleteModal').css('opacity', '0');
         setTimeout(() => {
@@ -88,7 +81,6 @@ $(document).ready(function() {
         }, 300);
     });
 
-    // Handle delete form submission
     $('#deleteForm').on('submit', function (e) {
         e.preventDefault();
         var actionUrl = $(this).attr('action');
@@ -96,6 +88,9 @@ $(document).ready(function() {
     });
 
     function deleteProduct(url) {
+        $('#deleteModal').hide();
+        $("#loader").show();
+    
         fetch(url, {
             method: 'DELETE',
             headers: {
@@ -110,20 +105,25 @@ $(document).ready(function() {
             return response.json();
         })
         .then(data => {
+            $("#loader").hide();
+    
             if (data.success) {
-                alert('Product deleted successfully');
-                location.reload();
+                Swal.fire('Product Deleted!', data.message, 'success')
+                .then(() => {
+                    location.reload();
+                });
             } else {
-                alert('Error deleting product: ' + data.error);
+                Swal.fire('Error!', 'Error deleting product: ' + data.error, 'error');
             }
         })
         .catch(error => {
+            $("#loader").hide();
+    
             console.error('Error:', error);
-            alert('Network error: Could not delete product');
+            Swal.fire('Network Error!', 'Could not delete product', 'error');
         });
-    }
+    }    
 
-    // Import product modal logic
     $('#openImportProductModal').on('click', function (e) {
         e.preventDefault();
         $('#importProductModal').show();
@@ -139,7 +139,6 @@ $(document).ready(function() {
         }, 300);
     });
 
-    // Ensure modal content is cleared on hide
     $('#createProductModal').on('hidden.bs.modal', function () {
         $('#createProductModal .modal-content').html('');
     });

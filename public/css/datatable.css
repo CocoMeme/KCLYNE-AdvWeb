@@ -4,6 +4,57 @@
     margin-left: 250px;
 }
 
+.service-container {
+    display: flex;
+    margin-left: 16.5%;
+    margin-top: 0%;
+    width: 80%;
+    height: 100%;
+}
+
+.create-employee-container,
+.edit-employee-container {
+    max-width: 800px;
+    margin-left: 36%;
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.create-employee-container .form-group,
+.edit-employee-container .form-group {
+    margin-bottom: 20px;
+}
+
+.create-employee-container .form-group label,
+.edit-employee-container .form-group label {
+    font-weight: bold;
+}
+
+.create-employee-container .form-control,
+.edit-employee-container .form-control {
+    margin-top: 5px;
+}
+
+.create-employee-container .btn,
+.edit-employee-container .btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+}
+
+.create-employee-container .alert,
+.edit-employee-container .alert {
+    margin-bottom: 20px;
+}
+
+.employee-form-image {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
 .left-panel {
     width: 300px;
     padding: 20px;
@@ -11,10 +62,24 @@
 }
 
 img#productImage {
-    width: 200px;
-    height: auto;
+    width: 100%;
+    height: 210px;
+    border: solid 1px;
+    background-color: #00334E;
 }
 
+#productName {
+    font-weight: bolder;
+    font-size: 25px;
+}
+
+#productStock {
+    margin-top: 10px;
+    margin-bottom: 1rem;
+    color: white;
+    background-color: #ee6f57;
+    border-radius: 10px;
+}
 
 .right-panel {
     width: 100%;
@@ -116,9 +181,9 @@ TABLE METHODS
 }
 
 .table-methods a.btn.btn-primary {
-    display: flex; /* Use flexbox */
-    align-items: center; /* Center items vertically */
-    justify-content: center; /* Center items horizontally */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: 1px solid #00334E;
     padding: 5px;
     text-align: center;
@@ -129,11 +194,11 @@ TABLE METHODS
     background-color: #00334E;
     border-radius: 4px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    text-decoration: none; /* Ensure there's no underline on the link */
+    text-decoration: none;
 }
 
 .table-methods a.btn.btn-primary i {
-    margin-right: 5px; /* Add some space between the icon and text */
+    margin-right: 5px;
 }
 
 
@@ -149,6 +214,56 @@ TABLE METHODS
     height: 35px;
 }
 
+.button-container {
+    display: flex;
+    margin-top: 10px;
+}
+
+#product-edit,
+#product-delete {
+    flex: 1;
+    display: inline-block;
+    padding: 10px 5px;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    font-size: 15px;
+    transition: background-color 0.3s, color 0.3s;
+    border: 1px solid transparent;
+}
+
+#product-edit {
+    background-color: #00334E;
+    border-color: #00334E;
+    width: 70px;
+}
+
+#product-edit i, #product-delete i{
+    color: rgb(255, 255, 255);
+}
+
+#product-edit:hover {
+    background-color: #025381;
+    border-color:  #025381;
+}
+
+#product-delete {
+    background-color:  #EE6F57;
+    border-color:  #EE6F57;
+}
+
+#product-delete:hover {
+    background-color:  #d4644e;
+    border-color: #d4644e;
+}
+
+.service-row{
+    margin-top: 0rem !important;
+    margin-bottom: 3rem !important;
+}
+
+
 /* 
 ---------------------------------------
 TABLE ICON
@@ -156,9 +271,9 @@ TABLE ICON
 */
 
 .table-methods form button {
-    display: flex; /* Use flexbox */
-    align-items: center; /* Center items vertically */
-    justify-content: center; /* Center items horizontally */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: 1px solid #00334E;
     padding: 5px;
     text-align: center;
@@ -170,7 +285,7 @@ TABLE ICON
     background-color: #00334E;
     border-radius: 4px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    text-decoration: none; /* Ensure there's no underline on the link */
+    text-decoration: none;
 }
 
 

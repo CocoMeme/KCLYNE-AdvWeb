@@ -665,10 +665,8 @@
 /* TY MESSAGE*/
 
 .ty-message {
-    margin-top: 10%;
+    margin-top: 20%;
     margin-bottom: 10%;
-    margin-left: 25%;
-    margin-right: 25%;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;

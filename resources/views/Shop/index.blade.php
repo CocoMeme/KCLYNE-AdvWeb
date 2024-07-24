@@ -113,6 +113,6 @@
         </div>
     </div>
 </div>
-
+<div id="loader" style="display:none;">Loading...</div>
 <script src="{{ asset('js/ShopScripts.js') }}"></script>
 @endsection

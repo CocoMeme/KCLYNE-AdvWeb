@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+<head>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
 @section('content')
 
 <div class="admin-container">
@@ -21,14 +25,17 @@
                 <a class="btn btn-primary" href="{{ route('employee.create') }}" role="button"><i class='bx bx-user-plus'></i>Add Employee</a>
         
                 <form method="POST" enctype="multipart/form-data" action="{{ route('employee.import') }}">
-                    @csrf
-                    <button type="submit" class="btn btn-info btn-primary"><i class='bx bxs-file-import'></i>Import Excel File</button>
-                    <input type="file" id="uploadName" name="employee_upload" required>
-                </form>
-            
+                @csrf
+                <button type="button" id="upload-button" class="btn btn-info btn-primary">
+                    <i class='bx bxs-file-import'></i> Import Excel
+                </button>
+                <input type="file" id="uploadName" name="employee_upload" required style="display: none;">
+                <button type="submit" id="submit-button" style="display: none;"></button>
+            </form>
+
                 <form method="POST" action="{{ route('employee.export') }}">
                     @csrf
-                    <button type="submit" class="btn btn-info btn-primary"><i class='bx bxs-file-export'></i>Export Excel File</button>
+                    <button type="submit" class="btn btn-info btn-primary"><i class='bx bxs-file-export'></i>Export Excel</button>
                 </form>
 
             </div>
@@ -112,7 +119,7 @@
 
     </div>
 </div>
-
+<div id="loader" style="display: none;">Loading...</div>
 <script src="{{ asset('js/EmployeeScripts.js') }}"></script>
 
 @endsection

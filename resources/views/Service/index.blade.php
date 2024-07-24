@@ -7,7 +7,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Service Management</title>
   <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css' />
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css' />
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
@@ -16,18 +15,22 @@
 </head>
 
 <body>
-  <div class="container">
-    <div class="row my-5">
-      <div class="col-lg-12">
-        <h2>Service Management</h2>
+  <div class="service-container">
+    <div class="row service-row">
+    <h2 style="text-align: left">Service Management</h2>
         <div class="card shadow">
           <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="text-light">Service Management</h3>
             <div>
-              
-              <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#importExcelModal"><i class="bi-file-earmark-spreadsheet me-2"></i>Import Excel</button>
-              <button class="btn btn-light" id="exportExcel"><i class="bi-file-earmark-spreadsheet me-2"></i>Export Excel</button>
-              <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addServiceModal"><i class="bi-plus-circle me-2"></i>Add New Services</button>
+              <button class="btn btn-light custom-btn" data-bs-toggle="modal" data-bs-target="#importExcelModal">
+                <i class="bi-file-earmark-spreadsheet me-2"></i>Import Excel
+              </button>
+              <button class="btn btn-light custom-btn" id="exportExcel">
+                <i class="bi-file-earmark-spreadsheet me-2"></i>Export Excel
+              </button>
+              <button class="btn btn-light custom-btn" data-bs-toggle="modal" data-bs-target="#addServiceModal">
+                <i class="bi-plus-circle me-2"></i>Add New Services
+              </button>
             </div>
           </div>
           <div class="card-body" id="show_all_service">
@@ -38,34 +41,34 @@
     </div>
   </div>
 
- <!-- Import Excel modal -->
-<div class="modal fade" id="importExcelModal" tabindex="-1" aria-labelledby="importExcelLabel" data-bs-backdrop="static" aria-hidden="true">
+  <!-- Import Excel modal -->
+  <div class="modal fade custom-modal" id="importExcelModal" tabindex="-1" aria-labelledby="importExcelLabel" data-bs-backdrop="static" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="importExcelLabel">Import Excel</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-4 bg-light">
-                <form id="import_excel_form" enctype="multipart/form-data">
-                    @csrf
-                    <div class="my-2">
-                        <label for="excel_file">Excel File</label>
-                        <input type="file" name="excel_file" class="form-control" accept=".xlsx, .xls" required>
-                        <div class="invalid-feedback" id="excel_file_error"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" id="import_excel_btn" class="btn btn-primary">Import</button>
-                    </div>
-                </form>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="importExcelLabel">Import Excel</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <div class="modal-body p-4 bg-light">
+          <form id="import_excel_form" enctype="multipart/form-data">
+            @csrf
+            <div class="my-2">
+              <label for="excel_file">Excel File</label>
+              <input type="file" name="excel_file" class="form-control" accept=".xlsx, .xls" required>
+              <div class="invalid-feedback" id="excel_file_error"></div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" id="import_excel_btn" class="btn btn-primary">Import</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 
-  {{-- new service modal --}}
-  <div class="modal fade" id="addServiceModal" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" aria-hidden="true">
+  <!-- Add New Service modal -->
+  <div class="modal fade custom-modal" id="addServiceModal" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -93,7 +96,7 @@
               <div class="invalid-feedback" id="price_error"></div>
             </div>
             <div class="my-2">
-              <label for="service_image">Service Image </label>
+              <label for="service_image">Service Image</label>
               <input type="file" name="service_image" class="form-control" required>
               <div class="invalid-feedback" id="service_image_error"></div>
             </div>
@@ -107,8 +110,8 @@
     </div>
   </div>
 
-  {{-- edit service modal --}}
-  <div class="modal fade" id="editServiceModal" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" aria-hidden="true">
+  <!-- Edit Service modal -->
+  <div class="modal fade custom-modal" id="editServiceModal" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -171,4 +174,3 @@
 </body>
 </html>
 @endsection
-

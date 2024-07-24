@@ -1,11 +1,15 @@
 @extends('layouts.app')
 
+<head>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
 @section('content')
-    <div class="admin-container">
-        {!! Form::open(['route' => ['employee.update', $employee->id], 'enctype' => 'multipart/form-data', 'method' => 'PUT']) !!}
+    <div class="edit-employee-container">
+        {!! Form::open(['route' => ['employee.update', $employee->id], 'enctype' => 'multipart/form-data', 'method' => 'PUT', 'class' => 'employee-form']) !!}
 
         @if ($employee->employee_image)
-            <img src="{{ url('images/Employees/' . $employee->employee_image) }}" alt="Employee Image" width="100">
+            <img src="{{ url('images/Employees/' . $employee->employee_image) }}" alt="Employee Image" width="100" class="employee-form-image">
         @else
             <p>No image uploaded</p>
         @endif

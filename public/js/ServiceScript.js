@@ -1,11 +1,9 @@
 $(function() {
-    // Add new service ajax request
     $("#add_service_form").submit(function(e) {
         e.preventDefault();
         const fd = new FormData(this);
         $("#add_service_btn").text('Adding...');
         
-        // Clear previous error messages
         $(".invalid-feedback").hide();
 
         $.ajax({
@@ -36,7 +34,6 @@ $(function() {
         });
     });
 
-    // edit service ajax request
     $(document).on('click', '.editIcon', function(e) {
         e.preventDefault();
         let id = $(this).attr('id');
@@ -58,7 +55,6 @@ $(function() {
         });
     });
 
-    // update service ajax request
     $("#edit_service_form").submit(function(e) {
         e.preventDefault();
         const fd = new FormData(this);
@@ -89,7 +85,6 @@ $(function() {
         });
     });
 
-    // delete service ajax request
     $(document).on('click', '.deleteIcon', function(e) {
         e.preventDefault();
         let id = $(this).attr('id');
@@ -120,7 +115,6 @@ $(function() {
         });
     });
 
-    // fetch all services ajax request
     fetchAllServices();
 
     function fetchAllServices() {
@@ -139,19 +133,15 @@ $(function() {
         });
     }
 
-    // Import Excel file
     $("#importExcel").on('click', function() {
-        // Create file input element
         const input = $('<input type="file" accept=".xlsx, .xls"/>');
         
-        // Handle file change event
         input.on('change', function(event) {
             const file = event.target.files[0];
             const fd = new FormData();
-            fd.append('excel_file', file); // Ensure 'excel_file' matches your form field name
+            fd.append('excel_file', file);
             fd.append('_token', csrfToken);
 
-            // Perform AJAX request to import data
             $.ajax({
                 url: routeImport,
                 method: 'post',
@@ -161,8 +151,8 @@ $(function() {
                 success: function(response) {
                     if (response.status === 200) {
                         Swal.fire('Imported!', 'Services Imported Successfully!', 'success');
-                        fetchAllServices(); // Refresh service data
-                        $("#importExcelModal").modal('hide'); // Hide modal if necessary
+                        fetchAllServices();
+                        $("#importExcelModal").modal('hide');
                     } else {
                         Swal.fire('Error!', 'Failed to import services.', 'error');
                     }
@@ -174,11 +164,9 @@ $(function() {
             });
         });
 
-        // Trigger click event on the file input
         input.trigger('click');
     });
 
-    // Handle form submission for importing Excel
     $("#import_excel_form").submit(function(e) {
         e.preventDefault();
         const fd = new FormData(this);
@@ -194,9 +182,9 @@ $(function() {
             success: function(response) {
                 if (response.status === 200) {
                     Swal.fire('Imported!', 'Services Imported Successfully!', 'success');
-                    fetchAllServices(); // Refresh service data
-                    $("#import_excel_form")[0].reset(); // Clear form inputs
-                    $("#importExcelModal").modal('hide'); // Hide modal
+                    fetchAllServices();
+                    $("#import_excel_form")[0].reset();
+                    $("#importExcelModal").modal('hide');
                 } else {
                     Swal.fire('Error!', 'Failed to import services. Please try again.', 'error');
                 }
@@ -210,13 +198,12 @@ $(function() {
         });
     });
 
-    // Export Excel file
     $("#exportExcel").on('click', function() {
         $.ajax({
             url: routeExport,
             method: 'get',
             xhrFields: {
-                responseType: 'blob' // Important for binary data
+                responseType: 'blob'
             },
             success: function(response) {
                 const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });

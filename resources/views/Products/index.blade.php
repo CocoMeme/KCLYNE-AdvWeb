@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+<head>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
 @section('content')
 
 <div class="admin-container">
@@ -9,9 +13,7 @@
         <br>
         <br>
         <p id="productName" align="center">Name</p>
-        <p id="productDescription" align="center">Description</p>
-        <p id="productPrice" align="center">Price</p>
-        <p id="productStock" align="center">Stock</p>
+        <p id="productStock" align="center">Stock Quantity</p>
     </div>
 
     <div class="right-panel">
@@ -20,11 +22,11 @@
 
             <div class="table-methods">
                 <a class="btn btn-primary" href="#" role="button" id="openCreateProductModal"><i class='bx bxs-add-to-queue' ></i>Add Product</a>
-                <a class="btn btn-info btn-primary" href="#" role="button" id="openImportProductModal"><i class='bx bxs-file-import'></i>Import Excel File</a>
+                <a class="btn btn-info btn-primary" href="#" role="button" id="openImportProductModal"><i class='bx bxs-file-import'></i>Import Excel</a>
 
                 <form method="POST" action="{{ route('product.export') }}">
                     @csrf
-                    <button type="submit" class="btn btn-info btn-primary"><i class='bx bxs-file-export'></i>Export Excel File</button>
+                    <button type="submit" class="btn btn-info btn-primary"><i class='bx bxs-file-export'></i>Export Excel</button>
                 </form>
             </div>
 
@@ -62,8 +64,8 @@
                                 <td>{{ $product->price }}</td>
                                 <td>{{ $product->stock_quantity }}</td>
                                 <td>
-                                    <button class="btn btn-primary btn-sm edit-button" data-id="{{ $product->id }}" data-name="{{ $product->name }}" data-description="{{ $product->description }}" data-price="{{ $product->price }}" data-stock-quantity="{{ $product->stock_quantity }}"><i class="fas fa-edit"></i> Edit</button>
-                                    <button class="btn btn-danger btn-sm delete-button" data-id="{{ $product->id }}"><i class="fa-solid fa-trash"></i> Delete</button>
+                                    <button class="edit-button" id="product-edit" data-id="{{ $product->id }}" data-name="{{ $product->name }}" data-description="{{ $product->description }}" data-price="{{ $product->price }}" data-stock-quantity="{{ $product->stock_quantity }}"><i class="fas fa-edit"></i> Edit</button>
+                                    <button class="delete-button" id="product-delete" data-id="{{ $product->id }}"><i class="fa-solid fa-trash"></i> Delete</button>
                                 </td>
                             </tr>
                         @endforeach
@@ -204,7 +206,7 @@
     </div>
 </div>
 
-
+<div id="loader" style="display: none;">Loading...</div>
 <script src="{{ asset('js/ProductScript.js') }}"></script>
 
 @endsection
