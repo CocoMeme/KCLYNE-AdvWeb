@@ -36,8 +36,10 @@ Route::get('/home', function () {
     return view('customer.home');
 })->name('home');
 
+Route::middleware('auth:sanctum')->group(function () {
 Route::get('/thank-you', function () {
     return view('shop.ty');
+});
 });
 
 /*
@@ -59,7 +61,6 @@ Route::post('/logout', [AccountController::class, 'logout'])->name('logout');
 |--------------------------------------------------------------------------
 */
 
-// Ensure these routes are only accessible to authenticated users with 'admin' role
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/users', [AdminController::class, 'index'])->name('admin.users');
     Route::post('/admin/users/{id}/update-role', [AdminController::class, 'updateRole']);
@@ -73,7 +74,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
+Route::middleware(['auth', 'admin'])->group(function () {
 Route::get('/admin/dashboard', [DashboardController::class, 'index']);
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -81,20 +84,26 @@ Route::get('/admin/dashboard', [DashboardController::class, 'index']);
 |--------------------------------------------------------------------------
 */
 
+Route::middleware(['auth', 'admin'])->group(function () {
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');
 Route::resource('product', ProductController::class);
 Route::post('/product/import', [ProductController::class, 'import'])->name('product.import');
 Route::post('/product/export', [ProductController::class, 'export'])->name('product.export');
+});
 
 /*
 |--------------------------------------------------------------------------
 | EMPLOYEES
 |--------------------------------------------------------------------------
 */
+
+Route::middleware(['auth', 'admin'])->group(function () {
 Route::get('/employee', [EmployeeController::class, 'index'])->name('employee.index');
 Route::resource('employee', EmployeeController::class);
 Route::post('/employee/import', [EmployeeController::class, 'import'])->name('employee.import');
 Route::post('/employee/export', [EmployeeController::class, 'export'])->name('employee.export');
+});
+
 
 /*
 |--------------------------------------------------------------------------
@@ -111,7 +120,9 @@ Route::get('/shop/{id}', [ShopController::class, 'show'])->name('shop.show');
 |--------------------------------------------------------------------------
 */
 
+Route::middleware(['auth:sanctum'])->group(function () {
 Route::get('/orders/history', [OrderController::class, 'myOrders']);
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -119,7 +130,7 @@ Route::get('/orders/history', [OrderController::class, 'myOrders']);
 |--------------------------------------------------------------------------
 */
 
- 
+Route::middleware(['auth', 'admin'])->group(function () {
 Route::get('/service', [ServiceController::class, 'index']);
 Route::post('/store', [ServiceController::class, 'store'])->name('store');
 Route::get('/fetchall', [ServiceController::class, 'fetchAll'])->name('fetchAll');
@@ -129,6 +140,7 @@ Route::post('/update', [ServiceController::class, 'update'])->name('update');
 
 Route::get('/export', [ServiceController::class, 'export'])->name('export');
 Route::post('/import', [ServiceController::class, 'import'])->name('import');
+});
 
 Route::get('/services', [ServiceController::class, 'customer_service_index']);
 Route::get('/getcustomer_service_index', [ServiceController::class, 'getcustomer_service_index'])->name('services.getcustomer_service_index');
