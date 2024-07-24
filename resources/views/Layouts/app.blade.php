@@ -55,6 +55,17 @@
 
     <!-- Ensure custom scripts are loaded after dependencies -->
     <script src="{{ asset('js/AccountScript.js') }}"></script>
+
+    <style>
+        div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm) {
+        border: 0;
+        border-radius: .25em;
+        background: initial;
+        background-color: #00334e;
+        color: #fff;
+        font-size: 1em;
+    }
+    </style>
 </head>
 <body>
     @if(Auth::check() && Auth::user()->role == 'admin')

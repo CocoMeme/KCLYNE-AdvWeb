@@ -14,6 +14,17 @@
   <script src="{{ asset('js/ServiceScript.js') }}" defer></script>
 </head>
 
+<style>
+        div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm) {
+        border: 0;
+        border-radius: .25em;
+        background: initial;
+        background-color: #00334e;
+        color: #fff;
+        font-size: 1em;
+    }
+</style>
+
 <body>
   <div class="service-container">
     <div class="row service-row">
