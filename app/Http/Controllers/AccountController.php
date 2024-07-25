@@ -22,21 +22,34 @@ class AccountController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required',
         ]);
-    
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended('/');
+
+        $credentials = $request->only('username', 'password');
+
+        $user = User::where('username', $request->username)->first();
+
+        if ($user) {
+            $customer = Customer::where('user_id', $user->id)->first();
+
+            if ($customer->status === 'Deactivated') {
+                return response()->json(['message' => 'Login Failed: Account is deactivated.'], 403);
+            }
+
+            if (Auth::attempt($credentials)) {
+                return response()->json(['message' => 'Login successful!', 'redirect' => route('home')]);
+            } else {
+                return response()->json(['message' => 'Invalid credentials'], 401);
+            }
+        } else {
+            return response()->json(['message' => 'User not found'], 404);
         }
-    
-        return back()->withErrors([
-            'username' => 'The provided credentials do not match our records.',
-        ])->onlyInput('username');
     }
     
+    
+
     public function logout(Request $request)
     {
         Auth::logout();
@@ -45,7 +58,6 @@ class AccountController extends Controller
     
         return redirect('/home');
     }
-    
 
     public function register(Request $request)
     {
@@ -58,24 +70,24 @@ class AccountController extends Controller
             'address' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-    
+
         // Set default image if no image uploaded
         $imageName = 'default_photo.png';
-    
+
         // Handle image upload if present
         if ($request->hasFile('image')) {
             $customerImage = $request->file('image');
             $imageName = $customerImage->getClientOriginalName();
             $customerImage->move(public_path('Images/Customers'), $imageName);
         }
-    
+
         // Create user
         $user = User::create([
             'username' => $request->username,
             'password' => Hash::make($request->password),
             'role' => 'customer',
         ]);
-    
+
         // Create customer
         $customer = Customer::create([
             'user_id' => $user->id,
@@ -86,12 +98,10 @@ class AccountController extends Controller
             'image' => $imageName,
             'status' => 'Actived', // This is actually redundant as it defaults to Actived
         ]);
-    
+
         // Log in the user
         Auth::login($user);
-    
+
         return redirect()->route('home')->with('message', 'Signed up successfully');
     }
-    
-
 }

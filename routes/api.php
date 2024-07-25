@@ -10,6 +10,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -114,3 +115,12 @@ Route::get('/get_all_service', [ServiceController::class, 'get_all_service']);
 Route::put('/apiupdate/{id}', [ServiceController::class, 'apiupdate']);
 Route::delete('/apidelete/{id}', [ServiceController::class, 'apidelete']);
 });
+
+
+/*
+|--------------------------------------------------------------------------
+| CUSTOMER
+|--------------------------------------------------------------------------
+*/
+
+Route::patch('customer/status/{id}', [CustomerController::class, 'updateStatus']);

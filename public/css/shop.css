@@ -301,8 +301,24 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    background-color: #002f47;
+    background-color: #EE6F57;
     color: white;
+    height: 100px;
+}
+
+.cart-header a{
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 17px;
+}
+
+.cart-header img{
+    max-width: 50px;
+    height: auto;
+    margin-right: 5px;
 }
 
 .cart-header h2 {
@@ -316,17 +332,19 @@
     right: 10px;
     background: none;
     border: none;
-    color: #c5c5c5;
-    font-size: 20px;
+    color: #fff;
+    font-size: 26px;
     cursor: pointer;
-    background-color: #858484;
-    padding-left: 10px;
-    padding-right: 10px;
+}
+
+.close-cart i{
+    color: #fff;
 }
 
 .close-cart:hover {
-    background-color: #acacac;
+    /* background-color: #acacac; */
     color: white;
+    scale: 1.1;
 }
 
 .cart-controls{
@@ -348,7 +366,8 @@
 .cart-item-row {
     display: flex;
     align-items: center;
-    padding: 10px 0;
+    padding: 10px;
+    padding-top: 0;
     border-bottom: 5px solid #ccc;
 }
 
@@ -357,6 +376,7 @@
     height: 80px;
     object-fit: cover;
     margin-right: 10px;
+    border-radius: 4px;
 }
 
 .itemImage {
@@ -393,12 +413,14 @@
 .cart-item-details h5 {
     margin: 0;
     font-size: 16px;
+    margin-left: 7px;
 }
 
 .cart-item-details p {
     margin: 0;
     color: #EE6F57;
     font-weight: bold;
+    margin-left: 7px;
 }
 
 .quantity-control {
@@ -408,10 +430,10 @@
 }
 
 .quantity-control button {
-    background-color: #00334E;
+    background-color: #EE6F57;
     border: none;
     color: white;
-    font-size: 16px;
+    font-size: 12px;
     width: 30px;
     height: 30px;
     display: flex;
@@ -419,14 +441,19 @@
     align-items: center;
     cursor: pointer;
     margin: 0 5px;
+    border-radius: 3px;
+    font-weight: 900;
 }
 
 .quantity-control .quantity {
     width: 40px;
     text-align: center;
-    border: 1px solid #ccc;
+    border: 2px solid #e2b9b0;
     border-radius: 5px;
     padding: 5px;
+    height: 30px;
+    font-size: 12px;
+    font-weight: 900;
 }
 
 .delete-item {
@@ -456,8 +483,8 @@
 }
 
 #cartTotal{
-    font-weight: bold;
-    font-size: 20px;
+    font-weight: 600;
+    font-size: 16px;
     color: #00334E;
 }
 
@@ -469,7 +496,7 @@
 #checkout {
     background-color: #EE6F57;
     border: none;
-    border-radius: 20px;
+    border-radius: 4px;
     padding: 7px 14px;
     color: white;
     font-size: 15px;
@@ -665,8 +692,10 @@
 /* TY MESSAGE*/
 
 .ty-message {
-    margin-top: 20%;
+    margin-top: 10%;
     margin-bottom: 10%;
+    margin-left: 25%;
+    margin-right: 25%;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;

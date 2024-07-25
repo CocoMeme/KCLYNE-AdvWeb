@@ -1,6 +1,7 @@
 .order-history-container {
     padding: 20px;
     margin-top: 100px;
+    min-height: 100vh;
 }
 
 .tabs {
@@ -49,12 +50,21 @@
 .review-button {
     background-color: #EE6F57;
     border: none;
-    border-radius: 20px;
+    border-radius: 5px;
     padding: 7px 14px;
     color: white;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 400;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: 100px;
+}
+
+.review-button i{
+    color: #fff;
+    margin-right: 5px;
+    font-size: 17px;
 }
 
 .review-button:hover {

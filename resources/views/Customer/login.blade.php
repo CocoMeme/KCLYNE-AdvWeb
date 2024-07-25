@@ -1,10 +1,33 @@
 @extends('layouts.app')
 
 @section('content')
+
+    @if(session('error'))
+        <div class="pop-up-message">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    @if(session('success'))
+        <div class="pop-up-message">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if($errors->any())
+        <div class="pop-up-message">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <section class="main-log">
         <div class="container">
             <h2>LOGIN</h2>
-            <form action="{{ route('login') }}" method="POST">
+            <form id="login-form" action="{{ route('login') }}" method="POST">
                 @csrf
                 <div class="form-group">
                     <label for="username">Username</label>

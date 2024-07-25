@@ -1,18 +1,34 @@
 $(document).ready(function() {
-    // Login AJAX
+    // Ensure CSRF token is included in every AJAX request
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     $('#login-form').on('submit', function(e) {
         e.preventDefault();
-
+    
         $.ajax({
             type: 'POST',
             url: '/login',
             data: $(this).serialize(),
             success: function(response) {
-                alert(response.message);
-                window.location.href = '/';
+                $('.pop-up-message').remove();
+                $('<div class="pop-up-message">' + response.message + '</div>').appendTo('body');
+                if (response.redirect) {
+                    setTimeout(function() {
+                        window.location.href = response.redirect;
+                    }, 3000);
+                }
             },
             error: function(response) {
-                alert('Login failed: ' + response.responseJSON.message);
+                $('.pop-up-message').remove();
+                if (response.responseJSON && response.responseJSON.message) {
+                    $('<div class="pop-up-message">' + response.responseJSON.message + '</div>').appendTo('body');
+                } else {
+                    $('<div class="pop-up-message">Login failed: An unknown error occurred</div>').appendTo('body');
+                }
             }
         });
     });
@@ -30,11 +46,15 @@ $(document).ready(function() {
             contentType: false,
             processData: false,
             success: function(response) {
-                alert(response.message);
-                window.location.href = '/';
+                $('.pop-up-message').remove();
+                $('<div class="pop-up-message">' + response.message + '</div>').appendTo('body');
+                setTimeout(function() {
+                    window.location.href = '/';
+                }, 3000);
             },
             error: function(response) {
-                alert('Registration failed: ' + response.responseJSON.message);
+                $('.pop-up-message').remove();
+                $('<div class="pop-up-message">Registration failed: ' + response.responseJSON.message + '</div>').appendTo('body');
             }
         });
     });

@@ -10,6 +10,8 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CustomerController;
+use App\Exports\CustomersExport;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +68,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/users/{id}/update-role', [AdminController::class, 'updateRole']);
     Route::post('/admin/users/{id}/deactivate', [AdminController::class, 'deactivate']);
     Route::get('/admin/products', [ProductController::class, 'index'])->name('admin.products');
+
+    Route::get('admin/customers', [CustomerController::class, 'index'])->name('customer.index');
+    Route::post('admin/customers/import', [CustomerController::class, 'import'])->name('customers.import');
+    Route::post('admin/customers/export', [CustomerController::class, 'export'])->name('customers.export');
 });
 
 /*

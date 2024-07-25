@@ -13,8 +13,8 @@
             <div class="user-info" id="user-info">
                 <img src="/Images/Customers/{{ Auth::user()->customer->image }}" alt="Profile Image" class="profile-image">
                 <div class="dropdown-menu-user" id="profile-dropdown">
-                    <a href="/orders/history"><i class="fa-solid fa-cart-shopping"></i>My Orders</a>
-                    <a href="/profile"><i class="fa fa-user"></i> My Profile</a>
+                    <a href="/orders/history"><i class='bx bx-receipt'></i>Orders</a>
+                    <a href="/profile"><i class='bx bxs-user-detail' ></i>Profile</a>
                 </div>
             </div>
             <div class="logout-button">

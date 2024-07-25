@@ -55,7 +55,7 @@ $(document).ready(function() {
                             <td>${new Date(item.created_at).toLocaleDateString()}</td>
                             <td>
                                 <button class="review-button" data-reviewed="${item.reviewed}" data-id="${item.product_id}" data-type="product">
-                                    ${item.reviewed ? 'Done' : 'Review >>'}
+                                    ${item.reviewed ? "<i class='bx bx-check-circle' ></i> Done" : "<i class='bx bx-list-plus' ></i> Review"}
                                 </button>
                                 <div class="review-content" id="review-content-${item.product_id}" style="display: none;"></div>
                             </td>

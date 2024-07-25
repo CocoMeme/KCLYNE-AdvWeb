@@ -8,8 +8,9 @@
 @section('content')
 <div class="cart-container" id="cart-container">
     <div class="cart-header">
-        <h2>Cart</h2>
-        <button class="close-cart">x</button>
+        <a href=""><img src="/Images/Layouts/Logo White.png" alt="Logo">CART</a>
+        
+        <button class="close-cart"><i class='bx bx-x-circle' ></i></button>
     </div>
     <div class="cart-controls">
             <input type="checkbox" id="select-all-items"> Select All
@@ -18,7 +19,7 @@
     <div class="cart-items" id="cartItems">
     </div>
     <div class="checkout-footer">
-        <span id="cartTotal">Total: ₱ <span id="cart-total-amount">0.00</span></span>
+        <span id="cartTotal">TOTAL: ₱<span id="cart-total-amount">0.00</span></span>
         <button class="btn btn-primary" id="checkout">CHECKOUT</button>
     </div>
 </div>
@@ -113,6 +114,6 @@
         </div>
     </div>
 </div>
-<div id="loader" style="display:none;">Loading...</div>
+
 <script src="{{ asset('js/ShopScripts.js') }}"></script>
 @endsection

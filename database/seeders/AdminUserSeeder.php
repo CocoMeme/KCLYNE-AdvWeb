@@ -29,7 +29,7 @@ class AdminUserSeeder extends Seeder
             'user_id' => $userId,
             'name' => 'Admin User',
             'email' => 'admin@example.com',
-            'image' => '<user_photo.png',
+            'image' => 'user_photo.png',
             'phone' => '123-456-7890',
             'status' => 'Actived',
             'address' => 'Confidential Detail',
