@@ -38,6 +38,11 @@ Route::get('/home', function () {
     return view('customer.home');
 })->name('home');
 
+Route::get('/failed', function () {
+    return view('customer.failed_login');
+});
+
+
 Route::middleware('auth:sanctum')->group(function () {
 Route::get('/thank-you', function () {
     return view('shop.ty');

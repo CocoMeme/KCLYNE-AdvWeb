@@ -20,6 +20,11 @@ class AccountController extends Controller
         return view('customer.login');
     }
 
+    public function showLoginFailed()
+    {
+        return view('customer.failed_login');
+    }
+
     public function login(Request $request)
     {
         $request->validate([
