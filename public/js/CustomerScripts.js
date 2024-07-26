@@ -6,8 +6,12 @@ $(document).ready(function() {
     $('.status-select').on('change', function() {
         var customerId = $(this).data('id');
         var newStatus = $(this).val();
+        
+        // Set data attributes for the modal
         $('#confirmStatusChangeModal').data('customer-id', customerId);
         $('#confirmStatusChangeModal').data('new-status', newStatus);
+        
+        // Show the confirmation modal
         $('#confirmStatusChangeModal').modal('show');
     });
 
@@ -16,6 +20,7 @@ $(document).ready(function() {
         var customerId = $('#confirmStatusChangeModal').data('customer-id');
         var newStatus = $('#confirmStatusChangeModal').data('new-status');
         
+        // Make the AJAX call to update the status
         $.ajax({
             url: `/api/customer/status/${customerId}`,
             method: 'PATCH',
@@ -29,10 +34,11 @@ $(document).ready(function() {
             }),
             success: function(response) {
                 alert('Customer status updated successfully');
-                location.reload();
+                location.reload(); // Reload the page to see the changes
             },
             error: function(error) {
                 console.error('Error:', error);
+                alert('Failed to update customer status: ' + error.responseJSON.message);
             }
         });
     });
@@ -40,7 +46,6 @@ $(document).ready(function() {
     // Close modal without making any changes
     $('#cancelStatusChangeButton').on('click', function() {
         $('#confirmStatusChangeModal').modal('hide');
-        location.reload();
     });
 
     // Open Import Modal

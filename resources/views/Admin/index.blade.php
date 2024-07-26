@@ -45,7 +45,7 @@
                             <td>{{ $customer->phone }}</td>
                             <td>
                                 <select class="form-control status-select" data-id="{{ $customer->id }}">
-                                    <option value="Activated" {{ $customer->status == 'Activated' ? 'selected' : '' }}>Activated</option>
+                                    <option value="Actived" {{ $customer->status == 'Actived' ? 'selected' : '' }}>Actived</option>
                                     <option value="Deactivated" {{ $customer->status == 'Deactivated' ? 'selected' : '' }}>Deactivated</option>
                                 </select>
                             </td>

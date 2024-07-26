@@ -30,9 +30,16 @@ use App\Exports\CustomersExport;
 |--------------------------------------------------------------------------
 */
 
+// Route::middleware(['auth', 'check.status'])->group(function () {
+
 Route::get('/', function () {
     return view('customer.home');
 });
+
+
+
+// });
+
 
 Route::get('/home', function () {
     return view('customer.home');
@@ -42,11 +49,10 @@ Route::get('/failed', function () {
     return view('customer.failed_login');
 });
 
-
 Route::middleware('auth:sanctum')->group(function () {
-Route::get('/thank-you', function () {
-    return view('shop.ty');
-});
+    Route::get('/thank-you', function () {
+        return view('shop.ty');
+    });
 });
 
 /*
@@ -86,7 +92,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 */
 
 Route::middleware(['auth', 'admin'])->group(function () {
-Route::get('/admin/dashboard', [DashboardController::class, 'index']);
+    Route::get('/admin/dashboard', [DashboardController::class, 'index']);
 });
 
 /*
@@ -96,10 +102,10 @@ Route::get('/admin/dashboard', [DashboardController::class, 'index']);
 */
 
 Route::middleware(['auth', 'admin'])->group(function () {
-Route::get('/product', [ProductController::class, 'index'])->name('product.index');
-Route::resource('product', ProductController::class);
-Route::post('/product/import', [ProductController::class, 'import'])->name('product.import');
-Route::post('/product/export', [ProductController::class, 'export'])->name('product.export');
+    Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+    Route::resource('product', ProductController::class);
+    Route::post('/product/import', [ProductController::class, 'import'])->name('product.import');
+    Route::post('/product/export', [ProductController::class, 'export'])->name('product.export');
 });
 
 /*
@@ -108,11 +114,12 @@ Route::post('/product/export', [ProductController::class, 'export'])->name('prod
 |--------------------------------------------------------------------------
 */
 
+
 Route::middleware(['auth', 'admin'])->group(function () {
-Route::get('/employee', [EmployeeController::class, 'index'])->name('employee.index');
-Route::resource('employee', EmployeeController::class);
-Route::post('/employee/import', [EmployeeController::class, 'import'])->name('employee.import');
-Route::post('/employee/export', [EmployeeController::class, 'export'])->name('employee.export');
+    Route::get('/employee', [EmployeeController::class, 'index'])->name('employee.index');
+    Route::resource('employee', EmployeeController::class);
+    Route::post('/employee/import', [EmployeeController::class, 'import'])->name('employee.import');
+    Route::post('/employee/export', [EmployeeController::class, 'export'])->name('employee.export');
 });
 
 
@@ -122,8 +129,12 @@ Route::post('/employee/export', [EmployeeController::class, 'export'])->name('em
 |--------------------------------------------------------------------------
 */
 
-Route::get('/shop', [ShopController::class, 'index'])->name('shop');
-Route::get('/shop/{id}', [ShopController::class, 'show'])->name('shop.show');
+// Route::middleware(['auth', 'check.status'])->group(function () {
+
+
+    Route::get('/shop', [ShopController::class, 'index'])->name('shop');
+    Route::get('/shop/{id}', [ShopController::class, 'show'])->name('shop.show');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -131,10 +142,11 @@ Route::get('/shop/{id}', [ShopController::class, 'show'])->name('shop.show');
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth:sanctum'])->group(function () {
-Route::get('/orders/history', [OrderController::class, 'myOrders']);
-});
+    Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/orders/history', [OrderController::class, 'myOrders']);
+    });
 
+// });
 /*
 |--------------------------------------------------------------------------
 | SERVICE
@@ -153,5 +165,9 @@ Route::get('/export', [ServiceController::class, 'export'])->name('export');
 Route::post('/import', [ServiceController::class, 'import'])->name('import');
 });
 
-Route::get('/services', [ServiceController::class, 'customer_service_index']);
-Route::get('/getcustomer_service_index', [ServiceController::class, 'getcustomer_service_index'])->name('services.getcustomer_service_index');
+Route::middleware(['auth', 'check.status'])->group(function () {
+
+    Route::get('/services', [ServiceController::class, 'customer_service_index']);
+    Route::get('/getcustomer_service_index', [ServiceController::class, 'getcustomer_service_index'])->name('services.getcustomer_service_index');
+
+});
