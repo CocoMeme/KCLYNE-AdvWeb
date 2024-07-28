@@ -181,7 +181,7 @@
       var routeExport = "{{ route('export') }}";
       var csrfToken = "{{ csrf_token() }}";
   </script>
-  
+
 </body>
 </html>
 @endsection

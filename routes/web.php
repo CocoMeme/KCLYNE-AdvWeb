@@ -145,6 +145,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/shop', [ShopController::class, 'index'])->name('shop');
     Route::get('/shop/{id}', [ShopController::class, 'show'])->name('shop.show');
 
+    
+
 
 /*
 |--------------------------------------------------------------------------
@@ -179,3 +181,5 @@ Route::middleware(['auth', 'check.status'])->group(function () {
     Route::get('/services', [ServiceController::class, 'customer_service_index']);
     Route::get('/getcustomer_service_index', [ServiceController::class, 'getcustomer_service_index'])->name('services.getcustomer_service_index');
 });
+
+Route::get('/service_view/{id}', [ServiceController::class, 'show'])->name('service.show');
