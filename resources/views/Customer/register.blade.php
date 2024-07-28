@@ -46,7 +46,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="col-md-6">
+                                {{-- <div class="col-md-6">
                                     <label for="phone" class="col-form-label text-md-right">{{ __('Phone') }}</label>
                                     <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone">
                                     @error('phone')
@@ -54,7 +54,7 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
-                                </div>
+                                </div> --}}
                             </div>
 
                             <div class="form-group">
@@ -74,7 +74,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group" style="justify-content: left">
+                            {{-- <div class="form-group" style="justify-content: left">
                                 <div class="col-md-6">
 
                                     <label for="address" class="col-md-4 col-form-label text-md-right">{{ __('Address') }}</label>
@@ -87,7 +87,7 @@
                                     @enderror
 
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="form-group">
                                 

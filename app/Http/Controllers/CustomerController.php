@@ -47,4 +47,20 @@ class CustomerController extends Controller
 
         return response()->json(['error' => 'Customer not found.'], 404);
     }
+
+    // CustomerController.php
+
+    // public function updateStatus(Request $request, $id)
+    // {
+    //     $request->validate([
+    //         'status' => 'required|in:Activated,Deactivated',
+    //     ]);
+
+    //     $customer = Customer::findOrFail($id);
+    //     $customer->status = $request->status;
+    //     $customer->save();
+
+    //     return response()->json(['message' => 'Status updated successfully.']);
+    // }
+
 }

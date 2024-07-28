@@ -20,6 +20,11 @@ class AccountController extends Controller
         return view('customer.login');
     }
 
+    public function showLoginFailed()
+    {
+        return view('customer.failed_login');
+    }
+
     public function login(Request $request)
     {
         $request->validate([
@@ -66,8 +71,8 @@ class AccountController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:customers',
-            'phone' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -93,8 +98,8 @@ class AccountController extends Controller
             'user_id' => $user->id,
             'name' => $request->name,
             'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
+            // 'phone' => $request->phone,
+            // 'address' => $request->address,
             'image' => $imageName,
             'status' => 'Actived', // This is actually redundant as it defaults to Actived
         ]);

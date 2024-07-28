@@ -55,12 +55,17 @@ Route::get('/products', [ShopController::class, 'getProducts']);
 Route::get('/services', [ShopController::class, 'getServices']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/customer', [AuthController::class, 'getCustomerInfo']);
-    Route::post('/orders', [OrderController::class, 'store']);
-    Route::post('/cart/add', [CartController::class, 'addToCart']);
-    Route::post('/cart/update', [CartController::class, 'updateQuantity']);
-    Route::delete('/cart/{product}', [CartController::class, 'delete']);
-    Route::delete('/cart/delete-selected', [CartController::class, 'deleteSelected']);
+
+    Route::middleware(['auth', 'check.status'])->group(function () {
+
+        Route::get('/customer', [AuthController::class, 'getCustomerInfo']);
+        Route::post('/orders', [OrderController::class, 'store']);
+        Route::post('/cart/add', [CartController::class, 'addToCart']);
+        Route::post('/cart/update', [CartController::class, 'updateQuantity']);
+        Route::delete('/cart/{product}', [CartController::class, 'delete']);
+        Route::delete('/cart/delete-selected', [CartController::class, 'deleteSelected']);
+
+    });
 });
 
 /*

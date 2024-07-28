@@ -6,11 +6,11 @@
     top: 120px;
     left: 20px;
     text-align: left;
-    background-color: rgb(194, 156, 156);
+    background-color: rgb(0, 51, 78);
     padding: 10px;
     color: #fff;
     z-index: 9999;
-    background: linear-gradient(to right, rgba(194, 156, 156, 1), rgba(232, 113, 33, 0));
+    background: linear-gradient(to right, rgba(0, 51, 78, 1), rgba(232, 113, 33, 0));
     animation: fadeOut 7s ease-in-out forwards;
 }
 

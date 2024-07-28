@@ -8,7 +8,7 @@
     <meta charset="utf-8">
 </head>
 <body>
-<div class="container">
+<div class="container" style="height: 100vh">
     <h2>Services</h2>
     <div id="services-container">
         @foreach($services as $service)
