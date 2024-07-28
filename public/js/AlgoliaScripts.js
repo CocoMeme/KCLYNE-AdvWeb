@@ -76,12 +76,12 @@
         console.log('Selected suggestion:', suggestion, 'Dataset:', dataset); // Debugging: Log the selected suggestion and dataset
         if (dataset === 0) { // Service selected
             const serviceName = suggestion._highlightResult?.service_name?.value || suggestion.service_name;
-            saveSearchHistory(serviceName, suggestion.objectID, suggestion.service_image, 'service');
+            saveSearchHistory(serviceName, suggestion.objectID, suggestion.service_image, 'service_view');
             window.location.href = window.location.origin + '/service/' + suggestion.objectID;
         } else if (dataset === 1) { // Product selected
             const productName = suggestion._highlightResult?.name?.value || suggestion.name;
             saveSearchHistory(productName, suggestion.objectID, suggestion.image_path, 'shop');
-            window.location.href = window.location.origin + '/shop/' + suggestion.objectID;
+            window.location.href = window.location.origin + '/service_view/' + suggestion.objectID;
         }
         enterPressed = true;
     }).on('keyup', function(event) {

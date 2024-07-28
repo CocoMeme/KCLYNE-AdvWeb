@@ -309,31 +309,40 @@ class ServiceController extends Controller
 }
 
 
-public function getcustomer_service_index(Request $request)
-{
-    $start = $request->get("start");
-    $rowperpage = $this->rowperpage;
+    public function getcustomer_service_index(Request $request)
+    {
+        $start = $request->get("start");
+        $rowperpage = $this->rowperpage;
 
-    // Fetch additional services
-    $services = Service::skip($start)->take($rowperpage)->get();
+        // Fetch additional services
+        $services = Service::skip($start)->take($rowperpage)->get();
 
-    $html = "";
-    foreach ($services as $service) {
-        $service_name = $service->service_name;
-        $description = $service->description;
-        $price = $service->price;
-        $service_image = $service->service_image;
+        $html = "";
+        foreach ($services as $service) {
+            $service_name = $service->service_name;
+            $description = $service->description;
+            $price = $service->price;
+            $service_image = $service->service_image;
 
-        $html .= '<div class="card w-75 post mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">' . $service_name . '</h5>
-                        <p class="card-text">' . $description . '</p>
-                        <p class="card-text">$' . $price . '</p>
-                    </div>
-                    <img src="' . asset('images/Services/' . $service_image) . '" class="card-img-bottom" alt="' . $service_name . '">
-                </div>';
+            $html .= '<div class="card w-75 post mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">' . $service_name . '</h5>
+                            <p class="card-text">' . $description . '</p>
+                            <p class="card-text">$' . $price . '</p>
+                        </div>
+                        <img src="' . asset('images/Services/' . $service_image) . '" class="card-img-bottom" alt="' . $service_name . '">
+                    </div>';
+        }
+
+        return response()->json(['html' => $html]);
     }
 
-    return response()->json(['html' => $html]);
-}
+    public function show($id)
+    {
+        $service = Service::findOrFail($id);
+        $relatedServices = Service::where('id', '!=', $service->id)->take(4)->get();
+        return view('customer.service_view', compact('service', 'relatedServices'));
+    }
+
+
 }

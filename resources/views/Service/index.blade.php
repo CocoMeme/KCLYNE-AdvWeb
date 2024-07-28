@@ -181,7 +181,102 @@
       var routeExport = "{{ route('export') }}";
       var csrfToken = "{{ csrf_token() }}";
   </script>
-  
+
 </body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+
+<script>
+
+$(document).ready(function() {
+    // Add jQuery validation rules
+    $("#add_service_form").validate({
+        rules: {
+            service_name: {
+                required: true,
+                minlength: 3,
+                maxlength: 50
+            },
+            price: {
+                required: true,
+                number: true,
+                min: 0
+            },
+            description: {
+                required: true,
+                minlength: 10
+            }
+        },
+        messages: {
+            service_name: {
+                required: "Please enter a service name.",
+                minlength: "Service name must be at least 3 characters.",
+                maxlength: "Service name cannot exceed 50 characters."
+            },
+            price: {
+                required: "Please enter a price.",
+                number: "Price must be a number.",
+                min: "Price must be greater than or equal to 0."
+            },
+            description: {
+                required: "Please enter a description.",
+                minlength: "Description must be at least 10 characters."
+            }
+        },
+        errorElement: 'span',
+        errorClass: 'invalid-feedback',
+        highlight: function(element) {
+            $(element).closest('.form-group').addClass('has-error');
+        },
+        unhighlight: function(element) {
+            $(element).closest('.form-group').removeClass('has-error');
+        },
+        errorPlacement: function(error, element) {
+            if (element.parent('.input-group').length) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+        },
+        submitHandler: function(form) {
+            const fd = new FormData(form);
+            $("#add_service_btn").text('Adding...');
+            // Clear previous error messages
+            $(".invalid-feedback").hide();
+            $.ajax({
+                url: routeStore, // Use the named route
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: fd,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 200) {
+                        Swal.fire('Added!', response.message, 'success');
+                        fetchAllServices();
+                        $("#add_service_form")[0].reset();
+                        $("#addServiceModal").modal('hide');
+                    }
+                    $("#add_service_btn").text('Add Service');
+                },
+                error: function(response) {
+                    $("#add_service_btn").text('Add Service');
+                    if (response.responseJSON && response.responseJSON.errors) {
+                        $.each(response.responseJSON.errors, function(key, value) {
+                            $(`#${key}_error`).text(value[0]).show();
+                        });
+                    }
+                }
+            });
+        }
+    });
+});
+
+</script>
+
 </html>
 @endsection
