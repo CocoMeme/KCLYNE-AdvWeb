@@ -36,9 +36,8 @@ $(document).ready(function() {
     // Registration AJAX
     $('#register-form').on('submit', function(e) {
         e.preventDefault();
-
         var formData = new FormData(this);
-
+    
         $.ajax({
             type: 'POST',
             url: '/register',
@@ -54,10 +53,26 @@ $(document).ready(function() {
             },
             error: function(response) {
                 $('.pop-up-message').remove();
-                $('<div class="pop-up-message">Registration failed: ' + response.responseJSON.message + '</div>').appendTo('body');
+                if (response.responseJSON && response.responseJSON.errors) {
+                    // Clear previous errors
+                    $('.is-invalid').removeClass('is-invalid');
+                    $('.invalid-feedback').html('');
+    
+                    // Display new errors
+                    $.each(response.responseJSON.errors, function(field, messages) {
+                        var input = $('[name=' + field + ']');
+                        input.addClass('is-invalid');
+                        input.next('.invalid-feedback').html('<strong>' + messages.join(' ') + '</strong>');
+                    });
+    
+                    $('<div class="pop-up-message">Registration failed: Please fix the errors and try again.</div>').appendTo('body');
+                } else {
+                    $('<div class="pop-up-message">Registration failed: An unknown error occurred</div>').appendTo('body');
+                }
             }
         });
     });
+    
 
     // Logout Confirmation Dialog
     const logoutButton = document.getElementById('logout-button');

@@ -7,6 +7,16 @@
         <li><a href="/services">Services</a></li>
         <li><a href="#">About Us</a></li>
     </ul>
+
+    <div class="aa-input-container" id="aa-input-container">
+        <link rel="stylesheet" href="{{ asset('css/algolia.css') }}">
+        <input type="search" id="aa-search-input" class="aa-input-search"
+        placeholder="Search...">
+        <div id="search-results"></div>
+        <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
+        <script src="{{ asset('js/AlgoliaScripts.js') }}"></script>
+    </div>
     
     <div class="nav-icon">
         @auth

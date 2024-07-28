@@ -25,6 +25,7 @@
     <link href="{{ asset('css/order_history.css') }}" rel="stylesheet">
     <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
     <link href="{{ asset('css/message.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('css/customer-profile.css') }}" rel="stylesheet"> --}}
 
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
@@ -56,6 +57,8 @@
 
     <!-- Ensure custom scripts are loaded after dependencies -->
     <script src="{{ asset('js/AccountScript.js') }}"></script>
+
+    
 
     <style>
         div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm) {

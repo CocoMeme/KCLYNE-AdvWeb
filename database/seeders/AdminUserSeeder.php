@@ -31,7 +31,7 @@ class AdminUserSeeder extends Seeder
             'email' => 'admin@example.com',
             'image' => 'user_photo.png',
             'phone' => '123-456-7890',
-            'status' => 'Actived',
+            'status' => 'Activated',
             'address' => 'Confidential Detail',
             'created_at' => now(),
             'updated_at' => now(),

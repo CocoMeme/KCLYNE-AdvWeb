@@ -68,6 +68,16 @@ Route::get('/login', [AccountController::class, 'showLoginForm'])->name('showlog
 Route::post('/login', [AccountController::class, 'login'])->name('login');
 Route::post('/logout', [AccountController::class, 'logout'])->name('logout');
 
+
+/*
+|--------------------------------------------------------------------------
+| CUSTOMER
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/profile', [AccountController::class, 'profile'])->name('profile');
+Route::post('/profile/update', [AccountController::class, 'updateProfile'])->name('profile.update');
+
 /*
 |--------------------------------------------------------------------------
 | ADMINS
@@ -92,7 +102,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 */
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/dashboard', [DashboardController::class, 'index']);
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
 /*
@@ -142,9 +152,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-    Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/orders/history', [OrderController::class, 'myOrders']);
-    });
+});
 
 // });
 /*
@@ -166,8 +176,6 @@ Route::post('/import', [ServiceController::class, 'import'])->name('import');
 });
 
 Route::middleware(['auth', 'check.status'])->group(function () {
-
     Route::get('/services', [ServiceController::class, 'customer_service_index']);
     Route::get('/getcustomer_service_index', [ServiceController::class, 'getcustomer_service_index'])->name('services.getcustomer_service_index');
-
 });

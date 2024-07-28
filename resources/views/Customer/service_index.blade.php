@@ -8,7 +8,7 @@
     <meta charset="utf-8">
 </head>
 <body>
-<div class="container" style="height: 100vh">
+<div class="container" style="min-height: 100vh">
     <h2>Services</h2>
     <div id="services-container">
         @foreach($services as $service)
@@ -44,5 +44,11 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="{{ asset('js/ServiceIndexScript.js') }}"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+<script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
+<script src="{{ asset('js/AlgoliaScripts.js') }}"></script>
 
 @endsection

@@ -116,4 +116,10 @@
 </div>
 
 <script src="{{ asset('js/ShopScripts.js') }}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+<script src="https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
+<script src="{{ asset('js/AlgoliaScripts.js') }}"></script>
+
 @endsection

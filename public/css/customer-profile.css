@@ -1,0 +1,145 @@
+body {
+    background-color: #f9f9fa;
+}
+
+.user-card-full {
+    overflow: hidden;  
+    margin: 10rem auto; /* Center the card and add margin */
+    width: 100%; /* Ensure the card takes full width */
+    max-width: 1000px; /* Limit the maximum width */
+    height: 500px;
+}
+
+.card {
+    border-radius: 10px;
+    -webkit-box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
+    box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08); 
+}
+
+.wrapper {
+    width: 100%;  /* Set width to 100% */
+}
+
+.m-r-0 {
+    margin-right: 0px;
+}
+
+.m-l-0 {
+    margin-left: 0px;
+}
+
+.user-card-full .user-profile {
+    border-radius: 5px 0 0 5px;
+}
+
+.bg-c-lite-green {
+    background: linear-gradient(109.6deg, rgb(27, 27, 79) 11.2%, rgb(120, 201, 244) 100.2%);
+    height: 200%;
+}
+
+.user-profile {
+    padding: 20px 0;
+}
+
+.card-block {
+    padding: 1.25rem;
+}
+
+.m-b-25 {
+    margin-bottom: 25px;
+}
+
+.img-radius {
+    border-radius: 100%; /* Makes the image circular */
+    width: 250px; /* Adjust this size as needed */
+    height: 250px; /* Ensures the height matches the width for a circular image */
+    object-fit: cover; /* Ensures the image covers the circle without distortion */
+}
+
+h6 {
+    font-size: 25px;
+}
+
+.card .card-block p {
+    line-height: 50px;
+}
+
+@media only screen and (min-width: 1400px) {
+    p {
+        font-size: 25px;
+    }
+}
+
+.b-b-default {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.m-b-20 {
+    margin-bottom: 20px;
+}
+
+.p-b-5 {
+    padding-bottom: 5px !important;
+}
+
+.m-b-10 {
+    margin-bottom: 10px;
+}
+
+.text-muted {
+    color: #919aa3 !important;
+}
+
+.f-w-600 {
+    font-weight: 600;
+}
+
+.m-t-40 {
+    margin-top: 20px;
+}
+
+/* Styles for messages */
+.alert {
+    display: none; /* Hidden by default */
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 5px;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert-error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+/* New styles for the icon */
+.mdi {
+    font-family: 'Material Design Icons';
+}
+
+.feather {
+    font-family: 'Feather Icons';
+}
+
+.icon-edit {
+    color: #ffffff; /* Change this to the desired color */
+    transition: color 0.3s;
+}
+
+.icon-edit:hover {
+    color: #dddddd; /* Change this to the desired hover color */
+}
+
+.m-t-10 {
+    margin-top: 10px;
+}
+
+.f-16 {
+    font-size: 30px;
+}
