@@ -148,7 +148,7 @@ REGISTER
     /* justify-content: center; */
 }
 
-.main-register .container {
+.main-register .container-register {
     background: rgba(0, 51, 78, 0.7);
     padding: 40px;
     border-radius: 5px;

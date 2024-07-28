@@ -337,9 +337,9 @@ function updateCartDisplay() {
                 totalPrice -= price * quantity;
                 if (isNaN(totalPrice)){
                     totalPrice = 0.00;
-                    $('#cartTotal').text('Total: ₱ ' + totalPrice.toFixed(2));
+                    $('#cartTotal').text('TOTAL: ₱ ' + totalPrice.toFixed(2));
                 } else {
-                    $('#cartTotal').text('Total: ₱ ' + totalPrice.toFixed(2));
+                    $('#cartTotal').text('TOTAL: ₱ ' + totalPrice.toFixed(2));
                 }
             });
         },
@@ -434,7 +434,7 @@ function updateCartDisplay() {
             var quantity = $(this).data('product-quantity');
             totalPrice += price * quantity;
         });
-        $('#cartTotal').text('Total: ₱ ' + totalPrice.toFixed(2));
+        $('#cartTotal').text('TOTAL: ₱ ' + totalPrice.toFixed(2));
     }
 
     updateCartDisplay();
@@ -668,7 +668,7 @@ $('#confirmCheckout').click(function() {
         },
         success: function(response) {
             console.log("Order successfully created:", response);
-            
+            $('#checkoutModal').modal('hide');
             $("#loader").hide();     
             Swal.fire({
                 title: 'Order Placed!',

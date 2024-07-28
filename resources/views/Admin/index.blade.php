@@ -1,18 +1,22 @@
 <!-- Customer Management Page -->
 @extends('layouts.app')
 
+<head>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
 @section('content')
 <div class="admin-container">
     <div class="right-panel">
         <div id="customers">
             <div class="table-methods">
                 <a class="btn btn-info btn-primary" href="#" role="button" id="openImportCustomerModal">
-                    <i class='bx bxs-file-import'></i> Import Excel File
+                    <i class='bx bxs-file-import'></i> Import Excel
                 </a>
                 <form id="exportCustomerForm" method="POST" action="{{ route('customers.export') }}">
                     @csrf
                     <button type="submit" class="btn btn-info btn-primary">
-                        <i class='bx bxs-file-export'></i> Export Excel File
+                        <i class='bx bxs-file-export'></i> Export Excel
                     </button>
                 </form>
             </div>

@@ -19,7 +19,7 @@ $(document).ready(function() {
                 if (response.redirect) {
                     setTimeout(function() {
                         window.location.href = response.redirect;
-                    }, 3000);
+                    }, 1000);
                 }
             },
             error: function(response) {
@@ -50,7 +50,7 @@ $(document).ready(function() {
                 $('<div class="pop-up-message">' + response.message + '</div>').appendTo('body');
                 setTimeout(function() {
                     window.location.href = '/';
-                }, 3000);
+                }, 1000);
             },
             error: function(response) {
                 $('.pop-up-message').remove();

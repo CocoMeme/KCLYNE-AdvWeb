@@ -19,7 +19,7 @@
     <div class="cart-items" id="cartItems">
     </div>
     <div class="checkout-footer">
-        <span id="cartTotal">TOTAL: ₱<span id="cart-total-amount">0.00</span></span>
+        <span id="cartTotal">TOTAL: ₱ <span id="cart-total-amount">0.00</span></span>
         <button class="btn btn-primary" id="checkout">CHECKOUT</button>
     </div>
 </div>

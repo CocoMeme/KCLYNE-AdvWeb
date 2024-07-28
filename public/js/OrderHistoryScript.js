@@ -82,7 +82,7 @@ $(document).ready(function() {
                             <td>${new Date(item.created_at).toLocaleDateString()}</td>
                             <td>
                                 <button class="review-button" data-reviewed="${item.reviewed}" data-id="${item.service_id}" data-type="service">
-                                    ${item.reviewed ? 'Done' : 'Review >>'}
+                                     ${item.reviewed ? "<i class='bx bx-check-circle' ></i> Done" : "<i class='bx bx-list-plus' ></i> Review"}
                                 </button>
                                 <div class="review-content" id="review-content-${item.service_id}" style="display: none;"></div>
                             </td>
