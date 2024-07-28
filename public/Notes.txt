@@ -40,3 +40,6 @@ php artisan migrate
 
 php artisan migrate:refresh
 php artisan db:seed --class=AdminUserSeeder
+
+Algolia:
+composer require laravel/scout

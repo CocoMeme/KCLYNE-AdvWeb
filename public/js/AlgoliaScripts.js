@@ -14,6 +14,8 @@
             templates: {
                 header: '<div class="algolia-result">Services</div>',
                 suggestion: function(suggestion) {
+                    console.log('Service suggestion:', suggestion); // Debugging: Log the service suggestion object
+                    const price = typeof suggestion.price === 'number' ? suggestion.price: 'N/A';
                     const markup = `
                         <div class="algolia-result">
                             <span>
@@ -22,7 +24,7 @@
                             </span>
                         </div>
                         <div class="algolia-details">
-                            <span>₱${(suggestion.price).toFixed(2)}</span>
+                            <span>₱${price}</span>
                         </div>
                         <div class="algolia-details">
                             <span>${suggestion._highlightResult.description.value}</span>
@@ -31,6 +33,7 @@
                     return markup;
                 },
                 empty: function(result) {
+                    console.log('No service results:', result); // Debugging: Log the no service results
                     return 'Sorry, we did not find any results for "' + result.query + '"';
                 }
             }
@@ -41,15 +44,18 @@
             templates: {
                 header: '<div class="algolia-result">Products</div>',
                 suggestion: function(suggestion) {
+                    console.log('Product suggestion:', suggestion); // Debugging: Log the product suggestion object
+                    const firstImagePath = suggestion.image_path.split(',')[0]; // Get the first image path
+                    const price = typeof suggestion.price === 'string' ? suggestion.price : 'N/A';
                     const markup = `
                         <div class="algolia-result">
                             <span>
-                                <img src="${baseUrl}images/products/${suggestion.image_path}" alt="img" class="algolia-thumb">
+                                <img src="${baseUrl}images/products/${firstImagePath}" alt="img" class="algolia-thumb">
                                 ${suggestion._highlightResult.name.value}
                             </span>
                         </div>
                         <div class="algolia-details">
-                            <span>₱${(suggestion.price).toFixed(2)}</span>
+                            <span>₱${price}</span>
                         </div>
                         <div class="algolia-details">
                             <span>${suggestion._highlightResult.description.value}</span>
@@ -61,29 +67,36 @@
                     return markup;
                 },
                 empty: function(result) {
+                    console.log('No product results:', result); // Debugging: Log the no product results
                     return 'Sorry, we did not find any results for "' + result.query + '"';
                 }
             }
         }
     ]).on('autocomplete:selected', function(event, suggestion, dataset) {
+        console.log('Selected suggestion:', suggestion, 'Dataset:', dataset); // Debugging: Log the selected suggestion and dataset
         if (dataset === 0) { // Service selected
-            saveSearchHistory(suggestion._highlightResult.service_name.value, suggestion.objectID, suggestion.service_image, 'service');
+            const serviceName = suggestion._highlightResult?.service_name?.value || suggestion.service_name;
+            saveSearchHistory(serviceName, suggestion.objectID, suggestion.service_image, 'service');
             window.location.href = window.location.origin + '/service/' + suggestion.objectID;
         } else if (dataset === 1) { // Product selected
-            saveSearchHistory(suggestion._highlightResult.name.value, suggestion.objectID, suggestion.image_path, 'shop');
+            const productName = suggestion._highlightResult?.name?.value || suggestion.name;
+            saveSearchHistory(productName, suggestion.objectID, suggestion.image_path, 'shop');
             window.location.href = window.location.origin + '/shop/' + suggestion.objectID;
         }
         enterPressed = true;
     }).on('keyup', function(event) {
+        console.log('Keyup event:', event); // Debugging: Log the keyup event
         if (event.keyCode == 13 && !enterPressed) {
             const query = document.getElementById('aa-search-input').value;
+            console.log('Enter key pressed, query:', query); // Debugging: Log the query on Enter key press
             saveSearchHistory(query);
             window.location.href = window.location.origin + '/search-algolia?q=' + query;
         }
     });
-    
+
     // Save search query to local storage
     function saveSearchHistory(name, objectID, imagePath, type) {
+        console.log('Saving search history:', name, objectID, imagePath, type); // Debugging: Log the search history being saved
         let searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
         if (!searchHistory.some(item => item.name === name)) {
             searchHistory.unshift({ name, objectID, imagePath, type });
@@ -91,21 +104,20 @@
                 searchHistory.pop();
             }
             localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
-            console.log('Search history saved:', searchHistory); // Debugging
+            console.log('Search history saved:', searchHistory); // Debugging: Log the saved search history
         }
     }
-    
 
     // Display search history when the input is focused
     document.getElementById('aa-search-input').addEventListener('focus', function() {
-        console.log('Input focused'); // Debugging
+        console.log('Input focused'); // Debugging: Log when the input is focused
         const searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
         const dropdown = document.createElement('div');
         dropdown.className = 'search-history-dropdown';
-    
+
         dropdown.innerHTML = searchHistory.map(item => {
             const imgSrc = item.imagePath ? `${baseUrl}images/${item.type === 'service' ? 'services' : 'products'}/${item.imagePath}` : `${baseUrl}images/default-placeholder.png`;
-    
+
             return `
                 <div class="search-history-item" data-id="${item.objectID}" data-type="${item.type}" style="cursor: pointer;">
                     <img src="${imgSrc}" alt="img" class="algolia-thumb">
@@ -113,14 +125,15 @@
                 </div>
             `;
         }).join('');
-    
+
         this.parentNode.appendChild(dropdown);
-        console.log('Dropdown appended:', dropdown); // Debugging
-    
+        console.log('Dropdown appended:', dropdown); // Debugging: Log the dropdown appended
+
         document.querySelectorAll('.search-history-item').forEach(item => {
             item.addEventListener('click', function() {
                 const objectId = this.getAttribute('data-id');
                 const type = this.getAttribute('data-type');
+                console.log('Search history item clicked:', objectId, type); // Debugging: Log the clicked search history item
                 if (objectId && type) {
                     window.location.href = window.location.origin + `/${type}/` + objectId;
                 } else {
@@ -132,29 +145,31 @@
 
     // Trigger search on search history item click
     function triggerSearch(query) {
+        console.log('Triggering search for query:', query); // Debugging: Log the query triggering the search
         document.getElementById('aa-search-input').value = query;
         const event = new KeyboardEvent('keyup', { keyCode: 13 });
         document.getElementById('aa-search-input').dispatchEvent(event);
     }
-    
+
     document.getElementById('aa-search-input').addEventListener('blur', function() {
         setTimeout(() => {
             const dropdown = document.querySelector('.search-history-dropdown');
             if (dropdown) {
                 dropdown.remove();
-                console.log('Dropdown removed'); // Debugging
+                console.log('Dropdown removed'); // Debugging: Log the dropdown removed
             }
         }, 200); 
-    }); 
+    });
+
     function clearSearchInputIfOnIndexPage() {
         const searchInput = document.getElementById('aa-search-input');
         if (window.location.pathname === '/' || window.location.pathname === '/index') {
             searchInput.value = '';
             localStorage.removeItem('searchHistory');
+            console.log('Cleared search input and history on index page'); // Debugging: Log clearing search input and history on index page
         }
     }
-    
+
     window.addEventListener('popstate', clearSearchInputIfOnIndexPage);
     document.addEventListener('DOMContentLoaded', clearSearchInputIfOnIndexPage);
-    
 })();
