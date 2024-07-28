@@ -11,8 +11,8 @@ class ProductImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         $imagePath = null;
-        if (isset($row['image']) && !empty($row['image'])) {
-            $imagePath = $row['image'];
+        if (isset($row['image_path']) && !empty($row['image_path'])) {
+            $imagePath = $row['image_path'];
         }
 
         return new Product([
@@ -20,7 +20,7 @@ class ProductImport implements ToModel, WithHeadingRow
             "description" => $row['description'],
             "price" => $row['price'],
             "stock_quantity" => $row['stock_quantity'],
-            "image" => $imagePath,
+            "image_path" => $imagePath,
         ]);
     }
 }

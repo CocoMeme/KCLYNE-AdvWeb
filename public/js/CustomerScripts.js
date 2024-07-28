@@ -1,26 +1,20 @@
 $(document).ready(function() {
-    // Initialize DataTable
     $('#ctable').DataTable();
 
-    // Function to handle status change
     $('.status-select').on('change', function() {
         var customerId = $(this).data('id');
         var newStatus = $(this).val();
         
-        // Set data attributes for the modal
         $('#confirmStatusChangeModal').data('customer-id', customerId);
         $('#confirmStatusChangeModal').data('new-status', newStatus);
         
-        // Show the confirmation modal
         $('#confirmStatusChangeModal').modal('show');
     });
 
-    // Function to handle status update confirmation
     $('#confirmStatusChangeButton').on('click', function() {
         var customerId = $('#confirmStatusChangeModal').data('customer-id');
         var newStatus = $('#confirmStatusChangeModal').data('new-status');
         
-        // Make the AJAX call to update the status
         $.ajax({
             url: `/api/customer/status/${customerId}`,
             method: 'PATCH',
@@ -34,7 +28,7 @@ $(document).ready(function() {
             }),
             success: function(response) {
                 alert('Customer status updated successfully');
-                location.reload(); // Reload the page to see the changes
+                location.reload();
             },
             error: function(error) {
                 console.error('Error:', error);
@@ -43,23 +37,19 @@ $(document).ready(function() {
         });
     });
 
-    // Close modal without making any changes
     $('#cancelStatusChangeButton').on('click', function() {
         $('#confirmStatusChangeModal').modal('hide');
     });
 
-    // Open Import Modal
     $('#openImportCustomerModal').on('click', function() {
         $('#importCustomerModal').modal('show');
     });
 
-    // Open Export Form
     $('#exportCustomerForm').on('submit', function(e) {
         e.preventDefault();
         $(this).submit();
     });
 
-    // Close Import Modal
     $('#cancelImportCustomerModal').on('click', function() {
         $('#importCustomerModal').modal('hide');
     });

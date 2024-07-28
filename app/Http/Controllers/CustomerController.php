@@ -10,14 +10,12 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class CustomerController extends Controller
 {
-    // Display the customer management index page
     public function index()
     {
         $customers = Customer::all();
         return view('Admin.index', compact('customers'));
     }
 
-    // Import customers from an Excel file
     public function import(Request $request)
     {
         $request->validate([
@@ -29,13 +27,11 @@ class CustomerController extends Controller
         return back()->with('success', 'Customers imported successfully.');
     }
 
-    // Export customers to an Excel file
     public function export()
     {
         return Excel::download(new CustomersExport, 'customers.xlsx');
     }
 
-    // Update the status of a customer
     public function updateStatus(Request $request, $id)
     {
         $customer = Customer::find($id);

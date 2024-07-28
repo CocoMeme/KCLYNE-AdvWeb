@@ -32,8 +32,6 @@
                             <th>Phone</th>
                             <th>Status</th>
                             <th>Address</th>
-                            <th>Created At</th>
-                            <th>Updated At</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -49,13 +47,11 @@
                             <td>{{ $customer->phone }}</td>
                             <td>
                                 <select class="form-control status-select" data-id="{{ $customer->id }}">
-                                    <option value="Actived" {{ $customer->status == 'Actived' ? 'selected' : '' }}>Actived</option>
+                                    <option value="Activated" {{ $customer->status == 'Activated' ? 'selected' : '' }}>Activated</option>
                                     <option value="Deactivated" {{ $customer->status == 'Deactivated' ? 'selected' : '' }}>Deactivated</option>
                                 </select>
                             </td>
                             <td>{{ $customer->address }}</td>
-                            <td>{{ $customer->created_at }}</td>
-                            <td>{{ $customer->updated_at }}</td>
                         </tr>
                         @endforeach
                     </tbody>
