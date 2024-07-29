@@ -238,41 +238,6 @@ $(document).ready(function() {
                 error.insertAfter(element);
             }
         },
-        submitHandler: function(form) {
-            const fd = new FormData(form);
-            $("#add_service_btn").text('Adding...');
-            // Clear previous error messages
-            $(".invalid-feedback").hide();
-            $.ajax({
-                url: routeStore, // Use the named route
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: fd,
-                cache: false,
-                contentType: false,
-                processData: false,
-                dataType: 'json',
-                success: function(response) {
-                    if (response.status === 200) {
-                        Swal.fire('Added!', response.message, 'success');
-                        fetchAllServices();
-                        $("#add_service_form")[0].reset();
-                        $("#addServiceModal").modal('hide');
-                    }
-                    $("#add_service_btn").text('Add Service');
-                },
-                error: function(response) {
-                    $("#add_service_btn").text('Add Service');
-                    if (response.responseJSON && response.responseJSON.errors) {
-                        $.each(response.responseJSON.errors, function(key, value) {
-                            $(`#${key}_error`).text(value[0]).show();
-                        });
-                    }
-                }
-            });
-        }
     });
 });
 
