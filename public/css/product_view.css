@@ -278,10 +278,6 @@ pre code {
   word-break: normal;
 }
 
-.search-history-dropdown{
-  z-index: 1000;
-}
-
 code {
   font-size: 0.875em;
   color: var(--bs-code-color);
@@ -604,6 +600,10 @@ progress {
 .img-fluid {
   max-width: 100%;
   height: auto;
+}
+
+.search-history-dropdown{
+  z-index: 1000;
 }
 
 .img-thumbnail {
@@ -4274,10 +4274,22 @@ textarea.form-control-lg {
   border-radius: var(--bs-card-inner-border-radius);
 }
 
-.card-img,
-.card-img-top,
+.card-img, 
 .card-img-bottom {
   width: 100%;
+}
+
+.card-img-top {
+  width: 100%;
+  height: auto;
+}
+
+.card-img-recommend {
+  width: 100%;
+  height: 150px;
+  margin-bottom: 10px;
+  padding: 10px;
+  object-fit: cover;
 }
 
 .card-img,

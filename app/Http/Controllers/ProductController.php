@@ -89,7 +89,7 @@ class ProductController extends Controller
             'description' => 'nullable|string|max:255',
             'price' => 'sometimes|required|numeric',
             'stock_quantity' => 'sometimes|required|integer',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate multiple images
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
     
         $imagePaths = [];
@@ -108,7 +108,7 @@ class ProductController extends Controller
                 $imagePaths[] = $imageName;
             }
     
-            $validatedData['image_path'] = implode(',', $imagePaths); // Save filenames as a comma-separated string
+            $validatedData['image_path'] = implode(',', $imagePaths);
         }
     
         $product->update($validatedData);
@@ -164,6 +164,27 @@ class ProductController extends Controller
     {
         return Product::find($id);
     }
+
+    public function showProduct($id)
+    {
+        $product = Product::findOrFail($id);
+    
+        $imagePaths = explode(',', $product->image_path);
+        $firstImagePath = trim($imagePaths[0]);
+    
+        $relatedProducts = Product::where('id', '!=', $product->id)
+                                  ->take(4)
+                                  ->get();
+    
+        return view('customer.product_view', [
+            'item' => $product,
+            'firstImagePath' => $firstImagePath,
+            'relatedItems' => $relatedProducts,
+            'isService' => false
+        ]);
+    }
+    
+     
 
     public function import(Request $request)
     {

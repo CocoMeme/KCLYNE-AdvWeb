@@ -178,3 +178,4 @@ Route::get('/services', [ServiceController::class, 'customer_service_index']);
 // Route::get('/getcustomer_service_index', [ServiceController::class, 'getcustomer_service_index'])->name('services.getcustomer_service_index');
 
 Route::get('/service_view/{id}', [ServiceController::class, 'show'])->name('service.show');
+Route::get('/product_view/{id}', [ProductController::class, 'showProduct']);
