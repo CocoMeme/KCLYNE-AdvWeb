@@ -53,6 +53,7 @@ Route::delete('/product/delete/{id}', [ProductController::class, 'destroy'])->na
 Route::get('/cart', [CartController::class, 'getCart']);
 Route::get('/products', [ShopController::class, 'getProducts']);
 Route::get('/services', [ShopController::class, 'getServices']);
+Route::get('/services/fetch', [ServiceController::class, 'getcustomer_service_index'])->name('services.getcustomer_service_index');
 
 Route::middleware('auth:sanctum')->group(function () {
 

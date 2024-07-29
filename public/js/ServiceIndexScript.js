@@ -1,40 +1,88 @@
 $(document).ready(function() {
-    function fetchData() {
-        var start = Number($('#start').val());
-        var totalRecords = Number($('#totalrecords').val());
-        var rowPerPage = Number($('#rowperpage').val());
+    var currentPage = 1;
+    var lastPage = null;
+    var isFetching = false;
 
-        if (start < totalRecords) {
-            $.ajax({
-                url: "{{ route('services.getcustomer_service_index') }}",
-                data: { start: start },
-                dataType: 'json',
-                success: function(response) {
-                    $('#services-container').append(response.html);
-                    $('#start').val(start + rowPerPage);
-                    checkWindowSize();
-                },
-                error: function() {
-                    console.log('AJAX load did not work');
-                    alert("Error fetching services.");
+    function fetchData(page = 1) {
+        if (lastPage !== null && page > lastPage) return;
+
+        isFetching = true;
+
+        $('#loading').show();
+
+        $.ajax({
+            url: "/api/services/fetch?page=" + page,
+            dataType: 'json',
+            success: function(response) {
+                lastPage = response.last_page;
+                var services = response.data;
+                var html = '';
+                services.forEach(function(service) {
+                    var averageRating = service.reviews.reduce((acc, review) => acc + review.rating, 0) / (service.reviews.length || 1);
+                    var filledStar = service.reviews.length > 0 ? '★' : '☆';
+                    html += `
+                        <div class="card w-75 post mb-3 service-card">
+                            <div class="card-body">
+                                <h5 class="card-title-name">${service.service_name}</h5>
+                                <p class="card-text-price">₱${service.price}</p>
+                                <p class="card-text-description">${service.description}</p>
+                                <img src="/images/Services/${service.service_image}" class="card-img-bottom" alt="${service.service_name}">
+                                <div class="rating-and-comments">
+                                    <span class="star-rating-service" data-service-id="${service.id}">
+                                        ${filledStar}
+                                        <span class="number-rating">${averageRating.toFixed(1)}</span>
+                                    </span>
+                                    <span class="comment-icon" data-service-id="${service.id}">
+                                        <i class="fa-regular fa-comment"></i>
+                                        <span class="comment-number">${service.reviews.length}</span>
+                                    </span>
+                                </div>
+                                <div class="comments-container" id="comments-container-${service.id}"></div>
+                            </div>
+                        </div>
+                    `;
+                });
+                $('#services-container').append(html);
+
+                // Update the observer to the new last service card
+                if ($('.service-card').length > 0) {
+                    var lastServiceCard = $('.service-card').last()[0];
+                    observer.observe(lastServiceCard);
                 }
-            });
-        }
+
+                // Update current page
+                currentPage = page;
+
+                // Hide the load more button if no more pages
+                if (currentPage >= lastPage) {
+                    $('#load-more').hide();
+                }
+            },
+            error: function() {
+                console.log('AJAX load did not work');
+                alert("Error fetching services.");
+            },
+            complete: function() {
+                isFetching = false;
+                $('#loading').hide();
+            }
+        });
     }
 
-    function checkWindowSize() {
-        if ($(window).height() >= $(document).height()) {
-            fetchData();
+    var observer = new IntersectionObserver(function(entries) {
+        if (entries[0].isIntersecting && !isFetching) {
+            var nextPage = currentPage + 1;
+            if (nextPage <= lastPage) {
+                fetchData(nextPage);
+            }
         }
-    }
-
-    checkWindowSize();
-
-    $(window).scroll(function() {
-        if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
-            fetchData();
-        }
+    }, {
+        root: null,
+        rootMargin: '0px',
+        threshold: 1.0
     });
+
+    fetchData();
 
     $(document).on('click', '.comment-icon', function() {
         var serviceId = $(this).data('service-id');

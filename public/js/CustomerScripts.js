@@ -27,8 +27,15 @@ $(document).ready(function() {
                 _token: $('meta[name="csrf-token"]').attr('content')
             }),
             success: function(response) {
-                alert('Customer status updated successfully');
-                location.reload();
+                $("#loader").hide();
+    
+                Swal.fire({
+                    title: 'Customer Status Updated!',
+                    text: response.message,
+                    icon: 'success'
+                }).then(() => {
+                    location.reload();
+                });
             },
             error: function(error) {
                 console.error('Error:', error);

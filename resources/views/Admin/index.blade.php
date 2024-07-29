@@ -106,6 +106,6 @@
         </div>
     </div>
 </div>
-
+<div id="loader" style="display: none;">Loading...</div>
 <script src="{{ asset('js/CustomerScripts.js') }}"></script>
 @endsection

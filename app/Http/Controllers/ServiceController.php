@@ -291,52 +291,25 @@ class ServiceController extends Controller
         return response()->json(['status' => 200, 'message' => 'Services Imported Successfully!']);
     }
 
-    public $rowperpage = 10; // Number of rows per page
+    public $rowperpage = 10;
 
     public function customer_service_index()
 {
-    // Number of rows per page
     $data['rowperpage'] = $this->rowperpage;
 
-    // Total number of records
     $data['totalrecords'] = Service::count();
 
-    // Fetch initial set of services
     $data['services'] = Service::take($this->rowperpage)->get();
 
-    // Load index view
     return view('customer.service_index', $data);
 }
 
-
     public function getcustomer_service_index(Request $request)
     {
-        $start = $request->get("start");
-        $rowperpage = $this->rowperpage;
-
-        // Fetch additional services
-        $services = Service::skip($start)->take($rowperpage)->get();
-
-        $html = "";
-        foreach ($services as $service) {
-            $service_name = $service->service_name;
-            $description = $service->description;
-            $price = $service->price;
-            $service_image = $service->service_image;
-
-            $html .= '<div class="card w-75 post mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">' . $service_name . '</h5>
-                            <p class="card-text">' . $description . '</p>
-                            <p class="card-text">$' . $price . '</p>
-                        </div>
-                        <img src="' . asset('images/Services/' . $service_image) . '" class="card-img-bottom" alt="' . $service_name . '">
-                    </div>';
-        }
-
-        return response()->json(['html' => $html]);
-    }
-
+        $services = Service::with('reviews')->paginate(10);
+        return response()->json($services);
+    }    
+    
     public function show($id)
     {
         $service = Service::findOrFail($id);
