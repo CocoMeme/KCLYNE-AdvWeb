@@ -119,6 +119,156 @@
 
     </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Add jQuery validation rules
+        $("#createProductForm").validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 50
+                },
+                price: {
+                    required: true,
+                    number: true,
+                    min: 0
+                },
+                description: {
+                    required: true,
+                    minlength: 10
+                },
+                stock_quantity: {
+                    required: true,
+                    number: true
+                }
+            },
+            messages: {
+                name: {
+                    required: "Please enter a product name.",
+                    minlength: "Product name must be at least 3 characters.",
+                    maxlength: "Product name cannot exceed 50 characters."
+                },
+                price: {
+                    required: "Please enter a price.",
+                    number: "Price must be a number.",
+                    min: "Price must be greater than or equal to 0."
+                },
+                description: {
+                    required: "Please enter a description.",
+                    minlength: "Description must be at least 10 characters."
+                },
+                stock_quantity: {
+                    required: "Please enter a stock quantity.",
+                    number: "Stock quantity must be a number."
+                }
+            },
+            errorElement: 'span',
+            errorClass: 'invalid-feedback',
+            highlight: function(element) {
+                $(element).closest('.form-group').addClass('has-error');
+            },
+            unhighlight: function(element) {
+                $(element).closest('.form-group').removeClass('has-error');
+            },
+            errorPlacement: function(error, element) {
+                error.insertAfter(element);
+            },
+            submitHandler: function(form) {
+                $.ajax({
+                    url: $(form).attr('action'),
+                    type: 'POST',
+                    data: new FormData(form),
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $('#createProductModal').modal('hide'); // Hide the modal
+                        location.reload(); // Reload the page to see the new product
+                    },
+                    error: function(xhr, status, error) {
+                        $('#createProductErrorMessage').text('An error occurred while creating the product.').show();
+                    }
+                });
+            }
+        });
+    
+        // Initialize validation for the Edit Product Form
+        $("#editProductForm").validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 50
+                },
+                price: {
+                    required: true,
+                    number: true,
+                    min: 0
+                },
+                description: {
+                    required: true,
+                    minlength: 10
+                },
+                stock_quantity: {
+                    required: true,
+                    number: true
+                }
+            },
+            messages: {
+                name: {
+                    required: "Please enter a product name.",
+                    minlength: "Product name must be at least 3 characters.",
+                    maxlength: "Product name cannot exceed 50 characters."
+                },
+                price: {
+                    required: "Please enter a price.",
+                    number: "Price must be a number.",
+                    min: "Price must be greater than or equal to 0."
+                },
+                description: {
+                    required: "Please enter a description.",
+                    minlength: "Description must be at least 10 characters."
+                },
+                stock_quantity: {
+                    required: "Please enter a stock quantity.",
+                    number: "Stock quantity must be a number."
+                }
+            },
+            errorElement: 'span',
+            errorClass: 'invalid-feedback',
+            highlight: function(element) {
+                $(element).closest('.form-group').addClass('has-error');
+            },
+            unhighlight: function(element) {
+                $(element).closest('.form-group').removeClass('has-error');
+            },
+            errorPlacement: function(error, element) {
+                error.insertAfter(element);
+            },
+            submitHandler: function(form) {
+                $.ajax({
+                    url: $(form).attr('action'),
+                    type: 'POST',
+                    data: new FormData(form),
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $('#editProductModal').modal('hide'); // Hide the modal
+                        location.reload(); // Reload the page to see the updated product
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('An error occurred: ' + error);
+                    }
+                });
+            }
+        });
+    
+        // Other scripts for modals and actions can go here
+    });
+    </script>
 <div id="loader" style="display: none;">Loading...</div>
 <script src="{{ asset('js/EmployeeScripts.js') }}"></script>
 

@@ -1,28 +1,42 @@
 $(document).ready(function() {
     $('#ptable').DataTable();
 
-    $('#ptable tbody').on('click', 'tr', function () {
-        $('#ptable tbody tr').css('background-color', '');
-        $(this).css('background-color', '#EE6F57');
-        
-        var imageSrcs = $(this).data('product-images').split(',');
-        var firstImageSrc = imageSrcs.length > 0 ? imageSrcs[0] : 'defaultproduct.jpg';
-        var imageUrl = firstImageSrc ? '/images/Products/' + firstImageSrc : '/images/Products/defaultproduct.jpg';
-
-        var name = $(this).find('td').eq(2).text();
-        var stock = $(this).find('td').eq(5).text();
-
-        $('#productImage').attr('src', imageUrl)
-            .on('error', function() {
-                $(this).attr('src', '/images/Products/defaultproduct.jpg');
-            });
-        $('#productName').text(name);
-        $('#productStock').text(stock);
+    // Create Product form submission with AJAX
+    $('#createProductForm').on('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                $('#createProductModal').hide();
+                if (response.success) {
+                    Swal.fire('Product Created!', response.message, 'success')
+                        .then(() => {
+                            location.reload();
+                        });
+                } else {
+                    $('#createProductErrorMessage').text(response.error).show();
+                }
+            },
+            error: function(response) {
+                var errors = response.responseJSON.errors;
+                var errorMessage = '';
+                $.each(errors, function(key, value) {
+                    errorMessage += value[0] + '<br>';
+                });
+                $('#createProductErrorMessage').html(errorMessage).show();
+            }
+        });
     });
 
     $('#openCreateProductModal').on('click', function (e) {
         e.preventDefault();
         $('#createProductModal').show();
+        $('#createProductErrorMessage').hide();  // Hide the error message when opening the modal
         setTimeout(() => {
             $('#createProductModal').css('opacity', '1');
         }, 10);
@@ -32,6 +46,7 @@ $(document).ready(function() {
         $('#createProductModal').css('opacity', '0');
         setTimeout(() => {
             $('#createProductModal').hide();
+            $('#createProductErrorMessage').hide();  // Hide the error message when closing the modal
         }, 300);
     });
 

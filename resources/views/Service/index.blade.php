@@ -171,6 +171,7 @@
   <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js'></script>
   <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <script>
       var routeStore = "{{ route('store') }}";
       var routeEdit = "{{ route('edit') }}";
@@ -242,6 +243,108 @@ $(document).ready(function() {
 });
 
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Add jQuery validation rules
+    $("#createEmployeeForm").validate({
+        rules: {
+            first_name: {
+                required: true,
+                minlength: 2,
+                maxlength: 50
+            },
+            last_name: {
+                required: true,
+                minlength: 2,
+                maxlength: 50
+            },
+            birth_date: {
+                required: true,
+                date: true
+            },
+            sex: {
+                required: true
+            },
+            phone: {
+                required: true,
+                minlength: 10,
+                maxlength: 15
+            },
+            address: {
+                required: true,
+                minlength: 10
+            },
+            payrate_per_hour: {
+                required: true,
+                number: true,
+                min: 0
+            }
+        },
+        messages: {
+            first_name: {
+                required: "Please enter the first name.",
+                minlength: "First name must be at least 2 characters.",
+                maxlength: "First name cannot exceed 50 characters."
+            },
+            last_name: {
+                required: "Please enter the last name.",
+                minlength: "Last name must be at least 2 characters.",
+                maxlength: "Last name cannot exceed 50 characters."
+            },
+            birth_date: {
+                required: "Please enter the birth date.",
+                date: "Please enter a valid date."
+            },
+            sex: {
+                required: "Please select the sex."
+            },
+            phone: {
+                required: "Please enter the phone number.",
+                minlength: "Phone number must be at least 10 characters.",
+                maxlength: "Phone number cannot exceed 15 characters."
+            },
+            address: {
+                required: "Please enter the address.",
+                minlength: "Address must be at least 10 characters."
+            },
+            payrate_per_hour: {
+                required: "Please enter the payrate per hour.",
+                number: "Payrate must be a number.",
+                min: "Payrate must be greater than or equal to 0."
+            }
+        },
+        errorElement: 'span',
+        errorClass: 'invalid-feedback',
+        highlight: function(element) {
+            $(element).closest('.form-group').addClass('has-error');
+        },
+        unhighlight: function(element) {
+            $(element).closest('.form-group').removeClass('has-error');
+        },
+        errorPlacement: function(error, element) {
+            error.insertAfter(element);
+        },
+        submitHandler: function(form) {
+            $.ajax({
+                url: $(form).attr('action'),
+                type: 'POST',
+                data: new FormData(form),
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    $('#createEmployeeModal').modal('hide'); // Hide the modal
+                    location.reload(); // Reload the page to see the new employee
+                },
+                error: function(xhr, status, error) {
+                    $('#createEmployeeErrorMessage').text('An error occurred while creating the employee.').show();
+                }
+            });
+        }
+    });
 
+    // Other scripts for modals and actions can go here
+});
+</script>
 </html>
 @endsection

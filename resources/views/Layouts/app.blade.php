@@ -25,7 +25,6 @@
     <link href="{{ asset('css/order_history.css') }}" rel="stylesheet">
     <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
     <link href="{{ asset('css/message.css') }}" rel="stylesheet">
-    {{-- <link href="{{ asset('css/customer-profile.css') }}" rel="stylesheet"> --}}
 
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
