@@ -36,8 +36,6 @@ Route::get('/', function () {
     return view('customer.home');
 });
 
-
-
 // });
 
 
@@ -142,10 +140,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
 // Route::middleware(['auth', 'check.status'])->group(function () {
 
 
-    Route::get('/shop', [ShopController::class, 'index'])->name('shop');
-    Route::get('/shop/{id}', [ShopController::class, 'show'])->name('shop.show');
-
-    
+Route::get('/shop', [ShopController::class, 'index'])->name('shop');
+Route::get('/shop/{id}', [ShopController::class, 'show'])->name('shop.show');
 
 
 /*
@@ -166,20 +162,19 @@ Route::middleware(['auth:sanctum'])->group(function () {
 */
 
 Route::middleware(['auth', 'admin'])->group(function () {
-Route::get('/service', [ServiceController::class, 'index']);
-Route::post('/store', [ServiceController::class, 'store'])->name('store');
-Route::get('/fetchall', [ServiceController::class, 'fetchAll'])->name('fetchAll');
-Route::delete('/delete', [ServiceController::class, 'delete'])->name('delete');
-Route::get('/edit', [ServiceController::class, 'edit'])->name('edit');
-Route::post('/update', [ServiceController::class, 'update'])->name('update');
+    Route::get('/service', [ServiceController::class, 'index']);
+    Route::post('/store', [ServiceController::class, 'store'])->name('store');
+    Route::get('/fetchall', [ServiceController::class, 'fetchAll'])->name('fetchAll');
+    Route::delete('/delete', [ServiceController::class, 'delete'])->name('delete');
+    Route::get('/edit', [ServiceController::class, 'edit'])->name('edit');
+    Route::post('/update', [ServiceController::class, 'update'])->name('update');
 
-Route::get('/export', [ServiceController::class, 'export'])->name('export');
-Route::post('/import', [ServiceController::class, 'import'])->name('import');
+    Route::get('/export', [ServiceController::class, 'export'])->name('export');
+    Route::post('/import', [ServiceController::class, 'import'])->name('import');
 });
 
-Route::middleware(['auth', 'check.status'])->group(function () {
-    Route::get('/services', [ServiceController::class, 'customer_service_index']);
-    Route::get('/getcustomer_service_index', [ServiceController::class, 'getcustomer_service_index'])->name('services.getcustomer_service_index');
-});
+
+Route::get('/services', [ServiceController::class, 'customer_service_index']);
+Route::get('/getcustomer_service_index', [ServiceController::class, 'getcustomer_service_index'])->name('services.getcustomer_service_index');
 
 Route::get('/service_view/{id}', [ServiceController::class, 'show'])->name('service.show');
