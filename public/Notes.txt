@@ -45,4 +45,4 @@ Algolia:
 composer require laravel/scout
 
 php artisan scout:import “App\Models\Service”
-php artisan scout:import “App\Models\Service”
+php artisan scout:import “App\Models\Product”

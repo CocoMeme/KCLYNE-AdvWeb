@@ -29,7 +29,7 @@ class ServiceController extends Controller
         }
 
         return response()->json([
-            'success' => 'Employee retrieved successfully',
+            'success' => 'Service retrieved successfully',
             'employee' => $service,
             'status' => 200
         ]);

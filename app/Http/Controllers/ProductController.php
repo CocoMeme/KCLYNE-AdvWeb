@@ -172,20 +172,14 @@ class ProductController extends Controller
         $imagePaths = explode(',', $product->image_path);
         $firstImagePath = trim($imagePaths[0]);
     
-        $relatedProducts = Product::where('id', '!=', $product->id)
-                                  ->take(4)
-                                  ->get();
+        $relatedItems = Product::where('id', '!=', $product->id)->take(4)->get();
+        $item = $product;
+        $item->firstImagePath = $firstImagePath;
     
-        return view('customer.product_view', [
-            'item' => $product,
-            'firstImagePath' => $firstImagePath,
-            'relatedItems' => $relatedProducts,
-            'isService' => false
-        ]);
+        return view('customer.product_view', compact('item', 'relatedItems', 'firstImagePath'))->with('isService', false);    
     }
     
      
-
     public function import(Request $request)
     {
         $request->validate([

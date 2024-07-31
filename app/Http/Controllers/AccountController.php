@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 
 class AccountController extends Controller
@@ -45,10 +46,20 @@ class AccountController extends Controller
     
             // Attempt to authenticate the user
             if (Auth::attempt($credentials)) {
+                // Generate a token for the user
+                $token = $user->createToken('Personal Access Token')->plainTextToken;
+    
+                // Log the token
+                Log::info('User logged in. Token:', ['token' => $token]);
+    
                 // Check the user's role and set the appropriate redirect route
                 $redirectRoute = $user->role === 'admin' ? route('dashboard') : route('home');
     
-                return response()->json(['message' => 'Login successful!', 'redirect' => $redirectRoute]);
+                return response()->json([
+                    'message' => 'Login successful!',
+                    'redirect' => $redirectRoute,
+                    'token' => $token, // Return the token in the response
+                ]);
             } else {
                 return response()->json(['message' => 'Invalid credentials'], 401);
             }
