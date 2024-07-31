@@ -602,10 +602,6 @@ progress {
   height: auto;
 }
 
-.search-history-dropdown{
-  z-index: 1000;
-}
-
 .img-thumbnail {
   padding: 0.25rem;
   background-color: #fff;

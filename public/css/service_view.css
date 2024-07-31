@@ -278,10 +278,6 @@ pre code {
   word-break: normal;
 }
 
-.search-history-dropdown{
-  z-index: 1000;
-}
-
 code {
   font-size: 0.875em;
   color: var(--bs-code-color);
