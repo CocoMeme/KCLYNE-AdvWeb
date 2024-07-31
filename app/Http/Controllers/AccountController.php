@@ -175,9 +175,9 @@ class AccountController extends Controller
         $request->validate([
             'name' => 'required|min:8|max:255',
             'email' => 'required|email|max:255',
-            'phone' => 'required|min:max:20',
+            'phone' => 'required|min:8|max:20',
             'address' => 'required|max:255',
-            'image' => 'nullable|image|max:2048' // Validate image
+            'image' => 'nullable|image|max:2048'
         ]);
 
         $customer = Auth::user()->customer;
