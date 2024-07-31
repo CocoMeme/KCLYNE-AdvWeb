@@ -74,7 +74,7 @@ $(document).ready(function() {
 
     $('.delete-button').on('click', function() {
         var employeeId = $(this).data('id');
-        var deleteUrl = `/api/employee/delete/${employeeId}`;
+        var deleteUrl = `/api/delete_employee/${employeeId}`;
         $('#deleteForm').attr('action', deleteUrl);
         $('#deleteModal').modal('show');
     });

@@ -38,27 +38,22 @@ class AccountController extends Controller
         $user = User::where('username', $request->username)->first();
     
         if ($user) {
-            // Check if the user is a customer and if their status is deactivated
             $customer = Customer::where('user_id', $user->id)->first();
             if ($customer && $customer->status === 'Deactivated') {
                 return response()->json(['message' => 'Login Failed: Account is deactivated.'], 403);
             }
     
-            // Attempt to authenticate the user
             if (Auth::attempt($credentials)) {
-                // Generate a token for the user
                 $token = $user->createToken('Personal Access Token')->plainTextToken;
     
-                // Log the token
                 Log::info('User logged in. Token:', ['token' => $token]);
     
-                // Check the user's role and set the appropriate redirect route
                 $redirectRoute = $user->role === 'admin' ? route('dashboard') : route('home');
     
                 return response()->json([
                     'message' => 'Login successful!',
                     'redirect' => $redirectRoute,
-                    'token' => $token, // Return the token in the response
+                    'token' => $token,
                 ]);
             } else {
                 return response()->json(['message' => 'Invalid credentials'], 401);
