@@ -44,16 +44,13 @@ $(document).ready(function() {
                 });
                 $('#services-container').append(html);
 
-                // Update the observer to the new last service card
                 if ($('.service-card').length > 0) {
                     var lastServiceCard = $('.service-card').last()[0];
                     observer.observe(lastServiceCard);
                 }
 
-                // Update current page
                 currentPage = page;
 
-                // Hide the load more button if no more pages
                 if (currentPage >= lastPage) {
                     $('#load-more').hide();
                 }

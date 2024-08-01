@@ -84,7 +84,6 @@ class ServiceController extends Controller
     //UI CREATE
     public function store(Request $request)
     {
-        // Validate request data
         $validatedData = $request->validate([
             'service_name' => 'required|string|max:255',
             'description' => 'required|string',
@@ -92,13 +91,11 @@ class ServiceController extends Controller
             'service_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
     
-        // Handle image upload
         if ($request->hasFile('service_image')) {
             $fileName = time() . '.' . $request->service_image->extension();
             $request->service_image->move(public_path('images/Services'), $fileName);
             $validatedData['service_image'] = $fileName;
         } elseif ($request->has('service_image')) {
-            // Decode the base64 image string if present
             $imageData = $request->service_image;
             $image = base64_decode($imageData);
             $fileName = time() . '.png';
@@ -106,7 +103,6 @@ class ServiceController extends Controller
             $validatedData['service_image'] = $fileName;
         }
     
-        // Create service
         $service = Service::create($validatedData);
     
         return response()->json([

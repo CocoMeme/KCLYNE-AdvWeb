@@ -28,7 +28,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return color;
     }
 
-    // Products Ratings Bar Chart
     var productsRatingsData = transformChartData(productsRatings, 'product_name', 'avg_rating');
     var ctx1 = document.getElementById('productsRatingsChart').getContext('2d');
     new Chart(ctx1, {
@@ -50,7 +49,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Services Ratings Bar Chart
     var servicesRatingsData = transformChartData(servicesRatings, 'service_name', 'avg_rating');
     var ctx2 = document.getElementById('servicesRatingsChart').getContext('2d');
     new Chart(ctx2, {
