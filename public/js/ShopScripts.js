@@ -541,7 +541,7 @@ function updateCartDisplay() {
     function populateServices() {
         $.ajax({
             type: "GET",
-            url: "/api/get_all_service",
+            url: "/api/get_all_services",
             dataType: 'json',
             success: function (data) {
                 console.log(data);
