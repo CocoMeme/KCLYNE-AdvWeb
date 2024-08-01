@@ -1,7 +1,6 @@
 $(document).ready(function() {
     $('#ptable').DataTable();
 
-    // Create Product form submission with AJAX
     $('#createProductForm').on('submit', function(e) {
         e.preventDefault();
         var formData = new FormData(this);
@@ -36,7 +35,7 @@ $(document).ready(function() {
     $('#openCreateProductModal').on('click', function (e) {
         e.preventDefault();
         $('#createProductModal').show();
-        $('#createProductErrorMessage').hide();  // Hide the error message when opening the modal
+        $('#createProductErrorMessage').hide();
         setTimeout(() => {
             $('#createProductModal').css('opacity', '1');
         }, 10);
@@ -46,7 +45,7 @@ $(document).ready(function() {
         $('#createProductModal').css('opacity', '0');
         setTimeout(() => {
             $('#createProductModal').hide();
-            $('#createProductErrorMessage').hide();  // Hide the error message when closing the modal
+            $('#createProductErrorMessage').hide();
         }, 300);
     });
 

@@ -246,7 +246,6 @@ $(document).ready(function() {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 <script>
 $(document).ready(function() {
-    // Add jQuery validation rules
     $("#createEmployeeForm").validate({
         rules: {
             first_name: {
@@ -325,25 +324,8 @@ $(document).ready(function() {
         errorPlacement: function(error, element) {
             error.insertAfter(element);
         },
-        submitHandler: function(form) {
-            $.ajax({
-                url: $(form).attr('action'),
-                type: 'POST',
-                data: new FormData(form),
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    $('#createEmployeeModal').modal('hide'); // Hide the modal
-                    location.reload(); // Reload the page to see the new employee
-                },
-                error: function(xhr, status, error) {
-                    $('#createEmployeeErrorMessage').text('An error occurred while creating the employee.').show();
-                }
-            });
-        }
     });
 
-    // Other scripts for modals and actions can go here
 });
 </script>
 </html>

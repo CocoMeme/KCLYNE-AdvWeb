@@ -207,7 +207,6 @@
 
 <script>
 $(document).ready(function() {
-    // Add jQuery validation rules
     $("#createProductForm").validate({
         rules: {
             name: {
@@ -260,25 +259,8 @@ $(document).ready(function() {
         errorPlacement: function(error, element) {
             error.insertAfter(element);
         },
-        submitHandler: function(form) {
-            $.ajax({
-                url: $(form).attr('action'),
-                type: 'POST',
-                data: new FormData(form),
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    $('#createProductModal').modal('hide'); // Hide the modal
-                    location.reload(); // Reload the page to see the new product
-                },
-                error: function(xhr, status, error) {
-                    $('#createProductErrorMessage').text('An error occurred while creating the product.').show();
-                }
-            });
-        }
     });
 
-    // Initialize validation for the Edit Product Form
     $("#editProductForm").validate({
         rules: {
             name: {
@@ -331,25 +313,8 @@ $(document).ready(function() {
         errorPlacement: function(error, element) {
             error.insertAfter(element);
         },
-        submitHandler: function(form) {
-            $.ajax({
-                url: $(form).attr('action'),
-                type: 'POST',
-                data: new FormData(form),
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    $('#editProductModal').modal('hide'); // Hide the modal
-                    location.reload(); // Reload the page to see the updated product
-                },
-                error: function(xhr, status, error) {
-                    console.log('An error occurred: ' + error);
-                }
-            });
-        }
     });
 
-    // Other scripts for modals and actions can go here
 });
 </script>
 
